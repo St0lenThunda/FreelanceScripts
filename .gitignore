@@ -1,0 +1,57 @@
+# ─ Python bytecode ──────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ─ Virtual environments ─────────────────────────────────────────────────────
+# adjust “.venv” to whatever folder name you used
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ─ Environment variable files (secrets!) ────────────────────────────────────
+# store API keys, DB credentials, etc. here, never commit them
+.env
+*.env
+
+# ─ Editor / IDE / OS files ───────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# ─ Testing / Coverage ───────────────────────────────────────────────────────
+.pytest_cache/
+.tox/
+.nox/
+.coverage
+coverage.xml
+htmlcov/
+
+# ─ Packaging / Build ────────────────────────────────────────────────────────
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ─ Jupyter / IPython ────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+
+# ─ Mypy / Type checkers / Linters ──────────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pyright/
+
+# ─ Misc Python stuff ───────────────────────────────────────────────────────
+*.log     # if you ever write logs locally
+*.sqlite3 # e.g. a local test database
+celerybeat-schedule
