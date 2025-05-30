@@ -36,10 +36,12 @@ This script will search the project for any file ending in `_tool.py` and `chmod
 
 ⚠️ **Note**: This applies only to Linux/macOS/WSL systems.
  On Windows, simply run:
- `python path/to/tool_name_tool.py`
+ ```bash
+ python path/to/tool_name_tool.py
+ ```
  
 ## 📁 Project Structure (Example)
-
+```
 FreelanceScripts/
 ├── csv_converter/
 │   └── csv_json_tool.py
@@ -47,7 +49,7 @@ FreelanceScripts/
 │   └── simple_scraper_tool.py
 ├── executioner.py
 └── README.md
-
+```
 ---
 
 ## ✅ Next Steps
