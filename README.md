@@ -17,6 +17,7 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 |------|-------------|------|
 | 🧮 CSV ⇄ JSON Tool | A two-way data converter built in Python. Use it to transform: | [csv_json_converter/README.md](csv_json_converter/README.md) |
 | 🌐 Simple Web Scraper | Fetch all titles from [Hacker News](https://news.ycombinator.com ). Fetches inner text and links of  `<a>` elements inside `<span class="titleline">`. | [scraper/README.md](scraper/README.md) |
+| 🪛 Scraper Debug Demo Tool | This tool demonstrates real-world debugging and refactoring based on issues encountered while building the `simple_scraper_tool.py`. | [debug_demo/README.md](debug_demo/README.md) |
 <!-- TOOL_TABLE_END -->
 
 ## ⚙️ Installation
