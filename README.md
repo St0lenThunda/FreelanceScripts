@@ -12,7 +12,12 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 1. **CSV ⇄ JSON Converter** (`csv_json_tool.py`)  
 2. **Simple Web Scraper** (`simple_scraper_tool.py`)
 
----
+<!-- TOOL_TABLE_START -->
+| Tool | Description | Link |
+|------|-------------|------|
+| 🧮 CSV ⇄ JSON Tool | A two-way data converter built in Python. Use it to transform: | [csv_json_converter/README.md](csv_json_converter/README.md) |
+| 🌐 Simple Web Scraper | Grab `<h2>` headlines from any website and save them as a JSON file. | [scraper/README.md](scraper/README.md) |
+<!-- TOOL_TABLE_END -->
 
 ## ⚙️ Installation
 
@@ -22,24 +27,40 @@ cd FreelanceScripts
 python3 -m venv .venv             # optional but recommended
 source .venv/bin/activate         # or `.venv\Scripts\activate` on Windows
 pip install -r requirements.txt   # only needed if additional dependencies are added
-````
+```
 
 ---
 
-## 🧰 Making All Tools Executable
+## 🧰 Making All Tools Executable & Adding to PATH
 
-To run any tool directly like `./csv_json_tool.py`, make it executable:
+To run any tool directly (e.g., `csv_json_tool`), use the included script:
 
-`python executioner.py`
+```bash
+python executioner.py
+```
 
-This script will search the project for any file ending in `_tool.py` and `chmod +x` it automatically.
+This will:
+- Search the project for any file ending in `_tool.py`
+- Convert line endings to Unix (LF)
+- Make each tool executable
+- Symlink each tool (without the `.py` extension) into a `bin/` directory
+
+You can then run tools from the `bin/` directory using just their short names (e.g., `csv_json_tool`).
 
 > ⚠️ **Note**: This applies only to Linux/macOS/WSL systems.
- On Windows, simply run:
+> On Windows, simply run:
 > ```bash
 > python path/to/tool_name_tool.py
->  ```
- 
+> ```
+
+### 🔗 Add Tools to Your PATH
+
+To use these tools from anywhere, add this to your shell profile (e.g., `~/.bashrc`, `~/.zshrc`):
+
+```bash
+export PATH="$(pwd)/bin:$PATH"
+```
+
 ## 📁 Project Structure (Example)
 ```
 FreelanceScripts/
