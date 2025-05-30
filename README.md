@@ -34,11 +34,11 @@ To run any tool directly like `./csv_json_tool.py`, make it executable:
 
 This script will search the project for any file ending in `_tool.py` and `chmod +x` it automatically.
 
-⚠️ **Note**: This applies only to Linux/macOS/WSL systems.
+> ⚠️ **Note**: This applies only to Linux/macOS/WSL systems.
  On Windows, simply run:
- ```bash
- python path/to/tool_name_tool.py
- ```
+> ```bash
+> python path/to/tool_name_tool.py
+>  ```
  
 ## 📁 Project Structure (Example)
 ```
