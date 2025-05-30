@@ -1,10 +1,9 @@
-
 # 🌐 Simple Web Scraper
 [← Back to Main README](../README.md)
 
-Grab `<h2>` headlines from any website and save them as a JSON file.
-
----
+> ## Purpose
+>  Fetch all titles from [Hacker News](https://news.ycombinator.com
+). Fetches inner text and links of  `<a>` elements inside `<span class="titleline">`.
 
 ## 🚀 Usage
 
@@ -23,13 +22,23 @@ python simple_scraper_tool.py https://example.com my_headlines.json
 
 ## 📤 Output Example
 
-```
+```json
 [
-  "Breaking News: AI Beats Humans at Chess",
-  "How to Build a Web Scraper",
-  "Why Python is Great for Freelancers"
+  {
+    "title": "Breaking News: AI Beats Humans at Chess",
+    "link": "https://example.com/chess"
+  },
+  {
+    "title": "How to Build a Web Scraper",
+    "link": "https://example.com/scraper"
+  },
+  {
+    "title": "Why Python is Great for Freelancers",
+    "link": "https://example.com/python"
+  }
 ]
 ```
+
 ---
 
 ## 🔧 Upcoming Features

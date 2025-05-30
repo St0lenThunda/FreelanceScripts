@@ -106,7 +106,7 @@ def parse_arguments() -> argparse.Namespace:
         "output",
         type=Path,
         nargs="?",
-        help="Path to output file (defaults to input stem + extension)",
+        help="Path to output file (defaults to input stem + extension in the output directory)",
     )
 
     args = parser.parse_args()
@@ -123,7 +123,9 @@ def parse_arguments() -> argparse.Namespace:
                 logging.error(f"Input file not found: {input_path}")
                 sys.exit(1)
             ext = ".json" if direction == "c2j" else ".csv"
-            output_path = input_path.with_suffix(ext)
+            output_dir = Path.cwd() / "output"
+            output_dir.mkdir(exist_ok=True)
+            output_path = output_dir / input_path.with_suffix(ext).name
             return argparse.Namespace(direction=direction, input=input_path, output=output_path)
         except (KeyboardInterrupt, EOFError):
             logging.info("Operation cancelled by user.")
@@ -135,11 +137,14 @@ def parse_arguments() -> argparse.Namespace:
     if not input_path or not input_path.exists():
         parser.error(f"Input file does not exist: {input_path}")
 
+    output_dir = Path.cwd() / "output"
+    output_dir.mkdir(exist_ok=True)
+
     if args.output:
-        output_path = args.output
+        output_path = output_dir / args.output.name
     else:
         ext = ".json" if direction == "c2j" else ".csv"
-        output_path = input_path.with_suffix(ext)
+        output_path = output_dir / input_path.with_suffix(ext).name
 
     return argparse.Namespace(direction=direction, input=input_path, output=output_path)
 

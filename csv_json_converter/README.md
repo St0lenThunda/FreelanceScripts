@@ -1,9 +1,8 @@
-
-
 # 🧮 CSV ⇄ JSON Tool
 [← Back to Main README](../README.md)
 
-A two-way data converter built in Python. Use it to transform:
+> ## Purpose
+> A two-way data converter built in Python. Use it to transform:
 
 - CSV → JSON (`c2j`)
 - JSON → CSV (`j2c`)
@@ -48,6 +47,16 @@ Bob,25
 ]
 ```
 
+## 📤 Output Example
+
+```json
+[
+  { "name": "Alice", "age": "30" },
+  { "name": "Bob", "age": "25" }
+]
+```
+
+All output files are now saved in the root `output` directory by default.
 
 ## 📜 License
 

@@ -14,16 +14,22 @@ README = ROOT / "README.md"
 TOOL_ROWS = []
 
 def extract_summary(readme_path: Path) -> tuple[str, str]:
-    """Extracts the first-level header and first paragraph as summary."""
+    """Extracts the first-level header and the 'Purpose' section as summary."""
     title = "(No Title)"
     desc = ""
     with readme_path.open("r", encoding="utf-8") as f:
         lines = f.readlines()
-        for line in lines:
+        for i, line in enumerate(lines):
             if line.strip().startswith("# "):
                 title = line.strip().replace("#", "").strip()
-            elif line.strip() and not line.strip().startswith("#"):
-                desc = line.strip()
+            elif line.strip().lower().startswith("> ## purpose"):
+                # Collect all lines until the first empty line as the description
+                desc_lines = []
+                for desc_line in lines[i + 1:]:
+                    if not desc_line.strip():
+                        break
+                    desc_lines.append(desc_line.strip().lstrip("> "))
+                desc = " ".join(desc_lines)
                 break
     return title, desc
 
