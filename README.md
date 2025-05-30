@@ -9,15 +9,13 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 
 ### 📦 Tools Included
 
-1. **CSV ⇄ JSON Converter** (`csv_json_tool.py`)  
-2. **Simple Web Scraper** (`simple_scraper_tool.py`)
-
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Link |
 |------|-------------|------|
 | 🧮 CSV ⇄ JSON Tool | A two-way data converter built in Python. Use it to transform: | [csv_json_converter/README.md](csv_json_converter/README.md) |
+| README Updater | This script, `generate_tool_table.py`, automates the process of documenting tools in the main project README. It scans subdirectories for tool-specific `README.md` files, extracts their titles and descriptions, and generates a Markdown table to include in the main README. | [readme_updater/README.md](readme_updater/README.md) |
 | 🌐 Simple Web Scraper | Fetch all titles from [Hacker News](https://news.ycombinator.com ). Fetches inner text and links of  `<a>` elements inside `<span class="titleline">`. | [scraper/README.md](scraper/README.md) |
-| 🪛 Scraper Debug Demo Tool | This tool demonstrates real-world debugging and refactoring based on issues encountered while building the `simple_scraper_tool.py`. | [debug_demo/README.md](debug_demo/README.md) |
+| 🪛 Scraper Debug Demo Tool | This tool demonstrates a real-world debugging and refactoring process taken from the `scraper/simple_scraper_tool.py`. It includes both a **broken** and a **fixed** version of the scraper to illustrate how problems were identified and solved in a freelance-style workflow. | [debug_demo/README.md](debug_demo/README.md) |
 <!-- TOOL_TABLE_END -->
 
 ## ⚙️ Installation
