@@ -1,6 +1,9 @@
 
 # 🌐 Simple Web Scraper
+<<<<<<< HEAD
 [← Back to Main README](../README.md)
+=======
+>>>>>>> 9523e7f8b904f07031931076590bbf449337e8f7
 
 Grab `<h2>` headlines from any website and save them as a JSON file.
 
@@ -30,7 +33,10 @@ python simple_scraper_tool.py https://example.com my_headlines.json
   "Why Python is Great for Freelancers"
 ]
 ```
+<<<<<<< HEAD
 [← Back to Main README](../README.md)
+=======
+>>>>>>> 9523e7f8b904f07031931076590bbf449337e8f7
 
 ---
 
