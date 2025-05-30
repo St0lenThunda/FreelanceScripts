@@ -13,9 +13,9 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 | Tool | Description | Link |
 |------|-------------|------|
 | 🧮 CSV ⇄ JSON Tool | A two-way data converter built in Python. Use it to transform: | [csv_json_converter/README.md](csv_json_converter/README.md) |
-| README Updater | This script, `generate_tool_table.py`, automates the process of documenting tools in the main project README. It scans subdirectories for tool-specific `README.md` files, extracts their titles and descriptions, and generates a Markdown table to include in the main README. | [readme_updater/README.md](readme_updater/README.md) |
+| README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main project README. It allows for the addition of multiple tasks, such as generating a tool table, and makes the process extensible for future enhancements. | [readme_updater/README.md](readme_updater/README.md) |
 | 🌐 Simple Web Scraper | Fetch all titles from [Hacker News](https://news.ycombinator.com ). Fetches inner text and links of  `<a>` elements inside `<span class="titleline">`. | [scraper/README.md](scraper/README.md) |
-| 🪛 Scraper Debug Demo Tool | This tool demonstrates a real-world debugging and refactoring process taken from the `scraper/simple_scraper_tool.py`. It includes both a **broken** and a **fixed** version of the scraper to illustrate how problems were identified and solved in a freelance-style workflow. | [debug_demo/README.md](debug_demo/README.md) |
+| Executioner Tool | Automates making Python scripts executable and symlinking them into a `bin/` directory for easy PATH usage. | [executioner/README.md](executioner/README.md) |
 <!-- TOOL_TABLE_END -->
 
 ## ⚙️ Installation

@@ -1,11 +1,12 @@
 # README Updater
 
 > ## Purpose
-> This script, `generate_tool_table.py`, automates the process of documenting tools in the main project README. It scans subdirectories for tool-specific `README.md` files, extracts their titles and descriptions, and generates a Markdown table to include in the main README.
+> This script, `readme_updater.py`, provides a modular framework for dynamically updating the main project README. It allows for the addition of multiple tasks, such as generating a tool table, and makes the process extensible for future enhancements.
 
 ## Features
 
-- **Automatic Table Generation**: Extracts tool information from their `README.md` files.
+- **Modular Task System**: Tasks are encapsulated in classes, making it easy to add new functionality.
+- **Automatic Table Generation**: Extracts tool information from their `README.md` files and generates a Markdown table.
 - **Customizable Markers**: Inserts the table between `<!-- TOOL_TABLE_START -->` and `<!-- TOOL_TABLE_END -->` markers in the main README.
 - **Fallback Behavior**: Appends the table to the end of the README if markers are not found.
 
@@ -15,10 +16,34 @@
 2. Run the script:
 
    ```bash
-   python generate_tool_table.py
+   python readme_updater.py
    ```
 
-3. The main README will be updated with a table of tools.
+3. The main README will be updated based on the defined tasks.
+
+## Adding New Tasks
+
+To add a new task:
+
+1. Create a new class that inherits from `ReadmeTask`.
+2. Implement the `execute` method with the desired functionality.
+3. Add the new task to the `tasks` list in the `__main__` section of the script.
+
+### Example
+
+```python
+class CustomTask(ReadmeTask):
+    def execute(self):
+        print("Executing custom task...")
+
+# Add the task to the list
+if __name__ == "__main__":
+    tasks = [
+        ToolTableTask(),
+        CustomTask(),
+    ]
+    execute_readme_tasks(tasks)
+```
 
 ## Expected Tool README Format
 
