@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-simple_scraper.py
+simple_scraper_tool.py
 
 Minimal interactive web scraper for <h2> headlines.
 
@@ -12,13 +12,13 @@ Features:
 
 Usage:
   # Interactive
-  $ python simple_scraper.py
+  $ python simple_scraper_tool.py
 
   # Explicit (default output: domain_headlines.json)
-  $ python simple_scraper.py https://news.ycombinator.com
+  $ python simple_scraper_tool.py https://news.ycombinator.com
 
   # Explicit with custom output
-  $ python simple_scraper.py https://example.com my_headlines.json
+  $ python simple_scraper_tool.py https://example.com my_headlines.json
 """
 
 import argparse
