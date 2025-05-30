@@ -30,8 +30,6 @@ python simple_scraper_tool.py https://example.com my_headlines.json
   "Why Python is Great for Freelancers"
 ]
 ```
-[← Back to Main README](../README.md)
-
 ---
 
 ## 🔧 Upcoming Features
@@ -45,3 +43,6 @@ python simple_scraper_tool.py https://example.com my_headlines.json
 ## 📜 License
 
 MIT — grab and go.
+
+---
+[← Back to Main README](../README.md)
