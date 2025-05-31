@@ -1,0 +1,5 @@
+[INFO] Fetching: https://texasbluesalley.com
+[INFO] Fetched page, status code: 200
+[INFO] Parsing HTML and extracting with selector: div.columns.column-block
+[INFO] Extracted 16 items.
+[INFO] Results saved to: /home/thunda/FreelanceScripts/output/texasbluesalley_com.json

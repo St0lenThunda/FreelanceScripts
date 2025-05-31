@@ -8,20 +8,20 @@
     "url": "from?site=dpreview.com"
   },
   {
-    "title": "Surprisingly fast AI-generated kernels we didn't mean to publish yet",
-    "url": "https://crfm.stanford.edu/2025/05/28/fast-kernels.html"
-  },
-  {
-    "title": "stanford.edu",
-    "url": "from?site=stanford.edu"
-  },
-  {
     "title": "Valkey Turns One: Community fork of Redis",
     "url": "https://www.gomomento.com/blog/valkey-turns-one-how-the-community-fork-left-redis-in-the-dust/"
   },
   {
     "title": "gomomento.com",
     "url": "from?site=gomomento.com"
+  },
+  {
+    "title": "Surprisingly fast AI-generated kernels we didn't mean to publish yet",
+    "url": "https://crfm.stanford.edu/2025/05/28/fast-kernels.html"
+  },
+  {
+    "title": "stanford.edu",
+    "url": "from?site=stanford.edu"
   },
   {
     "title": "Mary Meeker's first Trends report since 2019, focused on AI",
@@ -48,7 +48,7 @@
     "url": "from?site=anemato.de"
   },
   {
-    "title": "The 'white-collar bloodbath' is all part of the AI hype machine",
+    "title": "The \u2018white-collar bloodbath\u2019 is all part of the AI hype machine",
     "url": "https://www.cnn.com/2025/05/30/business/anthropic-amodei-ai-jobs-nightcap"
   },
   {
@@ -64,12 +64,20 @@
     "url": "from?site=github.com/cheyao"
   },
   {
-    "title": "Java Virtual Threads Ate My Memory: A Web Crawler's Tale of Speed vs. Memory",
-    "url": "https://dariobalinzo.medium.com/virtual-threads-ate-my-memory-a-web-crawlers-tale-of-speed-vs-memory-a92fc75085f6"
+    "title": "Show HN: MCP Defender \u2013 OSS AI Firewall for Protecting MCP in Cursor/Claude etc.",
+    "url": "https://mcpdefender.com"
   },
   {
-    "title": "dariobalinzo.medium.com",
-    "url": "from?site=dariobalinzo.medium.com"
+    "title": "mcpdefender.com",
+    "url": "from?site=mcpdefender.com"
+  },
+  {
+    "title": "How large should your sample size be?",
+    "url": "https://vickiboykis.com/2015/08/04/how-large-should-your-sample-size-be/"
+  },
+  {
+    "title": "vickiboykis.com",
+    "url": "from?site=vickiboykis.com"
   },
   {
     "title": "Microsandbox: Virtual Machines that feel and perform like containers",
@@ -80,12 +88,20 @@
     "url": "from?site=github.com/microsandbox"
   },
   {
-    "title": "Anthropic launches a voice mode for Claude",
-    "url": "https://techcrunch.com/2025/05/27/anthropic-launches-a-voice-mode-for-claude/"
+    "title": "Revenge of the Chickenized Reverse-Centaurs",
+    "url": "https://pluralistic.net/2022/04/17/revenge-of-the-chickenized-reverse-centaurs/"
   },
   {
-    "title": "techcrunch.com",
-    "url": "from?site=techcrunch.com"
+    "title": "pluralistic.net",
+    "url": "from?site=pluralistic.net"
+  },
+  {
+    "title": "Java Virtual Threads Ate My Memory: A Web Crawler's Tale of Speed vs. Memory",
+    "url": "https://dariobalinzo.medium.com/virtual-threads-ate-my-memory-a-web-crawlers-tale-of-speed-vs-memory-a92fc75085f6"
+  },
+  {
+    "title": "dariobalinzo.medium.com",
+    "url": "from?site=dariobalinzo.medium.com"
   },
   {
     "title": "Systems Correctness Practices at Amazon Web Services",
@@ -96,20 +112,12 @@
     "url": "from?site=acm.org"
   },
   {
-    "title": "Ray Tracing in J",
-    "url": "https://idle.nprescott.com/2020/ray-tracing-in-j.html"
+    "title": "Every 5x5 Nonogram",
+    "url": "https://pixelogic.app/every-5x5-nonogram"
   },
   {
-    "title": "nprescott.com",
-    "url": "from?site=nprescott.com"
-  },
-  {
-    "title": "Revenge of the Chickenized Reverse-Centaurs",
-    "url": "https://pluralistic.net/2022/04/17/revenge-of-the-chickenized-reverse-centaurs/"
-  },
-  {
-    "title": "pluralistic.net",
-    "url": "from?site=pluralistic.net"
+    "title": "pixelogic.app",
+    "url": "from?site=pixelogic.app"
   },
   {
     "title": "Silicon Valley finally has a big electronics retailer again: Micro Center opens",
@@ -120,20 +128,44 @@
     "url": "from?site=microcenter.com"
   },
   {
-    "title": "Show HN: Circle Crop Image",
-    "url": "https://circlecropimage.io/"
+    "title": "Ray Tracing in J",
+    "url": "https://idle.nprescott.com/2020/ray-tracing-in-j.html"
   },
   {
-    "title": "circlecropimage.io",
-    "url": "from?site=circlecropimage.io"
+    "title": "nprescott.com",
+    "url": "from?site=nprescott.com"
   },
   {
-    "title": "Jerry Lewis's \"The Day the Clown Cried\" discovered in Sweden after 53 years",
+    "title": "Anthropic launches a voice mode for Claude",
+    "url": "https://techcrunch.com/2025/05/27/anthropic-launches-a-voice-mode-for-claude/"
+  },
+  {
+    "title": "techcrunch.com",
+    "url": "from?site=techcrunch.com"
+  },
+  {
+    "title": "The Darwin G\u00f6del Machine: AI that improves itself by rewriting its own code",
+    "url": "https://sakana.ai/dgm/"
+  },
+  {
+    "title": "sakana.ai",
+    "url": "from?site=sakana.ai"
+  },
+  {
+    "title": "Jerry Lewis's \u201cThe Day the Clown Cried\u201d discovered in Sweden after 53 years",
     "url": "https://www.thenationalnews.com/arts-culture/film-tv/2025/05/29/jerry-lewis-day-the-clown-cried-discovered/"
   },
   {
     "title": "thenationalnews.com",
     "url": "from?site=thenationalnews.com"
+  },
+  {
+    "title": "How to run cron jobs in Postgres without extra infrastructure",
+    "url": "https://wasp.sh/blog/2025/05/28/how-to-run-cron-jobs-in-postgress-without-extra-infrastructure"
+  },
+  {
+    "title": "wasp.sh",
+    "url": "from?site=wasp.sh"
   },
   {
     "title": "StackAI (YC W23) Is Looking for SWR and Tailwind Wizards",
@@ -144,28 +176,28 @@
     "url": "from?site=ycombinator.com"
   },
   {
+    "title": "Show HN: Circle Crop Image",
+    "url": "https://circlecropimage.io/"
+  },
+  {
+    "title": "circlecropimage.io",
+    "url": "from?site=circlecropimage.io"
+  },
+  {
+    "title": "Show HN: Leap \u2013 Full-stack AI developer agent that deploys to AWS",
+    "url": "https://leap.new"
+  },
+  {
+    "title": "leap.new",
+    "url": "from?site=leap.new"
+  },
+  {
     "title": "Show HN: Smart Silence \u2013 Remind your iPhone to stay quiet in quiet places",
     "url": "https://testflight.apple.com/join/47CJ31VK"
   },
   {
     "title": "testflight.apple.com",
     "url": "from?site=testflight.apple.com"
-  },
-  {
-    "title": "The radix 2^51 trick (2017)",
-    "url": "https://www.chosenplaintext.ca/articles/radix-2-51-trick.html"
-  },
-  {
-    "title": "chosenplaintext.ca",
-    "url": "from?site=chosenplaintext.ca"
-  },
-  {
-    "title": "How to Run CRON Jobs in Postgres Without Extra Infrastructure",
-    "url": "https://wasp.sh/blog/2025/05/28/how-to-run-cron-jobs-in-postgress-without-extra-infrastructure"
-  },
-  {
-    "title": "wasp.sh",
-    "url": "from?site=wasp.sh"
   },
   {
     "title": "Adam Riess and the Hubble tension",
@@ -184,36 +216,12 @@
     "url": "from?site=thisdavej.com"
   },
   {
-    "title": "Show HN: W++ \u2013 A Python-style scripting language for .NET with NuGet support",
-    "url": "https://github.com/sinisterMage/WPlusPlus"
-  },
-  {
-    "title": "github.com/sinistermage",
-    "url": "from?site=github.com/sinistermage"
-  },
-  {
     "title": "De Bruijn notation, and why it's useful",
     "url": "https://blueberrywren.dev/blog/debruijn-explanation/"
   },
   {
     "title": "blueberrywren.dev",
     "url": "from?site=blueberrywren.dev"
-  },
-  {
-    "title": "Every 5x5 Nonogram",
-    "url": "https://pixelogic.app/every-5x5-nonogram"
-  },
-  {
-    "title": "pixelogic.app",
-    "url": "from?site=pixelogic.app"
-  },
-  {
-    "title": "Why Writing by Hand Is Better for Memory and Learning",
-    "url": "https://www.scientificamerican.com/article/why-writing-by-hand-is-better-for-memory-and-learning/"
-  },
-  {
-    "title": "scientificamerican.com",
-    "url": "from?site=scientificamerican.com"
   },
   {
     "title": "A Smiling Public Man",
@@ -224,19 +232,11 @@
     "url": "from?site=skidmore.edu"
   },
   {
-    "title": "Show HN: Asdf Overlay \u2013 High performance in-game overlay library for Windows",
-    "url": "https://github.com/storycraft/asdf-overlay"
+    "title": "Show HN: W++ \u2013 A Python-style scripting language for .NET with NuGet support",
+    "url": "https://github.com/sinisterMage/WPlusPlus"
   },
   {
-    "title": "github.com/storycraft",
-    "url": "from?site=github.com/storycraft"
-  },
-  {
-    "title": "Radio Astronomy Software Defined Radio (Rasdr)",
-    "url": "https://radio-astronomy.org/rasdr"
-  },
-  {
-    "title": "radio-astronomy.org",
-    "url": "from?site=radio-astronomy.org"
+    "title": "github.com/sinistermage",
+    "url": "from?site=github.com/sinistermage"
   }
 ]
