@@ -38,7 +38,8 @@ build/
 dist/
 *.egg-info/
 .eggs/
-generate_tool_table.py
+bin/
+output/
 
 # ─ Jupyter / IPython ────────────────────────────────────────────────────────
 .ipynb_checkpoints/
