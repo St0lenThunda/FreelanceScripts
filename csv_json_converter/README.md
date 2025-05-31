@@ -1,67 +1,49 @@
-# 🧮 CSV ⇄ JSON Tool
-[← Back to Main README](../README.md)
+# CSV ⇄ JSON Converter Tool
 
-> ## Purpose
-> A two-way data converter built in Python. Use it to transform:
+A two-way data converter for CSV and JSON files.
 
-- CSV → JSON (`c2j`)
-- JSON → CSV (`j2c`)
+## Features
+- Converts CSV to JSON and JSON to CSV.
+- Interactive: prompts for input/output files if not provided as arguments.
+- CLI-friendly: supports short, memorable flags.
+- Educational: code is heavily commented for learning purposes.
 
-Supports:
-- Smart default filenames
-- CLI or interactive usage
-- Graceful error handling + logging
+## Usage
 
----
-
-## 🚀 Usage
+### Interactive Mode
+If you run the script without arguments, you will be prompted to choose the conversion direction and provide file paths:
 
 ```bash
-# Interactive mode
-python csv_json_tool.py
-
-# CSV → JSON
-python csv_json_tool.py c2j example.csv
-
-# JSON → CSV
-python csv_json_tool.py j2c example.json
-
-# With custom output
-python csv_json_tool.py c2j input.csv output.json
+python csv_to_json_converter_tool.py
 ```
 
-## 📤 Input Example
+### Command-Line Mode
+You can also specify the conversion direction and file paths directly:
 
-```csv
-name,age
-Alice,30
-Bob,25
+```bash
+python csv_to_json_converter_tool.py --csv-to-json input.csv output.json
+python csv_to_json_converter_tool.py --json-to-csv input.json output.csv
 ```
 
-## 📥 Output
+## Example
 
-```json
-[
-  { "name": "Alice", "age": "30" },
-  { "name": "Bob", "age": "25" }
-]
+Convert CSV to JSON interactively:
+```bash
+python csv_to_json_converter_tool.py
+# Choose 1, then provide file paths when prompted
 ```
 
-## 📤 Output Example
-
-```json
-[
-  { "name": "Alice", "age": "30" },
-  { "name": "Bob", "age": "25" }
-]
+Convert JSON to CSV with arguments:
+```bash
+python csv_to_json_converter_tool.py --json-to-csv input.json output.csv
 ```
 
-All output files are now saved in the root `output` directory by default.
+## Excluding from Packaging
+To exclude this tool from packaging or documentation, add a `.excluded` file to this directory:
+```bash
+touch .excluded
+```
 
-## 📜 License
-
-MIT — use freely!
-
----
-
-[← Back to Main README](../README.md)
+## Educational Notes
+- The script is designed as a learning resource, with docstrings and comments explaining each step and concept.
+- See the source code for detailed explanations of the logic and Python features used.
