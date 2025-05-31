@@ -13,9 +13,9 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 | Tool | Description | Link |
 |------|-------------|------|
 | 🧮 CSV ⇄ JSON Tool | A two-way data converter built in Python. Use it to transform: | [csv_json_converter/README.md](csv_json_converter/README.md) |
-| README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main project README. It allows for the addition of multiple tasks, such as generating a tool table, and makes the process extensible for future enhancements. | [readme_updater/README.md](readme_updater/README.md) |
+|:newspaper:  README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main project README. It allows for the addition of multiple tasks, such as generating a tool table, and makes the process extensible for future enhancements. | [readme_updater/README.md](readme_updater/README.md) |
 | 🌐 Simple Web Scraper | Fetch all titles from [Hacker News](https://news.ycombinator.com ). Fetches inner text and links of  `<a>` elements inside `<span class="titleline">`. | [scraper/README.md](scraper/README.md) |
-| Executioner Tool | Automates making Python scripts executable and symlinking them into a `bin/` directory for easy PATH usage. | [executioner/README.md](executioner/README.md) |
+:knife: Executioner Tool | Automates making Python scripts executable and symlinking them into a `bin/` directory for easy PATH usage. | [executioner/README.md](executioner/README.md) |
 <!-- TOOL_TABLE_END -->
 
 ## ⚙️ Installation
@@ -75,7 +75,6 @@ FreelanceScripts/
 ## ✅ Next Steps
 
 * [ ] Add a `requirements.txt` if needed
-* [ ] Finish Day 3 tool: bug fixer demo
 * [ ] Optional: Create a CLI launcher script for unified access
 
 ---
@@ -84,3 +83,99 @@ FreelanceScripts/
 
 MIT © \StolenThunda
 Use, modify, and share freely. No attribution required, but always appreciated!
+
+### Excluding Tools
+
+To exclude a tool from the toolkit or README generation, add a `.excluded` marker file to the tool's directory. For example:
+
+```bash
+touch debug_demo/.excluded
+```
+
+This will ensure the `debug_demo` tool is skipped during packaging and documentation updates.
+
+### Adding a New Tool to the Toolbox
+
+To add a new tool to the toolbox, follow these steps:
+
+1. **Create the Tool**:
+   - Place your tool in a dedicated directory under the project root (e.g., `my_new_tool/`).
+   - Name the main script file with the `_tool.py` suffix (e.g., `my_new_tool_tool.py`). This ensures compatibility with the Executioner tool for activation.
+
+2. **Document the Tool**:
+   - Add a `README.md` file to the tool's directory.
+   - Include a brief description of the tool, its purpose, and usage instructions.
+
+3. **Exclude from Packaging (Optional)**:
+   - If you want to exclude the tool from packaging or README generation, add a `.excluded` marker file to the tool's directory:
+     ```bash
+     touch my_new_tool/.excluded
+     ```
+   - This will ensure the tool is skipped during packaging and documentation updates.
+
+4. **Activate the Tool**:
+   - Run the Executioner tool to make the new tool executable and symlink it into the `bin/` directory:
+     ```bash
+     python executioner/executioner.py
+     ```
+   - The tool will now be accessible from the `bin/` directory using its short name (e.g., `my_new_tool_tool`).
+
+5. **Update the Combined README**:
+   - Ensure the `package_toolkit.py` script is run to regenerate the combined README and package the project:
+     ```bash
+     python package_toolkit/package_toolkit.py
+     ```
+
+### Syntax for Tool Summaries
+
+When documenting a tool in its `README.md`, follow this syntax to ensure consistency across the project:
+
+1. **Title**:
+   - Use a clear and concise title for the tool.
+   - Example:
+     ```markdown
+     # My New Tool
+     ```
+
+2. **Description**:
+   - Provide a brief overview of the tool's purpose and functionality.
+   - Example:
+     ```markdown
+     My New Tool is designed to simplify data processing by automating repetitive tasks.
+     ```
+
+3. **Usage Instructions**:
+   - Include step-by-step instructions on how to use the tool.
+   - Example:
+     ```markdown
+     ## Usage
+     ```bash
+     python my_new_tool_tool.py --input data.csv --output result.json
+     ```
+     ```
+
+4. **Examples**:
+   - Add examples to demonstrate the tool in action.
+   - Example:
+     ```markdown
+     ## Examples
+     ```bash
+     python my_new_tool_tool.py --help
+     ```
+     ```
+
+5. **Compatibility**:
+   - Mention any system or Python version requirements.
+   - Example:
+     ```markdown
+     ## Compatibility
+     Requires Python 3.8 or higher.
+     ```
+
+6. **Exclusion Marker**:
+   - If the tool should be excluded from packaging, mention the `.excluded` marker file.
+   - Example:
+     ```markdown
+     ## Exclusion
+     Add a `.excluded` file to the tool's directory to exclude it from packaging.
+     ```

@@ -59,6 +59,16 @@ Each tool's `README.md` should include:
 | CSV Tool | Converts CSV files to JSON and back. | [csv_tool/README.md](csv_tool/README.md) |
 | Scraper  | Scrapes headlines from websites.     | [scraper/README.md](scraper/README.md)   |
 
+## Excluding Tools
+
+To exclude a tool from being included in the README table or combined README file, create a `.excluded` marker file in the tool's directory. For example:
+
+```bash
+touch debug_demo/.excluded
+```
+
+This will ensure the `debug_demo` tool is skipped during processing.
+
 ## Notes
 
 - Ensure each tool has a properly formatted `README.md`.

@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 """
-generate_tool_table.py
+readme_updater.py
 
-Auto-generates a Markdown table of all tools from their individual READMEs
-and updates the root README.md.
+This script provides a modular framework for dynamically updating the main project README. It allows for the addition of multiple tasks, such as generating a tool table, and makes the process extensible for future enhancements.
+
+Key Features:
+- Modular task system using a ReadmeTask base class.
+- Excludes directories with `.excluded` marker files.
+- Can be extended with new tasks for README management.
+
+Intended as a learning resource: code is heavily commented to explain each step and concept.
 """
 
-import os
 from pathlib import Path
+from typing import List
 
-# Define the root directory of the project (parent of the current script's directory)
-ROOT = Path(__file__).parent.parent
+# Get the root directory of the project (parent of this script's directory)
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-# Define the path to the main README file in the root directory
-README = ROOT / "README.md"
-
-# List to store rows of the Markdown table for tools
-TOOL_ROWS = []
-
-# List of directories to exclude from processing
-EXCLUDED_DIRS = {"debug_demo"}
+# Base class for tasks that update the README
+class ReadmeTask:
+    """
+    Base class for a README update task.
+    Subclasses should implement the run() method.
+    """
+    def run(self, readme_path: Path):
+        raise NotImplementedError
 
 # Function to extract the title and description from a tool's README file
 # - The title is the first-level header (e.g., "# Tool Name")
@@ -46,83 +52,73 @@ def extract_summary(readme_path: Path) -> tuple[str, str]:
                 break
     return title, desc
 
-
-# Function to find all tool README files in subdirectories
-# - Each tool's README is expected to be named "README.md"
-# - Extracts the title and description for each tool and adds it to the table rows
+# Example task: Generate a table of tools in the README
 def find_tool_readmes():
-    """Find tool README.md files in subdirectories."""
-    for sub in ROOT.iterdir():
-        if sub.is_dir() and sub.name not in EXCLUDED_DIRS:  # Skip excluded directories
-            tool_readme = sub / "README.md"
-            if tool_readme.exists():
-                title, desc = extract_summary(tool_readme)
-                link = f"[{sub.name}/README.md]({sub.name}/README.md)"  # Relative link to the README
-                TOOL_ROWS.append(f"| {title} | {desc} | {link} |")
+    """
+    Finds all tool README.md files in the project, skipping excluded directories.
+    Returns a list of Path objects.
+    """
+    tool_readmes = []
+    for path in PROJECT_ROOT.iterdir():
+        # Skip if not a directory or if excluded
+        if not path.is_dir() or (path / ".excluded").exists():
+            continue
+        readme = path / "README.md"
+        if readme.exists():
+            tool_readmes.append(readme)
+    return tool_readmes
 
-
-# Function to update the main README file with the generated tool table
-# - The table is inserted between markers <!-- TOOL_TABLE_START --> and <!-- TOOL_TABLE_END -->
-# - If markers are not found, the table is appended to the end of the README
-def update_root_readme():
-    """Inject the generated table into the README.md between markers."""
-    if not README.exists():
-        print("❌ No root README.md found.")
-        return
-
-    marker_start = "<!-- TOOL_TABLE_START -->"
-    marker_end = "<!-- TOOL_TABLE_END -->"
-
-    # Define the table structure
-    table_header = "| Tool | Description | Link |\n|------|-------------|------|"
-    table_body = "\n".join(TOOL_ROWS)
-    full_table = f"{marker_start}\n{table_header}\n{table_body}\n{marker_end}"
-
-    with README.open("r", encoding="utf-8") as f:
-        content = f.read()
-
-    if marker_start in content and marker_end in content:
-        # Replace the old table between the markers
-        pre = content.split(marker_start)[0].rstrip()
-        post = content.split(marker_end)[-1].lstrip()
-        new_content = f"{pre}\n\n{full_table}\n\n{post}"
-    else:
-        # Append the table to the end if markers are not found
-        new_content = f"{content.strip()}\n\n{full_table}"
-
-    with README.open("w", encoding="utf-8") as f:
-        f.write(new_content)
-
-    print("✅ README.md updated with tool table.")
-
-
-# Define a base class for README tasks
-class ReadmeTask:
-    def execute(self):
-        raise NotImplementedError("Subclasses must implement the execute method.")
-
-# Task to generate a tool table and inject it into the README
 class ToolTableTask(ReadmeTask):
-    def execute(self):
-        TOOL_ROWS.clear()  # Clear any existing rows
-        find_tool_readmes()
-        update_root_readme()
+    """
+    Task to generate a markdown table of tools for the main README.
+    """
+    def run(self, readme_path: Path):
+        tool_readmes = find_tool_readmes()
+        # List to store rows of the Markdown table for tools
+        tool_rows = []
+        for tool_readme in tool_readmes:
+            title, desc = extract_summary(tool_readme)
+            link = f"[{tool_readme.parent.name}/README.md]({tool_readme.parent.name}/README.md)"  # Relative link to the README
+            tool_rows.append(f"| {title} | {desc} | {link} |")
 
-# Function to dynamically execute tasks for updating the README
-def execute_readme_tasks(tasks: list[ReadmeTask]):
+        # Define the table structure
+        marker_start = "<!-- TOOL_TABLE_START -->"
+        marker_end = "<!-- TOOL_TABLE_END -->"
+        table_header = "| Tool | Description | Link |\n|------|-------------|------|"
+        table_body = "\n".join(tool_rows)
+        full_table = f"{marker_start}\n{table_header}\n{table_body}\n{marker_end}"
+
+        if not readme_path.exists():
+            print("❌ No root README.md found.")
+            return
+
+        with readme_path.open("r", encoding="utf-8") as f:
+            content = f.read()
+
+        if marker_start in content and marker_end in content:
+            # Replace the old table between the markers
+            pre = content.split(marker_start)[0].rstrip()
+            post = content.split(marker_end)[-1].lstrip()
+            new_content = f"{pre}\n\n{full_table}\n\n{post}"
+        else:
+            # Append the table to the end if markers are not found
+            new_content = f"{content.strip()}\n\n{full_table}"
+
+        with readme_path.open("w", encoding="utf-8") as f:
+            f.write(new_content)
+
+        print("✅ README.md updated with tool table.")
+
+# Main function to run all tasks
+def main():
+    """
+    Main function to run all README update tasks.
+    """
+    readme_path = PROJECT_ROOT / "README.md"
+    tasks: List[ReadmeTask] = [ToolTableTask()]
     for task in tasks:
-        task.execute()
+        task.run(readme_path)
+    print("✅ README update tasks complete.")
 
-# Main script execution
-# - Finds all tool READMEs and generates a Markdown table
-# - Updates the main README with the generated table
 if __name__ == "__main__":
-    # Define the tasks to execute
-    tasks = [
-        ToolTableTask(),
-        # Additional tasks can be added here
-    ]
-
-    # Execute all tasks
-    execute_readme_tasks(tasks)
-    print(f"🔧 Completed {len(tasks)} task(s) for README update.")
+    main()
