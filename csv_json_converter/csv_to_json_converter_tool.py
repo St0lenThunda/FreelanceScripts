@@ -11,6 +11,8 @@ Key Features:
 - Infers output file names from input if not provided (auto-naming).
 - CLI-friendly: supports short, memorable flags.
 - Robust error handling for missing or invalid files.
+- Local file listing: lists all .csv and .json files in the current directory for easy selection.
+- Robust error handling for missing or invalid files.
 - Educational: code is heavily commented for learning purposes.
 
 Intended as a learning resource: code is heavily commented to explain each step and concept.

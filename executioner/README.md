@@ -1,23 +1,15 @@
 # 🪓 Executioner Tool
 
 > ## Purpose
-> The `executioner_tool` automates the process of making Python scripts executable and symlinking them into a `bin/` directory for easy access via the system PATH.
-
-## Features
-
-- **Executable Conversion**: Automatically applies executable permissions to Python scripts.
-- **Symlink Creation**: Creates symlinks in a `bin/` directory for easy command-line usage.
-- **Unix Line Endings**: Ensures all scripts use Unix-style line endings (LF).
-
-## Usage
-
-1. Place the script in the `executioner_tool` directory.
-2. Run the script:
-
-   ```bash
-   python executioner.py
-   ```
-
+> This script automates making Python scripts executable and symlinking them into a `bin/` directory for easy PATH usage.
+>
+> Key Features:
+> - Searches for Python scripts ending with `_tool.py`.
+> - Converts line endings to Unix (LF) for compatibility.
+> - Makes each tool executable (chmod +x).
+> - Symlinks each tool (without the `.py` extension) into a `bin/` directory.
+>
+> Intended as a learning resource: code is heavily commented to explain each step and concept.
 3. Add the `bin/` directory to your PATH:
 
    ```bash
@@ -28,6 +20,18 @@
 
 - This tool is designed for Unix-like systems (Linux, macOS, WSL).
 - On Windows, you can still run the scripts directly using `python`.
+
+## Concepts
+
+This tool demonstrates several Pythonic concepts useful for beginners:
+
+- **Recursive File Search:** Uses `pathlib.Path.rglob` to find files matching a pattern in all subdirectories.
+- **File Permissions:** Shows how to make files executable using `os.chmod` and `stat`.
+- **Symlinking:** Demonstrates creating symbolic links with `Path.symlink_to` for easy command-line access.
+- **Line Ending Normalization:** Converts Windows/CRLF line endings to Unix/LF for cross-platform compatibility.
+- **Exclusion by Marker File:** Skips directories containing a `.excluded` file.
+- **Path Manipulation:** Uses `pathlib` for robust, cross-platform path handling.
+- **Heavy Commenting:** Provides clear, educational comments for each step.
 
 ## License
 
