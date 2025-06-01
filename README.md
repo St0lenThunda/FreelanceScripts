@@ -1,6 +1,7 @@
 # 🚀 Python “Starter Pack” Tools
 
-A collection of small, battle-tested Python scripts to kickstart your freelancing journey. Each tool is:
+> ## Purpose
+> A collection of small, battle-tested Python scripts to kickstart your freelancing journey. The scripts provide are to be extended or the concepts in them could be used to create new tools. Each tool is:
 
 - **Standalone** – drop it into any project folder  
 - **Interactive** – no arguments? You’ll get prompted  
@@ -12,7 +13,7 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Link |
 |------|-------------|------|
-| {,} CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. | [csv_json_converter/README.md](csv_json_converter/README.md) |
+| 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. | [csv_json_converter/README.md](csv_json_converter/README.md) |
 | 📰 README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main... | [readme_updater/README.md](readme_updater/README.md) |
 | 🌐 Simple Web Scraper | A modular, educational web scraper for extracting titles and links from any website. - Supports s... | [scraper/README.md](scraper/README.md) |
 | 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's `REA... | [watch_automation/README.md](watch_automation/README.md) |
@@ -134,41 +135,32 @@ When documenting a tool in its `README.md`, follow this syntax to ensure consist
 
 1. **Title**:
    - Use a clear and concise title for the tool.
-   - Example:
      ```markdown
      # My New Tool
      ```
 
 2. **Description**:
    - Provide a brief overview of the tool's purpose and functionality.
-   - Example:
      ```markdown
      My New Tool is designed to simplify data processing by automating repetitive tasks.
      ```
 
 3. **Usage Instructions**:
    - Include step-by-step instructions on how to use the tool.
-   - Example:
      ```markdown
      ## Usage
-     ```bash
-     python my_new_tool_tool.py --input data.csv --output result.json
-     ```
-     ```
+     `python my_new_tool_tool.py --input data.csv --output result.json`
+      ```
 
 4. **Examples**:
    - Add examples to demonstrate the tool in action.
-   - Example:
      ```markdown
      ## Examples
-     ```bash
-     python my_new_tool_tool.py --help
-     ```
+     `python my_new_tool_tool.py --help`
      ```
 
 5. **Compatibility**:
    - Mention any system or Python version requirements.
-   - Example:
      ```markdown
      ## Compatibility
      Requires Python 3.8 or higher.
