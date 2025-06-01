@@ -7,18 +7,172 @@
 - **Interactive** – no arguments? You’ll get prompted  
 - **CLI-friendly** – use short, memorable flags  
 - **Well-documented** – logging, help text, and examples  
+---
+<!-- CONCEPTS_START -->
+<details><summary><strong>Pythonic Concepts found in this project</strong></summary>
+<p>This section lists unique Pythonic concepts demonstrated across all tools in this project.</p>
+<b>--</b>
+<ul>
+<li>--</li>
+</ul>
+<b>Argument parsing</b>
+<ul>
+<li>Handles command-line arguments and interactive prompts for flexible usage.</li>
+<li>Handles command-line arguments for flexible usage.</li>
+<li>Uses `argparse` for flexible CLI usage.</li>
+</ul>
+<b>Command-line</b>
+<ul>
+<li>Parameters: Handles CLI arguments for flexible script behavior.</li>
+</ul>
+<b>Csv and json handling</b>
+<ul>
+<li>Uses Python's built-in `csv` and `json` modules for data conversion.</li>
+</ul>
+<b>Docstring extraction and markdown conversion</b>
+<ul>
+<li>Extracts Python docstrings, preserves formatting, and safely converts HTML tags for markdown.</li>
+</ul>
+<b>Dynamic documentation</b>
+<ul>
+<li>Automates the generation of a combined README by reading and summarizing other README files.</li>
+<li>Automates updates to README files based on project state.</li>
+</ul>
+<b>Educational comments</b>
+<ul>
+<li>Explains each step for learning purposes.</li>
+</ul>
+<b>Error handling</b>
+<ul>
+<li>Checks for file existence and handles missing/invalid files gracefully.</li>
+<li>Provides robust error messages and suggestions.</li>
+</ul>
+<b>Exclusion by marker file</b>
+<ul>
+<li>Skips directories containing a `.excluded` file.</li>
+<li>Skips directories with a `.excluded` marker.</li>
+</ul>
+<b>Exclusion logic</b>
+<ul>
+<li>Shows how to exclude files/folders based on patterns and marker files (e.g., `.excluded`).</li>
+</ul>
+<b>File and directory traversal</b>
+<ul>
+<li>Uses `pathlib.Path` and `rglob` to recursively walk directories and process files.</li>
+</ul>
+<b>File i/o</b>
+<ul>
+<li>Reading and writing files using `open`, with context managers for safety.</li>
+</ul>
+<b>File listing</b>
+<ul>
+<li>Lists files by extension using `pathlib` and `glob`.</li>
+</ul>
+<b>File parsing</b>
+<ul>
+<li>Reads and updates Markdown files programmatically.</li>
+</ul>
+<b>File permissions</b>
+<ul>
+<li>Shows how to make files executable using `os.chmod` and `stat`.</li>
+</ul>
+<b>File watching</b>
+<ul>
+<li>Uses `watchdog` to monitor file changes in real time.</li>
+</ul>
+<b>Heavy commenting</b>
+<ul>
+<li>Provides clear, educational comments for each step.</li>
+</ul>
+<b>Line ending normalization</b>
+<ul>
+<li>Converts Windows/CRLF line endings to Unix/LF for cross-platform compatibility.</li>
+</ul>
+<b>Logging</b>
+<ul>
+<li>Logs activity to both terminal and file for auditing.</li>
+</ul>
+<b>Modular task system</b>
+<ul>
+<li>Uses classes and inheritance to enable extensible task management.</li>
+</ul>
+<b>Modularity</b>
+<ul>
+<li>Organizes code into functions and classes for clarity.</li>
+<li>Organizes code into functions for clarity and reuse.</li>
+</ul>
+<b>Multi-step</b>
+<ul>
+<li>Automation: Supports running multiple update steps in sequence with a single command (e.g., `--task=sync_and_table`).</li>
+</ul>
+<b>Output inference</b>
+<ul>
+<li>Infers output file names from input file paths.</li>
+</ul>
+<b>Path handling</b>
+<ul>
+<li>Leverages `pathlib` for robust file and directory operations.</li>
+<li>Uses `pathlib` for robust, cross-platform file operations.</li>
+</ul>
+<b>Path manipulation</b>
+<ul>
+<li>Uses `pathlib` for robust, cross-platform path handling.</li>
+</ul>
+<b>Recursive file search</b>
+<ul>
+<li>Uses `pathlib.Path.rglob` to find files matching a pattern in all subdirectories.</li>
+</ul>
+<b>Regex usage</b>
+<ul>
+<li>Employs regular expressions for flexible text replacement and extraction.</li>
+</ul>
+<b>Robustness</b>
+<ul>
+<li>Uses checks for file existence and safe file removal.</li>
+</ul>
+<b>Selector suggestion and ranking</b>
+<ul>
+<li>Analyzes HTML structure to suggest and rank CSS selectors.</li>
+</ul>
+<b>Subprocess automation</b>
+<ul>
+<li>Runs other scripts automatically in response to file events.</li>
+</ul>
+<b>Symlinking</b>
+<ul>
+<li>Demonstrates creating symbolic links with `Path.symlink_to` for easy command-line access.</li>
+</ul>
+<b>Table output</b>
+<ul>
+<li>Formats results as Markdown tables for readability.</li>
+</ul>
+<b>User interactivity</b>
+<ul>
+<li>Prompts users for input and provides file selection menus.</li>
+</ul>
+<b>Web scraping</b>
+<ul>
+<li>Uses `requests` and `BeautifulSoup` for HTTP requests and HTML parsing.</li>
+</ul>
+<b>Zipfile handling</b>
+<ul>
+<li>Demonstrates creating and writing to zip archives with Python's `zipfile` module.</li>
+</ul>
+</details>
 
+<!-- CONCEPTS_END -->
+---
 ### 📦 Tools Included
 
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Link |
 |------|-------------|------|
 | 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. | [csv_json_converter/README.md](csv_json_converter/README.md) |
-| 📰 README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main... | [readme_updater/README.md](readme_updater/README.md) |
-| 🌐 Simple Web Scraper | A modular, educational web scraper for extracting titles and links from any website. - Supports s... | [scraper/README.md](scraper/README.md) |
-| 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's `REA... | [watch_automation/README.md](watch_automation/README.md) |
-| 🪓 Executioner Tool | The `executioner_tool` automates the process of making Python scripts executable and symlinking t... | [executioner/README.md](executioner/README.md) |
-| 🧰 Package Toolkit | The Package Toolkit is a utility script designed to create a zip archive of your freelance tools,... | [package_toolkit/README.md](package_toolkit/README.md) |
+| 📰 README Updater | This script provides a modular framework for dynamically updating the main project README and too... | [readme_updater/README.md](readme_updater/README.md) |
+| 🌐 Simple Web Scraper | A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News). | [scraper/README.md](scraper/README.md) |
+| 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's READ... | [watch_automation/README.md](watch_automation/README.md) |
+| 🪓 Executioner Tool | This script automates making Python scripts executable and symlinking them into a `bin/` director... | [executioner/README.md](executioner/README.md) |
+| 🧰 Package Toolkit | package_toolkit.py | [package_toolkit/README.md](package_toolkit/README.md) |
 <!-- TOOL_TABLE_END -->
 
 ## ⚙️ Installation

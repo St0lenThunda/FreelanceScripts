@@ -2,37 +2,23 @@
 [← Back to Main README](../README.md)
 
 > ## Purpose
->  A modular, educational web scraper for extracting titles and links from any website.
->  - Supports scraping one or many URLs (from the command line or a file).
->  - Lets you use any CSS selector to target elements for extraction.
->  - Can automatically analyze and suggest scrapable tags, classes, ids, and nested selectors if your selector yields no results.
->  - The number of top suggestions and the maximum selector depth are adjustable via `--suggest-top` and `--suggest-depth`.
->  - Suggestion output is ranked using a composite emoji system (🏆, 🥇, 🥈, 🥉, 🎖️, 🔸) that combines link-likelihood, structural preference, and frequency.
->  - Only the top 5 selector suggestions show detailed metrics and the composite emoji in a table; the rest show selector and count for clarity.
->  - Outputs results to the terminal or to JSON files named after each URL.
->  - Designed for learning: code is heavily commented and easy to extend.
-
-## 🚀 Usage
-
-```bash
-usage: simple_scraper_tool.py [-h] [--url-file URL_FILE] [--selector SELECTOR] [--suggest] [--suggest-top SUGGEST_TOP] [--suggest-depth SUGGEST_DEPTH] [--no-save] [--print] [urls ...]
-
-Scrape titles/links from provided URLs.
-
-positional arguments:
-  urls                 One or more URLs to scrape (default: Hacker News)
-
-options:
-  -h, --help           show this help message and exit
-  --url-file URL_FILE  Path to a file containing newline-separated URLs to scrape
-  --selector SELECTOR  CSS selector for elements to scrape (default: span.titleline a)
-  --suggest            Scan the page and suggest scrapable tags/classes/ids and nested selectors
-  --suggest-top SUGGEST_TOP   How many top tags/classes/ids/selectors to show (default: 10)
-  --suggest-depth SUGGEST_DEPTH  Max depth for nested selector suggestions (default: 2)
-  --no-save            Do not save results to file (only print to terminal)
-  --print              Print results to terminal (default: off if saving to file)
-
-
+> A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News).
+>
+> Key Features:
+> - Fetches inner text and links of `<a>` elements inside `<span class="titleline">` (default selector).
+> - Handles multiple URLs from command-line arguments or a file (--url-file).
+> - Allows custom CSS selectors via --selector for flexible scraping of any site.
+> - Can scan the page and suggest common tags, classes, ids, and nested selectors for scrapable elements (--suggest).
+> - The number of top suggestions and the maximum selector depth are adjustable via --suggest-top and --suggest-depth.
+> - Suggestion output is ranked using a composite emoji system (🏆, 🥇, 🥈, 🥉, 🎖️, 🔸) that combines link-likelihood, structural preference, and frequency.
+> - Only the top 5 selector suggestions show detailed metrics and the composite emoji; the rest show selector and count for clarity.
+> - Automatically suggests scrapable elements if no results are found with the current selector.
+> - Prints results to the console (with --print or --no-save) for easy chaining.
+> - Saves results to a JSON file in the output directory (default behavior, can be disabled with --no-save).
+> - Output files are named after the URL.
+> - Designed as a learning resource: code is heavily commented and modular.
+>
+> TODO: Add colorized output for better readability.
 # Scrape the default (Hacker News)
 python simple_scraper_tool.py
 
@@ -91,6 +77,18 @@ python simple_scraper_tool.py https://example.com --no-save
 - Designed as a learning resource: code is heavily commented and modular
 
 ---
+
+## Concepts
+
+This tool demonstrates several Pythonic concepts useful for beginners:
+
+- **Web Scraping:** Uses `requests` and `BeautifulSoup` for HTTP requests and HTML parsing.
+- **Selector Suggestion and Ranking:** Analyzes HTML structure to suggest and rank CSS selectors.
+- **Table Output:** Formats results as Markdown tables for readability.
+- **Modularity:** Organizes code into functions for clarity and reuse.
+- **Argument Parsing:** Handles command-line arguments for flexible usage.
+- **Error Handling:** Provides robust error messages and suggestions.
+- **Educational Comments:** Explains each step for learning purposes.
 
 ## 📜 License
 
