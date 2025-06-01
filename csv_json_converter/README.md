@@ -1,6 +1,7 @@
-# CSV ⇄ JSON Converter Tool
+# {,} CSV ⇄ JSON Converter Tool
 
-A two-way data converter for CSV and JSON files.
+> ## Purpose 
+> A two-way data converter for CSV and JSON files.
 
 ## Features
 - Converts CSV to JSON and JSON to CSV.

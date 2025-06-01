@@ -198,11 +198,8 @@ def print_selector_summary(ranked_selectors, selector_ranking, selector_preferen
         for i, (sel, count) in enumerate(ranked_selectors[:top_n]):
             rank = selector_ranking.get(sel, 0)
             pref = selector_preference.get(sel, 0)
-            emoji = composite_emoji(rank, pref, count)
-            if i < 5:
-                print(f"{sel:<50.50} {count:>7} {rank:>7} {pref:>7} {count:>7} {emoji:>7}")
-            else:
-                print(f"{sel:<50.50} {count:>7}")
+            emoji = composite_emoji(rank, pref, count) if i < 5 else ''
+            print(f"{sel:<50.50} {count:>7} {rank:>7} {pref:>7} {count:>7} {emoji:>7}")
         print('-' * 90)
 
 # Suggest scrapable elements by scanning the DOM for common tags/classes/ids
@@ -271,8 +268,8 @@ if __name__ == "__main__":
         # Print to terminal if requested or if not saving
         if args.print or args.no_save:
             print(json.dumps(results, indent=2))
-        # Save to file unless --no-save is set
-        if not args.no_save:
+        # Save to file unless --no-save is set and only if response was successful
+        if not args.no_save and response.status_code == 200:
             output_file = OUTPUT_DIR / url_to_filename(url)
             with output_file.open("w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2)

@@ -1,4 +1,4 @@
-# README Updater
+# 📰 README Updater
 
 > ## Purpose
 > This script, `readme_updater.py`, provides a modular framework for dynamically updating the main project README. It allows for the addition of multiple tasks, such as generating a tool table, and makes the process extensible for future enhancements.
