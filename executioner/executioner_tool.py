@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-executioner.py
+executioner_tool.py
 
 This script automates making Python scripts executable and symlinking them into a `bin/` directory for easy PATH usage.
 

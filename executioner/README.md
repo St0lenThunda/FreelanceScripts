@@ -1,8 +1,7 @@
-# Executioner Tool
+# 🪓 Executioner Tool
 
 > ## Purpose
->
-> The `executioner.py` script automates the process of making Python scripts executable and symlinking them into a `bin/` directory for easy access via the system PATH.
+> The `executioner_tool` automates the process of making Python scripts executable and symlinking them into a `bin/` directory for easy access via the system PATH.
 
 ## Features
 
@@ -12,7 +11,7 @@
 
 ## Usage
 
-1. Place the script in the `executioner` directory.
+1. Place the script in the `executioner_tool` directory.
 2. Run the script:
 
    ```bash

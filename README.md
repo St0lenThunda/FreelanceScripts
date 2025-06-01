@@ -12,10 +12,12 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Link |
 |------|-------------|------|
-| 🧮 CSV ⇄ JSON Tool | A two-way data converter built in Python. Use it to transform: | [csv_json_converter/README.md](csv_json_converter/README.md) |
-|:newspaper:  README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main project README. It allows for the addition of multiple tasks, such as generating a tool table, and makes the process extensible for future enhancements. | [readme_updater/README.md](readme_updater/README.md) |
-| 🌐 Simple Web Scraper | Fetch all titles from [Hacker News](https://news.ycombinator.com ). Fetches inner text and links of  `<a>` elements inside `<span class="titleline">`. | [scraper/README.md](scraper/README.md) |
-:knife: Executioner Tool | Automates making Python scripts executable and symlinking them into a `bin/` directory for easy PATH usage. | [executioner/README.md](executioner/README.md) |
+| 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. | [csv_json_converter/README.md](csv_json_converter/README.md) |
+| 📰 README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main... | [readme_updater/README.md](readme_updater/README.md) |
+| 🌐 Simple Web Scraper | A modular, educational web scraper for extracting titles and links from any website. - Supports s... | [scraper/README.md](scraper/README.md) |
+| 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's `REA... | [watch_automation/README.md](watch_automation/README.md) |
+| 🪓 Executioner Tool | The `executioner_tool` automates the process of making Python scripts executable and symlinking t... | [executioner/README.md](executioner/README.md) |
+| 🧰 Package Toolkit | The Package Toolkit is a utility script designed to create a zip archive of your freelance tools,... | [package_toolkit/README.md](package_toolkit/README.md) |
 <!-- TOOL_TABLE_END -->
 
 ## ⚙️ Installation

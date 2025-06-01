@@ -29,7 +29,8 @@ OUTPUT_ZIP = OUTPUT_DIR / "freelance_toolkit.zip"
 EXCLUDE_NAMES = {
     ".git", "__pycache__", ".venv", "venv", "env",
     ".DS_Store", ".pytest_cache", ".idea", ".mypy_cache",
-    "output", "freelance_toolkit.zip", "bin", ".gitignore"
+    "output", "freelance_toolkit.zip", "bin", ".gitignore",
+    "Zone.Identifier"  # Exclude NTFS ADS metadata files
 }
 
 def should_exclude(path: Path) -> bool:
@@ -37,13 +38,19 @@ def should_exclude(path: Path) -> bool:
     Determines if a file or folder should be excluded from packaging.
     - Excludes if any parent directory contains a `.excluded` marker file.
     - Excludes if any part of the path matches EXCLUDE_NAMES.
+    - Excludes files ending with .Zone.Identifier (case-insensitive, handles all platforms).
     """
     # Check for `.excluded` marker file in any parent directory
     for parent in path.parents:
         if (parent / ".excluded").exists():
             return True
     # Exclude if any part of the path matches EXCLUDE_NAMES
-    return any(part in EXCLUDE_NAMES for part in path.parts) or path.name in EXCLUDE_NAMES
+    if any(part in EXCLUDE_NAMES for part in path.parts) or path.name in EXCLUDE_NAMES:
+        return True
+    # Exclude files ending with .Zone.Identifier (case-insensitive, handles all platforms)
+    if path.name.lower().endswith(".zone.identifier"):
+        return True
+    return False
 
 def add_files_to_zip(zipf: zipfile.ZipFile, current_dir: Path):
     """
@@ -80,27 +87,38 @@ def generate_combined_readme(output_path: Path):
             print(f"😜 Excluded Directory: {tool_dir.name}")  # Log excluded tools
 
     # If there are excluded tools, add a section to the README
-    if excluded_tools:
-        combined_readme.append("# Excluded Tools\n")
-        combined_readme.append("The following tools are excluded from the combined README:\n\n")
-        for tool in excluded_tools:
-            combined_readme.append(f"- {tool}\n")
-        combined_readme.append("\n")
+    # if excluded_tools:
+    #     combined_readme.append("# Excluded directories\n")
+    #     combined_readme.append("The following directories are excluded from the combined README:\n\n")
+    #     for tool in excluded_tools:
+    #         combined_readme.append(f"- {tool}\n")
+    #     combined_readme.append("\n")
 
     # For each included tool, add a summary from its README
     for tool_dir in PROJECT_ROOT.iterdir():
         if tool_dir.is_dir() and not should_exclude(tool_dir):
             tool_readme = tool_dir / "README.md"
             if tool_readme.exists():
-                combined_readme.append(f"## {tool_dir.name.capitalize()}\n")
                 with tool_readme.open("r", encoding="utf-8") as f:
-                    # Only include the first 10 lines for brevity
                     for i, line in enumerate(f):
-                        if i >= 10:
-                            combined_readme.append("...\n")
+                        if i >= 13:
+                            combined_readme.append("> ...\n")
+                            combined_readme.append(f">  (See [*{tool_dir.name}* documentation]({tool_dir.name}/README.md))\n\n")
                             break
-                        combined_readme.append(line)
-                combined_readme.append("\n")
+                        # Demote headings: prepend another # to any line starting with #
+                        if line.lstrip().startswith("#"):
+                            demoted = "#" + line if not line.startswith("# ") else line.replace("# ", "## ", 1)
+                            combined_readme.append(f"> {demoted}")
+                            
+                            # For non-heading lines, just add them as is
+                        else:
+                            if line.lower().startswith("> ## purpose"):
+                                # If the line starts with "## purpose", demote it
+                                combined_readme.append(f"> {line.replace("> ## Purpose", "> ### Purpose", 1)}")
+                            else:
+                                # Otherwise, just add the line as is                                                  
+                                combined_readme.append(f"> {line.strip()}\n")
+                combined_readme.append(">\n")
 
     # Write the combined README to the specified output path
     with output_path.open("w", encoding="utf-8") as f:
@@ -121,14 +139,24 @@ def main():
     - Adds all valid files to the zip archive.
     - Adds the combined README to the archive.
     - Cleans up the temporary combined README.
+    - If --readme-only is passed, only generate the combined README and exit.
     """
+    import sys
+    args = sys.argv[1:]
+    combined_readme_path = PROJECT_ROOT / "COMBINED_README.md"
+
+    if "--readme-only" in args:
+        # Only generate the combined README and exit
+        if combined_readme_path.exists():
+            combined_readme_path.unlink()
+        generate_combined_readme(combined_readme_path)
+        print("\n✅ Only generated combined README (no zip).")
+        return
+
     # Remove the old zip if it exists
     if OUTPUT_ZIP.exists():
         OUTPUT_ZIP.unlink()
         print(f"Deleted old zip: {OUTPUT_ZIP.name}")
-
-    # Path for the combined README (in the project root)
-    combined_readme_path = PROJECT_ROOT / "COMBINED_README.md"
 
     # Remove any old combined README
     if combined_readme_path.exists():
