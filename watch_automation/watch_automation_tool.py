@@ -1,3 +1,20 @@
+"""
+watch_automation_tool.py
+
+A utility that automatically updates your main project README tool table whenever any tool's README.md is changed.
+
+Key Features:
+- Monitors all tool directories for changes to their README.md files (excluding .excluded and system folders).
+- Automatically runs the readme_updater_tool.py to keep the main tool table in sync.
+- Logs all activity to both the terminal and a log file for easy auditing.
+- Designed for extensibility and easy integration into your workflow.
+
+Usage:
+    python watch_automation_tool.py
+
+Leave this running in a terminal while you work on your tools and documentation. Any update to a tool's README.md will trigger an automatic update to the main tool table.
+"""
+
 import time
 import logging
 from pathlib import Path

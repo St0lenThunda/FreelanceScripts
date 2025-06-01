@@ -12,7 +12,7 @@ A collection of small, battle-tested Python scripts to kickstart your freelancin
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Link |
 |------|-------------|------|
-| {,} CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. | [csv_json_converter/README.md](csv_json_converter/README.md) |
+| 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. | [csv_json_converter/README.md](csv_json_converter/README.md) |
 | 📰 README Updater | This script, `readme_updater.py`, provides a modular framework for dynamically updating the main... | [readme_updater/README.md](readme_updater/README.md) |
 | 🌐 Simple Web Scraper | A modular, educational web scraper for extracting titles and links from any website. - Supports s... | [scraper/README.md](scraper/README.md) |
 | 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's `REA... | [watch_automation/README.md](watch_automation/README.md) |
