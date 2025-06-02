@@ -197,7 +197,7 @@
 ##  3. <a name='Installation'></a>⚙️ Installation
 
 ```bash
-git clone https://github.com/St0lenThunda/reelanceScripts
+git clone https://github.com/St0lenThunda/FreelanceScripts
 cd FreelanceScripts
 python3 -m venv .venv             # optional but recommended
 source .venv/bin/activate         # or `.venv\Scripts\activate` on Windows
@@ -241,8 +241,10 @@ export PATH="$(pwd)/bin:$PATH"
 FreelanceScripts/
 ├── csv_converter/
 │   └── csv_json_tool.py
+│   └── README.md
 ├── scraper/
 │   └── simple_scraper_tool.py
+│   └── README.md
 ├── executioner.py
 └── README.md
 ```
