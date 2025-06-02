@@ -16,7 +16,7 @@
 	numbering=true
 	autoSave=true
 	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc --># 🚀 Python “Starter Pack” Tools
+<!-- /vscode-markdown-toc -->
 
 > ## Purpose
 > A collection of small, battle-tested Python scripts to kickstart your freelancing journey. The scripts provide are to be extended or the concepts in them could be used to create new tools. Each tool is:
