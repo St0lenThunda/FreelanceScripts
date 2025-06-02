@@ -1,4 +1,21 @@
-# 🚀 Python “Starter Pack” Tools
+<!-- vscode-markdown-toc -->
+* 1. [✨✨ Useful Takeaways!!! ✨✨](#UsefulTakeaways)
+* 2. [📦 Tools Included](#ToolsIncluded)
+* 3. [⚙️ Installation](#Installation)
+	* 3.1. [🧰 Making All Tools Executable & Adding to PATH](#MakingAllToolsExecutableAddingtoPATH)
+	* 3.2. [🔗 Add Tools to Your PATH](#AddToolstoYourPATH)
+	* 3.3. [📁 Project Structure (Example)](#ProjectStructureExample)
+	* 3.4. [Excluding Tools](#ExcludingTools)
+	* 3.5. [Adding a New Tool to the Toolbox](#AddingaNewTooltotheToolbox)
+	* 3.6. [Syntax for Tool Summaries](#SyntaxforToolSummaries)
+* 4. [✅ Next Steps](#NextSteps)
+* 5. [📜 License](#License)
+
+<!-- vscode-markdown-toc-config
+	numbering=true
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc --># 🚀 Python “Starter Pack” Tools
 
 > ## Purpose
 > A collection of small, battle-tested Python scripts to kickstart your freelancing journey. The scripts provide are to be extended or the concepts in them could be used to create new tools. Each tool is:
@@ -8,7 +25,7 @@
 - **CLI-friendly** – use short, memorable flags  
 - **Well-documented** – logging, help text, and examples  
 ---
-## ✨✨ Useful Takeaways!!! ✨✨
+##  1. <a name='UsefulTakeaways'></a>✨✨ Useful Takeaways!!! ✨✨
 <!-- CONCEPTS_START -->
 <details><summary><strong>Pythonic Concepts found in this project</strong></summary>
 <p>This section lists unique Pythonic concepts demonstrated across all tools in this project.</p>
@@ -163,7 +180,7 @@
 
 <!-- CONCEPTS_END -->
 ---
-### 📦 Tools Included
+##  2. <a name='ToolsIncluded'></a>📦 Tools Included
 
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Link |
@@ -176,7 +193,7 @@
 | 🧰 Package Toolkit | package_toolkit.py | [package_toolkit/README.md](package_toolkit/README.md) |
 <!-- TOOL_TABLE_END -->
 
-## ⚙️ Installation
+##  3. <a name='Installation'></a>⚙️ Installation
 
 ```bash
 git clone https://github.com/St0lenThunda/reelanceScripts
@@ -188,7 +205,7 @@ pip install -r requirements.txt   # only needed if additional dependencies are a
 
 ---
 
-## 🧰 Making All Tools Executable & Adding to PATH
+###  3.1. <a name='MakingAllToolsExecutableAddingtoPATH'></a>🧰 Making All Tools Executable & Adding to PATH
 
 To run any tool directly (e.g., `csv_json_tool`), use the included script:
 
@@ -210,7 +227,7 @@ You can then run tools from the `bin/` directory using just their short names (e
 > python path/to/tool_name_tool.py
 > ```
 
-### 🔗 Add Tools to Your PATH
+###  3.2. <a name='AddToolstoYourPATH'></a>🔗 Add Tools to Your PATH
 
 To use these tools from anywhere, add this to your shell profile (e.g., `~/.bashrc`, `~/.zshrc`):
 
@@ -218,7 +235,7 @@ To use these tools from anywhere, add this to your shell profile (e.g., `~/.bash
 export PATH="$(pwd)/bin:$PATH"
 ```
 
-## 📁 Project Structure (Example)
+###  3.3. <a name='ProjectStructureExample'></a>📁 Project Structure (Example)
 ```
 FreelanceScripts/
 ├── csv_converter/
@@ -228,21 +245,8 @@ FreelanceScripts/
 ├── executioner.py
 └── README.md
 ```
----
 
-## ✅ Next Steps
-
-* [ ] Add a `requirements.txt` if needed
-* [ ] Optional: Create a CLI launcher script for unified access
-
----
-
-## 📜 License
-
-MIT © \StolenThunda
-Use, modify, and share freely. No attribution required, but always appreciated!
-
-### Excluding Tools
+###  3.4. <a name='ExcludingTools'></a>Excluding Tools
 
 To exclude a tool from the toolkit or README generation, add a `.excluded` marker file to the tool's directory. For example:
 
@@ -252,7 +256,7 @@ touch debug_demo/.excluded
 
 This will ensure the `debug_demo` tool is skipped during packaging and documentation updates.
 
-### Adding a New Tool to the Toolbox
+###  3.5. <a name='AddingaNewTooltotheToolbox'></a>Adding a New Tool to the Toolbox
 
 To add a new tool to the toolbox, follow these steps:
 
@@ -284,7 +288,7 @@ To add a new tool to the toolbox, follow these steps:
      python package_toolkit/package_toolkit.py
      ```
 
-### Syntax for Tool Summaries
+###  3.6. <a name='SyntaxforToolSummaries'></a>Syntax for Tool Summaries
 
 When documenting a tool in its `README.md`, follow this syntax to ensure consistency across the project:
 
@@ -328,3 +332,17 @@ When documenting a tool in its `README.md`, follow this syntax to ensure consist
      ## Exclusion
      Add a `.excluded` file to the tool's directory to exclude it from packaging.
      ```
+
+     ---
+
+##  4. <a name='NextSteps'></a>✅ Next Steps
+
+* [ ] Add a `requirements.txt` if needed
+* [ ] Optional: Create a CLI launcher script for unified access
+
+---
+
+##  5. <a name='License'></a>📜 License
+
+MIT © \StolenThunda
+Use, modify, and share freely. No attribution required, but always appreciated!
