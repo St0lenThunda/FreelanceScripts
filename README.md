@@ -342,7 +342,7 @@ When documenting a tool in its `README.md`, follow this syntax to ensure consist
 
 * [ ] Add a `requirements.txt` if needed
 * [ ] Optional: Create a CLI launcher script for unified access
-
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A81FVBKZ)
 ---
 
 ##  5. <a name='License'></a>📜 License
