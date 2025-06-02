@@ -1,4 +1,14 @@
-# 🚀 Python “Starter Pack” Tools
+
+##  :boom: StolenThunda Presents: 
+# Freelance Scripts - 🐍 Python “Starter Pack” Tools 🛠️
+_A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
+
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
+![OS](https://img.shields.io/badge/OS-Mac%20%7C%20Linux%20%7C%20WSL-brightgreen)
+![Last Commit](https://img.shields.io/github/last-commit/St0lenThunda/FreelanceScripts)
+![GitHub Repo stars](https://img.shields.io/github/stars/St0lenThunda/FreelanceScripts?style=social)
+
 <!-- vscode-markdown-toc -->
 * 1. [✨✨ Useful Takeaways!!! ✨✨](#UsefulTakeaways)
 * 2. [📦 Tools Included](#ToolsIncluded)
