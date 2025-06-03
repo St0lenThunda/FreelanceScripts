@@ -13,8 +13,9 @@
 > - Local file listing: lists all .csv and .json files in the current directory for easy selection.
 > - Robust error handling for missing or invalid files.
 > - Educational: code is heavily commented for learning purposes.
->
-> Intended as a learning resource: code is heavily commented to explain each step and concept.### Interactive Mode
+> - Intended as a learning resource: code is heavily commented to explain each step and concept.
+ 
+ ### Interactive Mode
 If you run the script without arguments, you will be prompted to choose the conversion direction and provide file paths. The tool will list available files for you to select, and can infer output file names:
 
 ```bash
