@@ -24,18 +24,257 @@
       .tool-card:hover {
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
       }
+      
+*,::before,::after{
+  margin: 0;
+}
 
-      .carousel {
-        scroll-snap-type: x mandatory;
-        overflow-x: auto;
-        display: flex;
-      }
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: true;
+}
+/* general styling */
+html {
+	color-scheme: dark light;
+}
+img{
+  max-width: 100%;
+}
+/* Hide radio buttons */
+input[type="radio"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
 
-      .carousel-item {
-        scroll-snap-align: start;
-        flex: 0 0 90%;
-        margin-right: 2rem;
-      }
+body{
+
+  min-height: 100svh;
+  display: grid;
+  place-content: center;
+  margin: 0;
+  padding: 1rem;
+  font: 1rem system-ui;
+}
+
+.cards{
+  --img-w: 200px;
+  --duration: 300ms;
+  --img-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: min(100% - 4rem, 800px);
+  margin-inline: auto;
+  display: grid;
+  
+  counter-reset: my-counter;
+}
+
+.card{
+  --cards-grid-cols: auto;
+  --cards-grid-rows: var(--img-w) auto;
+  --cards-grid-gap: 2rem;
+  --cards-footer-justify: center;
+  
+  grid-area: 1/1;
+  display: grid;
+  place-items: center; 
+  grid-template-columns: var(--cards-grid-cols);
+  grid-template-rows: var(--cards-grid-rows);
+  gap: var(--cards-grid-gap);
+  opacity: 0.1; /* Dim inactive cards */
+  transition: opacity 0.3s ease-in-out;
+}
+
+@media (600px < width){
+  .card{
+      --cards-grid-cols: var(--img-w) auto;
+      --cards-grid-rows: auto;
+      --cards-grid-gap: 4rem;
+      --cards-footer-justify: start;
+  }
+}
+
+
+.card-img{
+  width: 200px;
+  height: 200px;
+  aspect-ratio: 1 / 1 ;
+  rotate: var(--angle, 0deg);
+  border-radius: 10px;
+  border: 3px solid #FFF;
+  overflow: hidden;
+  transform-origin: center;
+  object-fit: cover;
+  box-shadow: 0 0 5px 3px rgba(0 0 0 / .05);
+}
+
+
+
+input:nth-of-type(1):checked + .card ~ .card > .card-img{
+  animation: straighten-img-1 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(2):checked) > .card-img,
+input:nth-of-type(2):checked + .card ~ .card > .card-img{
+  animation: straighten-img-2 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(3):checked) > .card-img,
+input:nth-of-type(3):checked + .card ~ .card > .card-img{
+  animation: straighten-img-3 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(4):checked) > .card-img,
+input:nth-of-type(4):checked + .card ~ .card > .card-img{
+  animation: straighten-img-4 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(5):checked) > .card-img,
+input:nth-of-type(5):checked + .card ~ .card > .card-img{
+  animation: straighten-img-5 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(6):checked) > .card-img,
+input:nth-of-type(6):checked + .card ~ .card > .card-img{
+  animation: straighten-img-6 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+.card:has(~input:nth-of-type(7):checked) > .card-img,
+input:nth-of-type(7):checked + .card ~ .card > .card-img{
+  animation: straighten-img-7 calc(var(--duration) * 2) forwards;
+  animation-timing-function: var(--img-easing);
+}
+/* as CSS can't remove animations, we change the animation according to which checkbox is checked  - all animations are the same (would be simpler with SCSS) */
+@keyframes straighten-img-1 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-2 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-3 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-4 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-5 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-6 { 50%{ --angle: 0deg;} }
+@keyframes straighten-img-7 { 50%{ --angle: 0deg;} }
+
+
+/* stacking order - these are updated according to which card is selected */
+.card{
+  z-index: -1;
+}
+input:checked + .card{
+  z-index:10 !important;
+}
+/* next card checked - place behind */
+.card:has(+input:checked){
+  z-index:9;
+}
+/* next card +1 checked - place behind */
+.card:has(+input + .card + input:checked){
+  z-index:8;
+}
+/* next card +2 checked - place behind */
+.card:has(+input + .card +input + .card + input:checked){
+  z-index:7;
+}
+/* next card +3 checked - place behind */
+.card:has(+input + .card +input + .card +input + .card + input:checked){
+  z-index:6;
+}
+/* next card +4 checked - place behind */
+.card:has(+input + .card +input + .card +input + .card +input + .card + input:checked){
+  z-index:5;
+}
+/* next card +5 checked - place behind */
+.card:has(+input + .card +input + .card +input +input + .card +input + .card +input + .card + input:checked){
+  z-index:4;
+}
+/* next card +6 checked - place behind */
+.card:has(+input + .card +input + .card +input  + .card +input +input + .card +input + .card +input + .card + input:checked){
+  z-index:3;
+}
+
+.card-data{
+  display: grid;
+  gap: 1rem;
+}
+.card-data > .card-num{
+  opacity: var(--data-opacity, 0);
+  font-size: .8rem;
+  color: #666;
+}
+.card-data > p{
+  font-size: 0.9rem;
+
+}
+.card-data > h2,
+.card-data > p{
+  transition: var(--duration) ease-in-out;
+  transition-delay: var(--data-delay,0ms);
+  opacity: var(--data-opacity, 0);
+  translate: 0 var(--data-y, 20px);
+}
+.card-data > footer{
+  display: flex;
+  justify-content: var(--cards-footer-justify);
+  gap: 2rem;
+}
+.card-data > footer label{
+  margin-block-start: auto;
+  cursor: pointer;
+  pointer-events: var(--card-events, none);
+  opacity: var(--data-opacity, 0);
+  transition: color var(--duration) ease-in-out;
+  color: var(--label-clr-txt,#000);
+  background-color:var(--label-clr-bg,#EEE);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  aspect-ratio: 1/1;
+  display: grid;
+  place-content: center;
+  transition: background-color 300ms ease-in-out,color  300ms ease-in-out;
+}
+
+
+input:checked:focus-visible + .card > .card-data > footer label,
+.card-data > footer label:hover{
+  --label-clr-txt: #FFF;
+  --label-clr-bg: steelblue;
+}
+
+input:checked + .card{
+  --data-opacity: 1;
+  --data-y: 0;
+  --data-delay: var(--duration);
+  --card-events: auto;
+  transition: z-index;
+  transition-delay: 300ms;
+  /*z-index: 1;*/
+}
+
+input:checked +.card > .card-img{
+  animation: reveal-img calc(var(--duration) * 2) forwards;
+}
+
+@keyframes reveal-img{
+  50%{
+    translate: -150% 0;
+    --angle: 0deg;
+  }
+}
+
+/* Update CSS to make only the active card fully visible while others disappear */
+.cards .card {
+  opacity: 0; /* Hide inactive cards */
+  transition: opacity 0.3s ease-in-out;
+}
+
+input:checked + .card {
+  opacity: 1; /* Fully visible active card */
+}
     </style>
   </head>
 
@@ -60,156 +299,7 @@
       <!-- Tool Carousel -->
       <section class="my-12">
         <h2 class="text-3xl font-bold mb-6 text-center animate__animated animate__fadeIn">Included Tools</h2>
-        <div class="relative">
-          <div class="carousel pb-4 gap-8 px-2 md:px-8">
-            <!-- Tool Cards Start -->
-            <div
-              class="carousel-item tool-card bg-gradient-to-br from-blue-900 via-gray-800 to-gray-900 rounded-2xl p-8 shadow-2xl border border-blue-700 animate__animated animate__slideInLeft animate__faster transition-transform duration-300 hover:scale-105 hover:shadow-blue-500/40"
-            >
-              <h3 class="text-2xl font-bold mb-2 text-blue-300 animate__animated animate__fadeInDown">CSV ⇄ JSON
-                Converter</h3>
-              <div class="mb-2 text-gray-300 animate__animated animate__fadeInLeft animate__delay-1s">A two-way data
-                converter for CSV and JSON files.</div>
-              <ul class="list-disc ml-5 text-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                <li>Converts CSV to JSON and JSON to CSV</li>
-                <li>Interactive prompts and file listing</li>
-                <li>Auto-naming and output inference</li>
-                <li>Educational: heavily commented code</li>
-              </ul>
-              <a
-                href="../csv_json_converter/README.md"
-                class="inline-block mt-2 px-4 py-2 bg-blue-700 rounded-full text-white font-semibold shadow hover:bg-blue-600 transition animate__animated animate__fadeInUp animate__delay-3s"
-              >Read more</a>
-            </div>
-            <div
-              class="carousel-item tool-card bg-gradient-to-br from-green-900 via-gray-800 to-gray-900 rounded-2xl p-8 shadow-2xl border border-green-700 animate__animated animate__slideInUp animate__faster transition-transform duration-300 hover:scale-105 hover:shadow-green-500/40"
-            >
-              <h3 class="text-2xl font-bold mb-2 text-green-300 animate__animated animate__fadeInDown">Simple Web
-                Scraper</h3>
-              <div class="mb-2 text-gray-300 animate__animated animate__fadeInLeft animate__delay-1s">A modular web
-                scraper that fetches titles and links from URLs.</div>
-              <ul class="list-disc ml-5 text-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                <li>Fetches and parses HTML with BeautifulSoup</li>
-                <li>Selector suggestion and ranking</li>
-                <li>Handles multiple URLs and output formats</li>
-                <li>Educational: modular and commented</li>
-              </ul>
-              <a
-                href="../scraper/README.md"
-                class="inline-block mt-2 px-4 py-2 bg-green-700 rounded-full text-white font-semibold shadow hover:bg-green-600 transition animate__animated animate__fadeInUp animate__delay-3s"
-              >Read more</a>
-            </div>
-            <div
-              class="carousel-item tool-card bg-gradient-to-br from-purple-900 via-gray-800 to-gray-900 rounded-2xl p-8 shadow-2xl border border-purple-700 animate__animated animate__slideInRight animate__faster transition-transform duration-300 hover:scale-105 hover:shadow-purple-500/40"
-            >
-              <h3 class="text-2xl font-bold mb-2 text-purple-300 animate__animated animate__fadeInDown">Executioner</h3>
-              <div class="mb-2 text-gray-300 animate__animated animate__fadeInLeft animate__delay-1s">Automates making
-                Python scripts executable and symlinking them for easy PATH usage.</div>
-              <ul class="list-disc ml-5 text-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                <li>Finds and symlinks *_tool.py scripts</li>
-                <li>Normalizes line endings</li>
-                <li>Exclusion by marker file</li>
-                <li>Educational: clear, stepwise comments</li>
-              </ul>
-              <a
-                href="../executioner/README.md"
-                class="inline-block mt-2 px-4 py-2 bg-purple-700 rounded-full text-white font-semibold shadow hover:bg-purple-600 transition animate__animated animate__fadeInUp animate__delay-3s"
-              >Read more</a>
-            </div>
-            <div
-              class="carousel-item tool-card bg-gradient-to-br from-yellow-900 via-gray-800 to-gray-900 rounded-2xl p-8 shadow-2xl border border-yellow-700 animate__animated animate__slideInDown animate__faster transition-transform duration-300 hover:scale-105 hover:shadow-yellow-500/40"
-            >
-              <h3 class="text-2xl font-bold mb-2 text-yellow-200 animate__animated animate__fadeInDown">Package Toolkit
-              </h3>
-              <div class="mb-2 text-gray-300 animate__animated animate__fadeInLeft animate__delay-1s">Packages all tools
-                into a zip archive, generates a combined README, and respects exclusion rules.</div>
-              <ul class="list-disc ml-5 text-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                <li>Recursively scans and packages tools</li>
-                <li>Exclusion logic and marker files</li>
-                <li>Dynamic combined README generation</li>
-                <li>Educational: robust and safe</li>
-              </ul>
-              <a
-                href="../package_toolkit/README.md"
-                class="inline-block mt-2 px-4 py-2 bg-yellow-700 rounded-full text-white font-semibold shadow hover:bg-yellow-600 transition animate__animated animate__fadeInUp animate__delay-3s"
-              >Read more</a>
-            </div>
-            <div
-              class="carousel-item tool-card bg-gradient-to-br from-pink-900 via-gray-800 to-gray-900 rounded-2xl p-8 shadow-2xl border border-pink-700 animate__animated animate__slideInLeft animate__faster transition-transform duration-300 hover:scale-105 hover:shadow-pink-500/40"
-            >
-              <h3 class="text-2xl font-bold mb-2 text-pink-200 animate__animated animate__fadeInDown">README Updater
-              </h3>
-              <div class="mb-2 text-gray-300 animate__animated animate__fadeInLeft animate__delay-1s">A modular
-                framework for dynamically updating the main and tool READMEs.</div>
-              <ul class="list-disc ml-5 text-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                <li>Modular task system for README management</li>
-                <li>Syncs Purpose sections from docstrings</li>
-                <li>Automates tool table updates</li>
-                <li>Educational: extensible and clear</li>
-              </ul>
-              <a
-                href="../readme_updater/README.md"
-                class="inline-block mt-2 px-4 py-2 bg-pink-700 rounded-full text-white font-semibold shadow hover:bg-pink-600 transition animate__animated animate__fadeInUp animate__delay-3s"
-              >Read more</a>
-            </div>
-            <div
-              class="carousel-item tool-card bg-gradient-to-br from-cyan-900 via-gray-800 to-gray-900 rounded-2xl p-8 shadow-2xl border border-cyan-700 animate__animated animate__slideInRight animate__faster transition-transform duration-300 hover:scale-105 hover:shadow-cyan-500/40"
-            >
-              <h3 class="text-2xl font-bold mb-2 text-cyan-200 animate__animated animate__fadeInDown">Watch Automation
-              </h3>
-              <div class="mb-2 text-gray-300 animate__animated animate__fadeInLeft animate__delay-1s">Automatically
-                updates the main README tool table when any tool's README changes.</div>
-              <ul class="list-disc ml-5 text-sm mb-4 animate__animated animate__fadeInUp animate__delay-2s">
-                <li>Monitors tool directories for README changes</li>
-                <li>Runs updater automatically</li>
-                <li>Logs all activity</li>
-                <li>Educational: modular and extensible</li>
-              </ul>
-              <a
-                href="../watch_automation/README.md"
-                class="inline-block mt-2 px-4 py-2 bg-cyan-700 rounded-full text-white font-semibold shadow hover:bg-cyan-600 transition animate__animated animate__fadeInUp animate__delay-3s"
-              >Read more</a>
-            </div>
-          </div>
-          <div class="absolute left-0 top-1/2 -translate-y-1/2 z-10">
-            <button
-              id="carousel-left"
-              class="bg-gray-700 bg-opacity-80 hover:bg-blue-700 text-white rounded-full p-2 shadow-lg focus:outline-none animate__animated animate__fadeInLeft"
-            ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg></button>
-          </div>
-          <div class="absolute right-0 top-1/2 -translate-y-1/2 z-10">
-            <button
-              id="carousel-right"
-              class="bg-gray-700 bg-opacity-80 hover:bg-blue-700 text-white rounded-full p-2 shadow-lg focus:outline-none animate__animated animate__fadeInRight"
-            ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg></button>
-          </div>
-        </div>
+        <div class="cards"></div>
         <p class="text-center text-gray-400 mt-4">Scroll horizontally or use arrows to browse all tools &rarr;</p>
       </section>
 
@@ -343,11 +433,11 @@
     </footer>
 
     <script type="module">
-      import { renderCarousel, setupCarouselNav } from './functions.js';
-      // Render the carousel on DOMContentLoaded
-      document.addEventListener( 'DOMContentLoaded', () => {
-        renderCarousel();
-        setupCarouselNav();
+              import { renderCarousel } from './functions.js';
+
+              // Render the carousel dynamically on DOMContentLoaded
+              document.addEventListener( 'DOMContentLoaded', () => {
+                renderCarousel();
       } );
     </script>
   </body>

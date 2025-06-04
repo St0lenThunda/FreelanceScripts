@@ -2,7 +2,7 @@
 """
 csv_to_json_converter_tool.py
 
-A two-way data converter for CSV and JSON files.
+A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JSON format and vice versa. The script can be run from the command line, allowing users to specify input and output files, or it can prompt for file paths interactively if no arguments are provided.
 
 Key Features:
 - Converts CSV to JSON and JSON to CSV.

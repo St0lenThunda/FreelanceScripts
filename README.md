@@ -196,7 +196,7 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Link |
 |------|-------------|------|
-| 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. | [csv_json_converter/README.md](csv_json_converter/README.md) |
+| 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JS... | [csv_json_converter/README.md](csv_json_converter/README.md) |
 | 📰 README Updater | This script provides a modular framework for dynamically updating the main project README and too... | [readme_updater/README.md](readme_updater/README.md) |
 | 🌐 Simple Web Scraper | A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News). | [scraper/README.md](scraper/README.md) |
 | 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's READ... | [watch_automation/README.md](watch_automation/README.md) |

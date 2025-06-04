@@ -12,8 +12,6 @@
 > - Packages everything into an `output/freelance_toolkit.zip` archive.
 >
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-2. The output zip file will be created in the project root as `freelance_toolkit.zip`.
-
 ## Exclusion Rules
 
 - Files and directories matching the following patterns are excluded:

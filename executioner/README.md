@@ -10,8 +10,6 @@
 > - Symlinks each tool (without the `.py` extension) into a `bin/` directory.
 >
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-3. Add the `bin/` directory to your PATH:
-
    ```bash
    export PATH="$(pwd)/bin:$PATH"
    ```

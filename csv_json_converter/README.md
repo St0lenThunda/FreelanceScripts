@@ -1,7 +1,7 @@
 # 🧙‍♂️ CSV ⇄ JSON Converter Tool
 
 > ## Purpose
-> A two-way data converter for CSV and JSON files.
+> A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JSON format and vice versa. The script can be run from the command line, allowing users to specify input and output files, or it can prompt for file paths interactively if no arguments are provided.
 >
 > Key Features:
 > - Converts CSV to JSON and JSON to CSV.
@@ -13,8 +13,8 @@
 > - Local file listing: lists all .csv and .json files in the current directory for easy selection.
 > - Robust error handling for missing or invalid files.
 > - Educational: code is heavily commented for learning purposes.
-> - Intended as a learning resource: code is heavily commented to explain each step and concept.
- 
+>
+> Intended as a learning resource: code is heavily commented to explain each step and concept. 
  ### Interactive Mode
 If you run the script without arguments, you will be prompted to choose the conversion direction and provide file paths. The tool will list available files for you to select, and can infer output file names:
 

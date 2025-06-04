@@ -129,16 +129,36 @@ export function extractPurposeAndFeatures ( md ) {
   // Extract Purpose section starting with '> ## Purpose'
   const blockquoteMatch = md.match( />\s*##\s*Purpose[\s\n]+([\s\S]*?)(?=\n[^>]|$)/i );
   if ( blockquoteMatch ) {
-    const blockquoteContent = blockquoteMatch[1].trim();
-    const lines = blockquoteContent.split( /\n>/ ).map( line => line.trim() );
+    // Strip all leading '>' and whitespace from each line in the blockquote content
+    const blockquoteContent = blockquoteMatch[1]
+      .split( '\n' )
+      .map( line => line.replace( /^\s*>?\s?/, '' ) )
+      .join( '\n' )
+      .trim();
 
-    // Separate description and features
-    const descriptionEndIndex = lines.findIndex( line => line === '> ' );
-    const descriptionLines = lines.slice( 0, descriptionEndIndex );
-    const featuresLines = lines.slice( descriptionEndIndex + 1 );
+    // Split lines and separate purpose and features based on "Key Features"
+    const lines = blockquoteContent.split( '\n' );
+    let purposeLines = [];
+    let featuresLines = [];
+    let foundKeyFeatures = false;
+    for ( const line of lines ) {
+      if ( !foundKeyFeatures && line.trim().toLowerCase().startsWith( 'key features' ) ) {
+        foundKeyFeatures = true;
+        continue; // skip the "Key Features" line itself
+      }
+      if ( !foundKeyFeatures ) {
+        purposeLines.push( line );
+      } else {
+        featuresLines.push( line );
+      }
+    }
 
-    purpose = mdToHtml( descriptionLines.join( '\n' ) );
-    features = mdToHtml( featuresLines.join( '\n' ) );
+    // Remove empty lines and trim
+    const descriptionLines = purposeLines.map( line => line.trim() ).filter( line => line !== '' );
+    const featuresList = featuresLines.map( line => line.trim() ).filter( line => line !== '' );
+
+    purpose = descriptionLines.join( '\n' );
+    features = mdToHtml( featuresList.join( '\n' ) );
   }
 
   return { purpose, features };
@@ -176,20 +196,49 @@ export function createToolCard ( tool, idx ) {
   return `\n    <div class="carousel-item tool-card bg-gradient-to-br ${tool.gradient} rounded-2xl p-8 shadow-2xl border ${tool.border} animate__animated ${anims[idx % anims.length]} animate__faster transition-transform duration-300 hover:scale-105 ${tool.shadow}">\n      <h3 class="text-2xl font-bold mb-2 ${tool.text} animate__animated animate__fadeInDown">${tool.name}</h3>\n      ${detailsHtml}\n      <a href="${tool.readme}" class="inline-block mb-2 px-4 py-2 ${tool.btn} rounded-full text-white font-semibold shadow transition animate__animated animate__fadeInUp animate__delay-3s">Read more</a>\n    </div>\n  `;
 }
 
+// --- Dynamic Card Rendering ---
+// Returns HTML for a dynamically generated card based on the provided template
+export function generateDynamicCard ( tool, idx, totalTools ) {
+  const angle = [4, -8, -7, 11, 13, -17, 20][idx % 7];
+  const prevIdx = ( idx - 1 + totalTools ) % totalTools + 1;
+  const nextIdx = ( idx + 1 ) % totalTools + 1;
+  const { purpose, features } = extractPurposeAndFeatures( tool.markdown || '' );
+
+  return `
+  <input type="radio" id="radio-${idx + 1}" name="radio-card" ${idx === 0 ? 'checked' : ''}>
+  <article class="card" style="--angle:${angle}deg">
+      <div class="card-icon bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.shadow} rounded-full flex items-center justify-center text-white" style="width: 200px; height: 200px; font-size: 6rem;">
+        <span>${tool.emojiBackground || '🔧'}</span>
+      </div>
+      <div class="card-data bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.shadow} rounded-lg p-4 shadow-md style="width: 50vw; " >
+        <span class="card-num ${tool.text}">${idx + 1}/${totalTools}</span>
+        <h2 class="${tool.text}">${tool.name}</h2>
+        <p class="${tool.text}">${purpose}</p>
+        <details class="card-features">
+         <summary class='font-semibold text-lg mt-2 mb-1 ${tool.text}'>Key Features</summary>
+         <ul class='list-disc ml-5 text-sm mt-2 ${tool.text}'>${features}</ul>
+        </details>
+        <a href="${tool.readme}" class="card-btn ${tool.btn}">Read more</a>
+        <footer>
+          <label for="radio-${prevIdx}" aria-label="Previous" class="${tool.text}">&#10094;</label>
+          <label for="radio-${nextIdx}" aria-label="Next" class="${tool.text}">&#10095;</label>
+        </footer>
+      </div>
+    </article>
+  `;
+}
+
 // --- Carousel Rendering ---
 // Renders the carousel with all tool cards
 export async function renderCarousel () {
-  const carousel = document.querySelector( '.carousel' );
-  if ( !carousel ) return;
+  console.log( "Generating tool list" )
+  const cardsContainer = document.querySelector( '.cards' );
+  if ( !cardsContainer ) return;
+
   const tools = await getToolFolders();
   console.log( 'DEBUG: tools array for carousel:', tools );
-  carousel.innerHTML = tools.map( createToolCard ).join( '' );
-}
 
-// --- Carousel Navigation ---
-// Adds left/right scroll logic to carousel arrows
-export function setupCarouselNav () {
-  const carousel = document.querySelector( '.carousel' );
-  document.getElementById( 'carousel-left' ).onclick = () => carousel.scrollBy( { left: -carousel.offsetWidth * 0.8, behavior: 'smooth' } );
-  document.getElementById( 'carousel-right' ).onclick = () => carousel.scrollBy( { left: carousel.offsetWidth * 0.8, behavior: 'smooth' } );
+  // Render dynamic cards
+  cardsContainer.innerHTML = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
+  console.log( "Result", cardsContainer.innerHTML )
 }

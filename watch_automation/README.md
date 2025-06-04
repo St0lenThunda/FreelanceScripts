@@ -13,11 +13,6 @@
 >     python watch_automation_tool.py
 >
 > Leave this running in a terminal while you work on your tools and documentation. Any update to a tool's README.md will trigger an automatic update to the main tool table.
-- Scans all tool directories (excluding hidden/system and `.excluded` ones) for `README.md` files.
-- Watches for changes (modifications or new files) every 2 seconds.
-- When a change is detected, runs the `readme_updater_tool.py` script to regenerate the tool table in the main `README.md`.
-- Logs all events and updater output to `watch_automation/watch_automation.log` and the terminal.
-
 ---
 
 ## 🚀 Usage

@@ -11,8 +11,6 @@
 > - Updates the main tool table in the root README with tool names, descriptions, and links.
 > - Supports a combined task (`--task=sync_and_table`) to sync all Purpose sections and immediately update the tool table in one step.
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-3. The main README will be updated based on the defined tasks.
-
 ## Adding New Tasks
 
 To add a new task:
@@ -53,8 +51,6 @@ Each tool's `README.md` should include:
 > - Updates the main tool table in the root README with tool names, descriptions, and links.
 > - Supports a combined task (`--task=sync_and_table`) to sync all Purpose sections and immediately update the tool table in one step.
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-This will ensure the `debug_demo` tool is skipped during processing.
-
 ## Notes
 
 - Ensure each tool has a properly formatted `README.md`.
