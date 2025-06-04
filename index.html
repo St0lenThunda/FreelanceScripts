@@ -87,7 +87,6 @@ body{
   grid-template-columns: var(--cards-grid-cols);
   grid-template-rows: var(--cards-grid-rows);
   gap: var(--cards-grid-gap);
-  opacity: 0.1; /* Dim inactive cards */
   transition: opacity 0.3s ease-in-out;
 }
 
@@ -196,7 +195,12 @@ input:checked + .card{
   z-index:3;
 }
 
+input:checked + .card-data{
+  opacity: 1; /* Fully visible active card */
+}
 .card-data{
+  opacity: 1; /* Hide inactive cards */
+  transition: opacity 0.3s ease-in-out;
   display: grid;
   gap: 1rem;
 }
@@ -255,7 +259,7 @@ input:checked + .card{
 }
 
 input:checked +.card > .card-img{
-  animation: reveal-img calc(var(--duration) * 2) forwards;
+  animation: reveal-img calc(var(--duration) * 3) forwards;
 }
 
 @keyframes reveal-img{
@@ -265,15 +269,6 @@ input:checked +.card > .card-img{
   }
 }
 
-/* Update CSS to make only the active card fully visible while others disappear */
-.cards .card {
-  opacity: 0; /* Hide inactive cards */
-  transition: opacity 0.3s ease-in-out;
-}
-
-input:checked + .card {
-  opacity: 1; /* Fully visible active card */
-}
     </style>
   </head>
 
@@ -297,7 +292,7 @@ input:checked + .card {
     <main class="max-w-5xl mx-auto px-4">
       <!-- Tool Carousel -->
       <section class="my-12">
-        <h2 class="text-3xl font-bold mb-6 text-center animate__animated animate__fadeIn">Included Tools</h2>
+        <h2 class="text-3xl font-bold mb-2 text-center animate__animated animate__fadeIn">Included Tools</h2>
         <div class="cards"></div>
       </section>
 

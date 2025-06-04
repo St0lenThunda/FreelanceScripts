@@ -17,8 +17,8 @@
 > - Saves results to a JSON file in the output directory (default behavior, can be disabled with --no-save).
 > - Output files are named after the URL.
 > - Designed as a learning resource: code is heavily commented and modular.
->
-> TODO: Add colorized output for better readability.# Scrape the default (Hacker News)
+
+TODO: Add colorized output for better readability.# Scrape the default (Hacker News)
 python simple_scraper_tool.py
 
 # Scrape one or more custom URLs

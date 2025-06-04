@@ -54,6 +54,7 @@ export async function getToolFolders () {
       gradient: 'from-cyan-900 via-gray-800 to-gray-900', border: 'border-cyan-700', shadow: 'hover:shadow-cyan-500/40', text: 'text-cyan-200', btn: 'bg-cyan-700 hover:bg-cyan-600'
     }
   };
+  
 
   // Helper to fetch README content and parse info
   async function fetchToolInfo ( folder ) {
@@ -203,24 +204,35 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
   const prevIdx = ( idx - 1 + totalTools ) % totalTools + 1;
   const nextIdx = ( idx + 1 ) % totalTools + 1;
   const { purpose, features } = extractPurposeAndFeatures( tool.markdown || '' );
-
+  const divider = `<div class='flex items-center'>
+  <hr class='flex-grow border-gray-600'>
+  <span class='mx-4 text-gray-400'>✦</span>
+  <hr class='flex-grow border-gray-600'>
+</div>`
   const iconAnimations = ['animate__bounce', 'animate__pulse', 'animate__rubberBand', 'animate__shakeX', 'animate__shakeY'];
   const randomIconAnimation = iconAnimations[Math.floor( Math.random() * iconAnimations.length )];
 
+  // Wrap dynamic details in a scrollable area
   return `
   <input type="radio" id="radio-${idx + 1}" name="radio-card" ${idx === 0 ? 'checked' : ''}>
   <article class="card" style="--angle:${angle}deg">
-      <div class="card-icon bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.shadow} rounded-full flex items-center justify-center text-white ${randomIconAnimation}" style="width: 200px; height: 200px; font-size: 6rem;">
+      <div class="card-icon card-img bg-gradient-to-br ${tool.gradient} ${tool.text} ${tool.border} ${tool.shadow} flex items-center justify-center text-white border-8  p-4 bg-gray-800 ${randomIconAnimation}" style="width: 200px; height: 200px; font-size: 6rem;">
         <span>${tool.emojiBackground || '🔧'}</span>
       </div>
       <div class="card-data bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.shadow} rounded-lg p-4 shadow-md">
-        <span class="card-num ${tool.text} animate__animated animate__slideInLeft">${idx + 1}/${totalTools}</span>
-        <h2 class="${tool.text} animate__animated animate__slideInDown">${tool.name}</h2>
-        <p class="${tool.text} animate__animated animate__slideInUp">${purpose}</p>
-        <details class="card-features">
-        <summary class='font-semibold text-lg mt-2 mb-1 ${tool.text} animate__animated animate__slideInRight'>Key Features</summary>
-        <ul class='list-disc ml-5 text-sm mt-2 ${tool.text} animate__animated animate__slideInLeft'>${features}</ul>
-        </details>
+      <span class="card-num ${tool.text} animate__animated animate__slideInLeft">${idx + 1}/${totalTools}</span>
+      <h2 class="${tool.text} animate__animated animate__slideInDown text-3xl text-bold">${tool.name}</h2>
+        <p class="${tool.text} animate__animated animate__slideInUp">
+          <hr />
+          ${purpose} 
+          ${divider}
+        </p>
+        <div class="scrollable-details" style="max-height: 180px; overflow-y: auto;">
+          <details class="card-features">
+          <summary class='font-semibold text-lg mb-1 ${tool.text} animate__animated animate__slideInDown'>Key Features</summary>
+          <ul class='list-disc ml-5 text-sm mt-2 ${tool.text} animate__animated animate__slideInLeft'>${features}</ul>
+          </details>
+        </div>
         <a href="${tool.readme}" class="card-btn ${tool.btn} rounded-full px-4 py-2 text-white font-semibold shadow-lg transition-transform duration-300 hover:scale-105 animate__animated animate__slideInUp" style="margin: 0 auto; display: block; width: fit-content;">Read More</a>
         <footer style="display: flex; justify-content: space-between; padding: 0 1rem;">
           <label for="radio-${prevIdx}" aria-label="Previous" class="${tool.text} animate__animated animate__slideInLeft">&#10094;</label>
