@@ -5,16 +5,13 @@
 export async function getToolFolders () {
   let folders = [];
   try {
-    // Static fallback for local dev/live server (directory listing fetch is unreliable)
-    folders = [
-      'csv_json_converter',
-      'scraper',
-      'executioner',
-      'package_toolkit',
-      'readme_updater',
-      'watch_automation'
-    ];
+    debugger
+    const response = await fetch('./');
+    const text = await response.text();
+    const folderMatches = text.match(/href="(.*?)\/"/g);
+    folders = folderMatches ? folderMatches.map(match => match.replace(/href="|\/"/g, '')) : [];
   } catch ( e ) {
+    console.error( 'Error fetching folders:', e );
     folders = [
       'csv_json_converter',
       'scraper',
@@ -24,6 +21,7 @@ export async function getToolFolders () {
       'watch_automation'
     ];
   }
+  console.warn(folders)
   // Filter out folders with a .excluded file
   const filteredFolders = [];
   for ( const folder of folders ) {
@@ -33,28 +31,20 @@ export async function getToolFolders () {
     } catch ( e ) { }
     filteredFolders.push( folder );
   }
-  // Styling map by folder name
-  const styleMap = {
-    csv_json_converter: {
-      gradient: 'from-blue-900 via-gray-800 to-gray-900', border: 'border-blue-700', shadow: 'hover:shadow-blue-500/40', text: 'text-blue-300', btn: 'bg-blue-700 hover:bg-blue-600'
-    },
-    scraper: {
-      gradient: 'from-green-900 via-gray-800 to-gray-900', border: 'border-green-700', shadow: 'hover:shadow-green-500/40', text: 'text-green-300', btn: 'bg-green-700 hover:bg-green-600'
-    },
-    executioner: {
-      gradient: 'from-purple-900 via-gray-800 to-gray-900', border: 'border-purple-700', shadow: 'hover:shadow-purple-500/40', text: 'text-purple-300', btn: 'bg-purple-700 hover:bg-purple-600'
-    },
-    package_toolkit: {
-      gradient: 'from-yellow-900 via-gray-800 to-gray-900', border: 'border-yellow-700', shadow: 'hover:shadow-yellow-500/40', text: 'text-yellow-200', btn: 'bg-yellow-700 hover:bg-yellow-600'
-    },
-    readme_updater: {
-      gradient: 'from-pink-900 via-gray-800 to-gray-900', border: 'border-pink-700', shadow: 'hover:shadow-pink-500/40', text: 'text-pink-200', btn: 'bg-pink-700 hover:bg-pink-600'
-    },
-    watch_automation: {
-      gradient: 'from-cyan-900 via-gray-800 to-gray-900', border: 'border-cyan-700', shadow: 'hover:shadow-cyan-500/40', text: 'text-cyan-200', btn: 'bg-cyan-700 hover:bg-cyan-600'
-    }
-  };
-  
+
+  // Dynamically create style map
+  const colors = ['blue', 'green', 'purple', 'yellow', 'pink', 'cyan', 'red', 'orange'];
+  const styleMap = filteredFolders.reduce( ( map, folder, index ) => {
+    const color = colors[index % colors.length];
+    map[folder] = {
+      gradient: `from-${color}-900 via-gray-800 to-gray-900`,
+      border: `border-${color}-700`,
+      shadow: `hover:shadow-${color}-500/40`,
+      text: `text-${color}-300`,
+      btn: `bg-${color}-700 hover:bg-${color}-600`
+    };
+    return map;
+  }, {} );
 
   // Helper to fetch README content and parse info
   async function fetchToolInfo ( folder ) {

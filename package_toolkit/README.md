@@ -12,6 +12,7 @@
 > - Packages everything into an `output/freelance_toolkit.zip` archive.
 >
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
+
 ## Exclusion Rules
 
 - Files and directories matching the following patterns are excluded:

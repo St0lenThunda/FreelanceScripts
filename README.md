@@ -2,7 +2,7 @@
 ##  :boom: StolenThunda Presents: 
 # Freelance Scripts - 🐍 Python “Starter Pack” Tools 🛠️
 _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
-
+[Web Info Page](https://st0lenthunda.github.io/FreelanceScripts/)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![OS](https://img.shields.io/badge/OS-Mac%20%7C%20Linux%20%7C%20WSL-brightgreen)
@@ -198,8 +198,10 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 |------|-------------|------|
 | 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JS... | [csv_json_converter/README.md](csv_json_converter/README.md) |
 | 📰 README Updater | This script provides a modular framework for dynamically updating the main project README and too... | [readme_updater/README.md](readme_updater/README.md) |
+| 🛠️ Tool Runner | A unifying script to run all tools in the FreelanceScripts project. This script provides a menu-b... | [toolkit_runner/README.md](toolkit_runner/README.md) |
 | 🌐 Simple Web Scraper | A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News). | [scraper/README.md](scraper/README.md) |
 | 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's READ... | [watch_automation/README.md](watch_automation/README.md) |
+| tool_runner | No description. | [tool_runner/README.md](tool_runner/README.md) |
 | 🪓 Executioner Tool | This script automates making Python scripts executable and symlinking them into a `bin/` director... | [executioner/README.md](executioner/README.md) |
 | 🧰 Package Toolkit | package_toolkit.py | [package_toolkit/README.md](package_toolkit/README.md) |
 <!-- TOOL_TABLE_END -->

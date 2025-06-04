@@ -13,7 +13,6 @@
 >     python watch_automation_tool.py
 >
 > Leave this running in a terminal while you work on your tools and documentation. Any update to a tool's README.md will trigger an automatic update to the main tool table.
----
 
 ## 🚀 Usage
 

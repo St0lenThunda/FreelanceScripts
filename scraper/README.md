@@ -18,9 +18,8 @@
 > - Output files are named after the URL.
 > - Designed as a learning resource: code is heavily commented and modular.
 
-TODO: Add colorized output for better readability.# Scrape the default (Hacker News)
-python simple_scraper_tool.py
-
+## 🚀 Usage
+```
 # Scrape one or more custom URLs
 python simple_scraper_tool.py https://news.ycombinator.com https://example.com
 
@@ -88,6 +87,10 @@ This tool demonstrates several Pythonic concepts useful for beginners:
 - **Argument Parsing:** Handles command-line arguments for flexible usage.
 - **Error Handling:** Provides robust error messages and suggestions.
 - **Educational Comments:** Explains each step for learning purposes.
+
+## Future enhancements
+  - [ ] Add colorized output for better readability.# Scrape the default (Hacker News)
+python simple_scraper_tool.py
 
 ## 📜 License
 

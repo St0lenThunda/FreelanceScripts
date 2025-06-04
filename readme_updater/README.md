@@ -11,8 +11,6 @@
 > - Updates the main tool table in the root README with tool names, descriptions, and links.
 > - Supports a combined task (`--task=sync_and_table`) to sync all Purpose sections and immediately update the tool table in one step.
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-## Adding New Tasks
-
 To add a new task:
 
 1. Create a new class that inherits from `ReadmeTask`.
@@ -51,8 +49,6 @@ Each tool's `README.md` should include:
 > - Updates the main tool table in the root README with tool names, descriptions, and links.
 > - Supports a combined task (`--task=sync_and_table`) to sync all Purpose sections and immediately update the tool table in one step.
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-## Notes
-
 - Ensure each tool has a properly formatted `README.md`.
 - The script assumes the main README is located in the root directory of the project.
 
