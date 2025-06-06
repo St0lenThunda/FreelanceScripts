@@ -1,4 +1,4 @@
-# 🛠️ Toolkit Runner
+# 🛠️ Tool Runner
 
 > ## Purpose
 > A unifying script to run all tools in the FreelanceScripts project. This script provides a menu-based interface for selecting and running any tool interactively.

@@ -16,10 +16,9 @@ export async function getToolFolders () {
       console.log( 'Selected file:', input.files[0] );
       document.body.removeChild( input );
     } );
-   if (!folder.length) throw new Error("Not Working");
+  if (!folders.length) throw new Error("Zero-Config Solution Pending");
 
   } catch ( e ) {
-    console.error( 'Error fetching folders:', e );
     folders = [
       'csv_json_converter',
       'scraper',
@@ -29,8 +28,9 @@ export async function getToolFolders () {
       'watch_automation',
       'toolkit_runner'
     ];
+    console.info( `Error fetching folders: ${e}` )
+    console.info(`Defaulting to ${ folders.length } tools`);
   }
-  console.warn(folders)
   // Filter out folders with a .excluded file
   const filteredFolders = [];
   for ( const folder of folders ) {
@@ -65,7 +65,7 @@ export async function getToolFolders () {
       // Parse first heading as name (e.g., "# Tool Name")
       const nameMatch = md.match( /^#\s+(.+)/m );
       let name = nameMatch ? nameMatch[1].trim() : folder;
-      console.log( 'Name', name )
+      console.log( 'Tool found:', name )
       // Extract emojis from the beginning of the name for use as a background
       const emojiMatch = name.split( ' ' )[0];
       const emojiBackground = emojiMatch;
@@ -95,6 +95,7 @@ export async function getToolFolders () {
       return null;
     }
   }
+
   // Gather all tool info
   const toolInfo = ( await Promise.all( filteredFolders.map( fetchToolInfo ) ) ).filter( Boolean );
   // Assign styling
@@ -159,39 +160,7 @@ export function extractPurposeAndFeatures ( md ) {
   return { purpose, features };
 }
 
-// --- Tool Card Rendering ---
-// Returns HTML for a tool card given tool info and index
-// export function createToolCard ( tool, idx ) {
-//   // Animation classes for carousel entry effects
-//   const animations = [
-//     'animate__slideInLeft',
-//     'animate__slideInUp',
-//     'animate__slideInRight',
-//     'animate__slideInDown',
-//     'animate__slideInLeft',
-//     'animate__slideInRight'
-//   ];
-//   // Extract the 'Purpose' and 'Key Features' sections from the tool's README markdown
-//   const { purpose, features } = extractPurposeAndFeatures( tool.markdown || '' );
-//   console.log( 'Purpose:', purpose );
-//   console.log( 'Features:', features );
-//   // We'll build up the HTML for the details section here
-//   let detailsHtml = '';
-//   // If a Purpose section was found, add it as a heading and paragraph
-//   if ( purpose ) {
-//     detailsHtml += `<h4 class='font-semibold text-lg mt-2 mb-1'>Purpose</h4>`;
-//     detailsHtml += `<p class='mb-2 text-gray-200'>${purpose.replace( /\n/g, '<br>' )}</p>`;
-//   }
-//   detailsHtml += `\n        <div class='my-4 flex items-center'>\n          <hr class='flex-grow border-gray-600'>\n          <span class='mx-4 text-gray-400'>✦</span>\n          <hr class='flex-grow border-gray-600'>\n        </div>\n      `;
-//   // If Key Features were found, add a stylized divider and then the features list in <details>
-//   if ( features && features.length ) {
-//     detailsHtml += `<details class='mb-4'><summary class='font-semibold text-lg cursor-pointer'>Features</summary><ul class='list-disc ml-5 text-sm mt-2'>${features.map( f => `<li>${f.replace( /^\-\s+/, '' )}</li>` ).join( '' )}</ul></details>`;
-//   }
-//   // Return the full HTML for the tool card
-//   return `\n    <div class="carousel-item tool-card bg-gradient-to-br ${tool.gradient} rounded-2xl p-8 shadow-2xl border ${tool.border} animate__animated ${animations[idx % animations.length]} animate__faster transition-transform duration-300 hover:scale-105 ${tool.shadow}">\n      <h3 class="text-2xl font-bold mb-2 ${tool.text} animate__animated animate__fadeInDown">${tool.name}</h3>\n      ${detailsHtml}\n      <a href="${tool.readme}" class="inline-block mb-2 px-4 py-2 ${tool.btn} rounded-full text-white font-semibold shadow transition animate__animated animate__fadeInUp animate__delay-3s">Read more</a>\n    </div>\n  `;
-// }
-
-// --- Dynamic Card Rendering ---
+// --- Dynamic Tool Card Rendering ---
 // Returns HTML for a dynamically generated card based on the provided template
 export function generateDynamicCard ( tool, idx, totalTools ) {
   const angle = [4, -8, -7, 11, 13, -17, 20][idx % 7];
@@ -199,10 +168,10 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
   const nextIdx = ( idx + 1 ) % totalTools + 1;
   const { purpose, features } = extractPurposeAndFeatures( tool.markdown || '' );
   const divider = `<div class='flex items-center'>
-  <hr class='flex-grow border-gray-600'>
-  <span class='mx-4 text-gray-400'>✦</span>
-  <hr class='flex-grow border-gray-600'>
-</div>`
+    <hr class='flex-grow border-gray-600'>
+    <span class='mx-4 text-gray-400'>✦</span>
+    <hr class='flex-grow border-gray-600'>
+  </div>`;
   const iconAnimations = ['animate__bounce', 'animate__pulse', 'animate__rubberBand', 'animate__shakeX', 'animate__shakeY'];
   const randomIconAnimation = iconAnimations[Math.floor( Math.random() * iconAnimations.length )];
 
@@ -221,8 +190,8 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
           ${purpose} 
           ${divider}
         </p>
-        <div class="scrollable-details" style="max-height: 180px; overflow-y: auto;">
-          <details class="card-features" open>
+        <div class="scrollable-details" style="height: 30px; overflow: hidden;">
+          <details class="card-features detailsElement">
           <summary class='font-semibold text-lg mb-1 ${tool.text} animate__animated animate__slideInDown'>Key Features</summary>
           <ul class='list-disc ml-5 text-sm mt-2 ${tool.text} animate__animated animate__slideInLeft'>${features}</ul>
           </details>
@@ -237,15 +206,53 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
   `;
 }
 
+function addDetailsListeners () {
+  
+  // Listen for state toggling of the <details> element
+  const detailsEls = document.querySelectorAll( ".detailsElement" )
+  detailsEls.forEach( el => {    
+    el.addEventListener( "toggle", function ( event ) {
+      const modal = document.getElementById( "modal" );
+      const modalContent = document.getElementById( "modalContent" );
+      const backdrop = document.getElementById( "backdrop" );
+    
+      // If 'open' is true, copy inner content into the modal and display
+      if ( event.target.open ) {
+        modalContent.innerHTML = event.target.innerHTML;
+        modal.classList.add( "show" );
+        backdrop.classList.add( "show" );
+        addCloseListener()
+      } else {
+        closeModal();
+      }
+    })
+  } );
+  
+}
+
+// Function to close the modal and remove backdrop
+export const closeModal = () => {
+  const modal = document.getElementById( "modal" );
+  const backdrop = document.getElementById( "backdrop" );
+  modal.classList.remove( "show" );
+  backdrop.classList.remove( "show" );
+}
+export const addCloseListener = () => {
+  const closeBtn = document.getElementById( 'closeButton' );
+  if ( closeBtn ) {
+    closeBtn.addEventListener( 'click', closeModal );
+  } else {
+    console.warn( "Close button not found!" );
+  }
+}
 // --- Carousel Rendering ---
 // Renders the carousel with all tool cards
 export async function renderCarousel () {
   console.log( "Generating tool list" )
   const cardsContainer = document.querySelector( '.cards' );
   if ( !cardsContainer ) return;
-
   const loading = ` <img
-        src="./loading-67.gif.webp"
+        src="./loading.webp"
         alt="Loading"
         class="mx-auto mb-4 animate__animated animate__pulse animate__infinite"
         style="width=150px; height: 150px;"
@@ -253,11 +260,10 @@ export async function renderCarousel () {
   cardsContainer.innerHTML = loading
   setTimeout( async () => {
     const tools = await getToolFolders();
-    console.log( 'DEBUG: tools array for carousel:', tools );
-
+    
     // Render dynamic cards
     cardsContainer.innerHTML = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
-    console.log( "Result", cardsContainer.innerHTML )
 
+    addDetailsListeners()
   }, 3000 );
 }
