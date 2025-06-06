@@ -5,12 +5,19 @@
 export async function getToolFolders () {
   let folders = [];
   try {
-    debugger
-    const response = await fetch('./');
-    const text = await response.text();
-    const folderMatches = text.match(/href="(.*?)\/"/g);
-    folders = folderMatches ? folderMatches.map(match => match.replace(/href="|\/"/g, '')) : [];
-    
+    // debugger
+  
+    const input = document.createElement( 'input' );
+    input.type = 'file';
+    input.style.display = 'none';
+    document.body.appendChild( input );
+    input.click();
+    input.addEventListener( 'change', () => {
+      console.log( 'Selected file:', input.files[0] );
+      document.body.removeChild( input );
+    } );
+   if (!folder.length) throw new Error("Not Working");
+
   } catch ( e ) {
     console.error( 'Error fetching folders:', e );
     folders = [
@@ -19,7 +26,8 @@ export async function getToolFolders () {
       'executioner',
       'package_toolkit',
       'readme_updater',
-      'watch_automation'
+      'watch_automation',
+      'toolkit_runner'
     ];
   }
   console.warn(folders)
@@ -61,11 +69,6 @@ export async function getToolFolders () {
       // Extract emojis from the beginning of the name for use as a background
       const emojiMatch = name.split( ' ' )[0];
       const emojiBackground = emojiMatch;
-
-      // // Remove emojis from the name
-      // if ( emojiBackground ) {
-      //   name = name.replace( emojiBackground, '' ).trim();
-      // }
 
       // Parse blockquote entitled Purpose as description (e.g., "> Purpose\nDescription text")
       const descMatch = md.match( /^>\s*Purpose[\s\n]+([\s\S]*?)(?=\n>\s*$)/i );
@@ -158,35 +161,35 @@ export function extractPurposeAndFeatures ( md ) {
 
 // --- Tool Card Rendering ---
 // Returns HTML for a tool card given tool info and index
-export function createToolCard ( tool, idx ) {
-  // Animation classes for carousel entry effects
-  const anims = [
-    'animate__slideInLeft',
-    'animate__slideInUp',
-    'animate__slideInRight',
-    'animate__slideInDown',
-    'animate__slideInLeft',
-    'animate__slideInRight'
-  ];
-  // Extract the 'Purpose' and 'Key Features' sections from the tool's README markdown
-  const { purpose, features } = extractPurposeAndFeatures( tool.markdown || '' );
-  console.log( 'Purpose:', purpose );
-  console.log( 'Features:', features );
-  // We'll build up the HTML for the details section here
-  let detailsHtml = '';
-  // If a Purpose section was found, add it as a heading and paragraph
-  if ( purpose ) {
-    detailsHtml += `<h4 class='font-semibold text-lg mt-2 mb-1'>Purpose</h4>`;
-    detailsHtml += `<p class='mb-2 text-gray-200'>${purpose.replace( /\n/g, '<br>' )}</p>`;
-  }
-  detailsHtml += `\n        <div class='my-4 flex items-center'>\n          <hr class='flex-grow border-gray-600'>\n          <span class='mx-4 text-gray-400'>✦</span>\n          <hr class='flex-grow border-gray-600'>\n        </div>\n      `;
-  // If Key Features were found, add a stylized divider and then the features list in <details>
-  if ( features && features.length ) {
-    detailsHtml += `<details class='mb-4'><summary class='font-semibold text-lg cursor-pointer'>Features</summary><ul class='list-disc ml-5 text-sm mt-2'>${features.map( f => `<li>${f.replace( /^\-\s+/, '' )}</li>` ).join( '' )}</ul></details>`;
-  }
-  // Return the full HTML for the tool card
-  return `\n    <div class="carousel-item tool-card bg-gradient-to-br ${tool.gradient} rounded-2xl p-8 shadow-2xl border ${tool.border} animate__animated ${anims[idx % anims.length]} animate__faster transition-transform duration-300 hover:scale-105 ${tool.shadow}">\n      <h3 class="text-2xl font-bold mb-2 ${tool.text} animate__animated animate__fadeInDown">${tool.name}</h3>\n      ${detailsHtml}\n      <a href="${tool.readme}" class="inline-block mb-2 px-4 py-2 ${tool.btn} rounded-full text-white font-semibold shadow transition animate__animated animate__fadeInUp animate__delay-3s">Read more</a>\n    </div>\n  `;
-}
+// export function createToolCard ( tool, idx ) {
+//   // Animation classes for carousel entry effects
+//   const animations = [
+//     'animate__slideInLeft',
+//     'animate__slideInUp',
+//     'animate__slideInRight',
+//     'animate__slideInDown',
+//     'animate__slideInLeft',
+//     'animate__slideInRight'
+//   ];
+//   // Extract the 'Purpose' and 'Key Features' sections from the tool's README markdown
+//   const { purpose, features } = extractPurposeAndFeatures( tool.markdown || '' );
+//   console.log( 'Purpose:', purpose );
+//   console.log( 'Features:', features );
+//   // We'll build up the HTML for the details section here
+//   let detailsHtml = '';
+//   // If a Purpose section was found, add it as a heading and paragraph
+//   if ( purpose ) {
+//     detailsHtml += `<h4 class='font-semibold text-lg mt-2 mb-1'>Purpose</h4>`;
+//     detailsHtml += `<p class='mb-2 text-gray-200'>${purpose.replace( /\n/g, '<br>' )}</p>`;
+//   }
+//   detailsHtml += `\n        <div class='my-4 flex items-center'>\n          <hr class='flex-grow border-gray-600'>\n          <span class='mx-4 text-gray-400'>✦</span>\n          <hr class='flex-grow border-gray-600'>\n        </div>\n      `;
+//   // If Key Features were found, add a stylized divider and then the features list in <details>
+//   if ( features && features.length ) {
+//     detailsHtml += `<details class='mb-4'><summary class='font-semibold text-lg cursor-pointer'>Features</summary><ul class='list-disc ml-5 text-sm mt-2'>${features.map( f => `<li>${f.replace( /^\-\s+/, '' )}</li>` ).join( '' )}</ul></details>`;
+//   }
+//   // Return the full HTML for the tool card
+//   return `\n    <div class="carousel-item tool-card bg-gradient-to-br ${tool.gradient} rounded-2xl p-8 shadow-2xl border ${tool.border} animate__animated ${animations[idx % animations.length]} animate__faster transition-transform duration-300 hover:scale-105 ${tool.shadow}">\n      <h3 class="text-2xl font-bold mb-2 ${tool.text} animate__animated animate__fadeInDown">${tool.name}</h3>\n      ${detailsHtml}\n      <a href="${tool.readme}" class="inline-block mb-2 px-4 py-2 ${tool.btn} rounded-full text-white font-semibold shadow transition animate__animated animate__fadeInUp animate__delay-3s">Read more</a>\n    </div>\n  `;
+// }
 
 // --- Dynamic Card Rendering ---
 // Returns HTML for a dynamically generated card based on the provided template
@@ -210,7 +213,7 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
       <div class="card-icon card-img bg-gradient-to-br ${tool.gradient} ${tool.text} ${tool.border} ${tool.shadow} flex items-center justify-center text-white border-8  p-4 bg-gray-800 ${randomIconAnimation}" style="width: 200px; height: 200px; font-size: 6rem;">
         <span>${tool.emojiBackground || '🔧'}</span>
       </div>
-      <div class="card-data bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.shadow} rounded-lg p-4 shadow-md">
+      <div class="card-data bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.shadow} rounded-lg p-4 shadow-md" style="height: 75vh">
       <span class="card-num ${tool.text} animate__animated animate__slideInLeft">${idx + 1}/${totalTools}</span>
       <h2 class="${tool.text} animate__animated animate__slideInDown text-3xl text-bold">${tool.name}</h2>
         <p class="${tool.text} animate__animated animate__slideInUp">
@@ -219,7 +222,7 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
           ${divider}
         </p>
         <div class="scrollable-details" style="max-height: 180px; overflow-y: auto;">
-          <details class="card-features">
+          <details class="card-features" open>
           <summary class='font-semibold text-lg mb-1 ${tool.text} animate__animated animate__slideInDown'>Key Features</summary>
           <ul class='list-disc ml-5 text-sm mt-2 ${tool.text} animate__animated animate__slideInLeft'>${features}</ul>
           </details>
@@ -241,10 +244,20 @@ export async function renderCarousel () {
   const cardsContainer = document.querySelector( '.cards' );
   if ( !cardsContainer ) return;
 
-  const tools = await getToolFolders();
-  console.log( 'DEBUG: tools array for carousel:', tools );
+  const loading = ` <img
+        src="./loading-67.gif.webp"
+        alt="Loading"
+        class="mx-auto mb-4 animate__animated animate__pulse animate__infinite"
+        style="width=150px; height: 150px;"
+      >`
+  cardsContainer.innerHTML = loading
+  setTimeout( async () => {
+    const tools = await getToolFolders();
+    console.log( 'DEBUG: tools array for carousel:', tools );
 
-  // Render dynamic cards
-  cardsContainer.innerHTML = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
-  console.log( "Result", cardsContainer.innerHTML )
+    // Render dynamic cards
+    cardsContainer.innerHTML = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
+    console.log( "Result", cardsContainer.innerHTML )
+
+  }, 3000 );
 }
