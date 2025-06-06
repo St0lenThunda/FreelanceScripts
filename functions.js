@@ -10,6 +10,7 @@ export async function getToolFolders () {
     const text = await response.text();
     const folderMatches = text.match(/href="(.*?)\/"/g);
     folders = folderMatches ? folderMatches.map(match => match.replace(/href="|\/"/g, '')) : [];
+    
   } catch ( e ) {
     console.error( 'Error fetching folders:', e );
     folders = [
