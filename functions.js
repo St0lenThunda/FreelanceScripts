@@ -239,10 +239,18 @@ export const closeModal = () => {
 }
 export const addCloseListener = () => {
   const closeBtn = document.getElementById( 'closeButton' );
+  const backdrop = document.getElementById( 'backdrop' );
+
   if ( closeBtn ) {
     closeBtn.addEventListener( 'click', closeModal );
   } else {
     console.warn( "Close button not found!" );
+  }
+
+  if ( backdrop ) {
+    backdrop.addEventListener( 'click', closeModal );
+  } else {
+    console.warn( "Backdrop not found!" );
   }
 }
 // --- Carousel Rendering ---
