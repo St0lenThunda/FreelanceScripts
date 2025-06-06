@@ -1,8 +1,9 @@
 
+[Web Info Page](https://st0lenthunda.github.io/FreelanceScripts/)
 ##  :boom: StolenThunda Presents: 
 # Freelance Scripts - 🐍 Python “Starter Pack” Tools 🛠️
 _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
-[Web Info Page](https://st0lenthunda.github.io/FreelanceScripts/)
+
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![OS](https://img.shields.io/badge/OS-Mac%20%7C%20Linux%20%7C%20WSL-brightgreen)
