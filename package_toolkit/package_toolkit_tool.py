@@ -30,7 +30,7 @@ EXCLUDE_NAMES = {
     ".git", "__pycache__", ".venv", "venv", "env",
     ".DS_Store", ".pytest_cache", ".idea", ".mypy_cache",
     "output", "freelance_toolkit.zip", "bin", ".gitignore",
-    "Zone.Identifier"  # Exclude NTFS ADS metadata files
+    "Zone.Identifier",".vscode"  # Exclude NTFS ADS metadata files
 }
 
 def should_exclude(path: Path) -> bool:
@@ -65,6 +65,14 @@ def add_files_to_zip(zipf: zipfile.ZipFile, current_dir: Path):
             arcname = item.relative_to(PROJECT_ROOT)  # Store the relative path for correct zip structure
             zipf.write(item, arcname)  # Add the file to the zip archive
             print(f"✅ Added: {arcname}")  # Log the added file
+
+    # # Explicitly add index.html and functions.js
+    # for file_name in ["index.html", "functions.js"]:
+    #     file_path = PROJECT_ROOT / file_name
+    #     if file_path.exists():
+    #         arcname = file_path.relative_to(PROJECT_ROOT)
+    #         zipf.write(file_path, arcname)
+    #         print(f"✅ Explicitly Added: {arcname}")
 
 def generate_combined_readme(output_path: Path):
     """
@@ -143,14 +151,14 @@ def main():
     """
     import sys
     args = sys.argv[1:]
-    combined_readme_path = PROJECT_ROOT / "COMBINED_README.md"
+    combined_readme_path = PROJECT_ROOT / "SUMMARY_README.md"
 
     if "--readme-only" in args:
         # Only generate the combined README and exit
         if combined_readme_path.exists():
             combined_readme_path.unlink()
         generate_combined_readme(combined_readme_path)
-        print("\n✅ Only generated combined README (no zip).")
+        print("\n✅ Only generated combined summary README (no zip).")
         return
 
     # Remove the old zip if it exists
@@ -161,7 +169,7 @@ def main():
     # Remove any old combined README
     if combined_readme_path.exists():
         combined_readme_path.unlink()
-        print(f"Deleted old combined README: {combined_readme_path.name}")
+        print(f"Deleted old summary README: {combined_readme_path.name}")
 
     # Always generate a new combined README file
     generate_combined_readme(combined_readme_path)
@@ -170,7 +178,7 @@ def main():
     with zipfile.ZipFile(OUTPUT_ZIP, "w", zipfile.ZIP_DEFLATED) as zipf:
         add_files_to_zip(zipf, PROJECT_ROOT)  # Add all files except the combined README
         zipf.write(combined_readme_path, "COMBINED_README.md")  # Add the combined README
-        print(f"✅ Added: Combined README to zip")
+        print(f"✅ Added: Summary README to zip")
 
     # Remove the temporary combined README file after adding it to the zip
     combined_readme_path.unlink()
