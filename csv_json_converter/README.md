@@ -14,10 +14,13 @@
 > - Robust error handling for missing or invalid files.
 > - Educational: code is heavily commented for learning purposes.
 >
-> Intended as a learning resource: code is heavily commented to explain each step and concept. 
+> Intended as a learning resource: code is heavily commented to explain each step and concept.
+### Use Cases
+- Convert legacy data formats for client uploads
+- Clean and structure input/output data
+- Offer format conversion as a paid service
 
-
- ### Interactive Mode
+### Interactive Mode
 If you run the script without arguments, you will be prompted to choose the conversion direction and provide file paths. The tool will list available files for you to select, and can infer output file names:
 
 ```bash
