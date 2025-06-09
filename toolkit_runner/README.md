@@ -12,7 +12,13 @@
 > - Includes a help option to display detailed usage information for each tool.
 >
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-## Usage
+### Use Cases
+- Quickly access and run any tool in the project.
+- Provide a unified interface for managing tools.
+- Simplify tool usage for non-technical users.
+- Demonstrate menu-based CLI design.
+
+## 🚀 Usage
 
 ```bash
 python toolkit_runner_tool.py
@@ -28,3 +34,16 @@ python toolkit_runner_tool.py
 
 - Ensure all tools are properly configured and executable.
 - This script is designed for Unix-like systems (Linux, macOS, WSL).
+
+## Concepts
+
+This tool demonstrates several Pythonic concepts useful for beginners:
+
+- **Dynamic Tool Discovery:** Lists tools dynamically based on the project structure.
+- **Menu-Based CLI:** Provides an interactive menu for tool selection and execution.
+- **Error Handling:** Gracefully handles invalid inputs and tool execution errors.
+- **Extensibility:** Designed to easily add new tools and features.
+
+## License
+
+MIT License. Use freely and modify as needed.
