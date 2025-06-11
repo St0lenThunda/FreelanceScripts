@@ -13,6 +13,17 @@
 >     python watch_automation_tool.py
 >
 > Leave this running in a terminal while you work on your tools and documentation. Any update to a tool's README.md will trigger an automatic update to the main tool table.
+
+
+---
+
+### Use Cases
+- Auto-run tasks on file changes
+- Reduce human error in packaging
+- Speed up development & deployment cycles
+
+---
+
 ## 🚀 Usage
 
 ```bash
@@ -62,14 +73,7 @@ This tool demonstrates several Pythonic concepts useful for beginners:
 - **Modularity:** Organizes code into functions and classes for clarity.
 - **Heavy Commenting:** Provides clear, educational comments for each step.
 
----
 
-### Use Cases
-- Auto-run tasks on file changes
-- Reduce human error in packaging
-- Speed up development & deployment cycles
-
----
 
 ## 📜 License
 
