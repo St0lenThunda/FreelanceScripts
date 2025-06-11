@@ -323,9 +323,9 @@ export async function renderDynamicUseCaseSection () {
             .filter( line => line !== '' && !line.startsWith( '#' ) );
 
           const useCaseList = useCaseContent.map( useCase => `<li>${useCase}</li>` ).join( '' );
-          useCasesContainerGrid.innerHTML = `<details class="bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow} rounded-lg p-4 shadow-md" open>
+          useCasesContainerGrid.innerHTML = `<details class="bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow} rounded-lg p-4 shadow-md  w-3/4 text-center" open>
           <summary class="font-semibold text-lg cursor-pointer">${selectedTool.name}</summary>
-          <ul class="list-disc ml-5 mt-2">${useCaseList}</ul>
+          <ul class="list-disc ml-5 mt-2" style="list-style-type:none;">${useCaseList}</ul>
         </details>`;
         } else {
           useCasesContainerGrid.innerHTML = '';
