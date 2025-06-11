@@ -1,23 +1,69 @@
 // functions.js - JS for FreelanceScripts landing page
 
-// --- Zero Config Dynamic Tool Info Fetcher with .excluded filtering ---
+// --- Global Cache Variables ---
+let cachedToolInfo = {};
+const filteredToolFolders = [];
+// --- Global Style Map Variable ---
+let STYLEMAP = {};
+// --- Global variable to store tool data ---
+let cachedToolData = null;
+// Loading image html
+export const LOADING = ` <img
+  src="./loading.webp"
+  alt="Loading"
+  class="mx-auto mb-4 animate__animated animate__pulse animate__infinite"
+  style="width=150px; height: 150px;"
+>`
+
+// Function to close the modal and remove backdrop
+export const closeModal = () => {
+  const modal = document.getElementById( "modal" );
+  const backdrop = document.getElementById( "backdrop" );
+  const detailEls = document.querySelectorAll( "detailsElement" )
+  modal.classList.remove( "show" );
+  backdrop.classList.remove( "show" );
+  detailEls.forEach( el => el.open = false ); // Close all details elements
+}
+export const addCloseListener = () => {
+  const closeBtn = document.getElementById( 'closeButton' );
+  const backdrop = document.getElementById( 'backdrop' );
+
+  if ( closeBtn ) {
+    closeBtn.addEventListener( 'click', closeModal );
+  } else {
+    console.warn( "Close button not found!" );
+  }
+
+  if ( backdrop ) {
+    backdrop.addEventListener( 'click', closeModal );
+  } else {
+    console.warn( "Backdrop not found!" );
+  }
+}
+
+// Function to generate the style map
+function generateStyleMap ( folders ) {
+  const COLORS = ['blue', 'green', 'purple', 'yellow', 'pink', 'cyan', 'red', 'orange'];
+  return folders.reduce( ( map, folder, index ) => {
+    const color = COLORS[index % COLORS.length];
+    map[folder] = {
+      gradient: `from-${color}-900 via-gray-800 to-gray-900`,
+      border: `border-${color}-700`,
+      shadow: `hover:shadow-${color}-500/40`,
+      text: `text-${color}-300`,
+      btn: `bg-${color}-700 hover:bg-${color}-600`,
+    };
+    return map;
+  }, {} );
+}
+
 // This function gets all tool folders, filters out those with a .excluded file, and fetches README info.
 export async function getToolFolders () {
+
   let folders = [];
   try {
-    // debugger
-  
-    const input = document.createElement( 'input' );
-    input.type = 'file';
-    input.style.display = 'none';
-    document.body.appendChild( input );
-    input.click();
-    input.addEventListener( 'change', () => {
-      console.log( 'Selected file:', input.files[0] );
-      document.body.removeChild( input );
-    } );
-  if (!folders.length) throw new Error("Zero-Config Solution Pending");
-
+    // TODO: --- Zero Config Dynamic Tool Info Fetcher with .excluded filtering ---
+    if ( !folders.length ) throw new Error( "Zero-Config Solution Pending" );
   } catch ( e ) {
     folders = [
       'csv_json_converter',
@@ -29,81 +75,68 @@ export async function getToolFolders () {
       'toolkit_runner'
     ];
     console.info( `Error fetching folders: ${e}` )
-    console.info(`Defaulting to ${ folders.length } tools`);
+    console.info( `Defaulting to ${folders.length} tools` );
   }
-  // Filter out folders with a .excluded file
-  const filteredFolders = [];
+  // TODO: Filter out folders with a .excluded file
+
   for ( const folder of folders ) {
-    try {
-      const excl = await fetch( `${folder}/.excluded`, { method: 'HEAD' } );
-      if ( excl.ok ) continue;
-    } catch ( e ) { }
-    filteredFolders.push( folder );
+    // try {
+    //   const excl = await fetch( `${folder}/.excluded`, { method: 'HEAD' } );
+    //   if ( excl.ok ) continue;
+    // } catch ( e ) { }
+    filteredToolFolders.push( folder );
   }
+}
+// Helper to fetch README content and parse info
+async function fetchToolDataByFolder ( folder ) {
+  if ( cachedToolInfo[folder] ) {
+    return cachedToolInfo[folder];
+  }
+  try {
+    const resp = await fetch( `./${folder}/README.md` );
+    if ( !resp.ok ) return null;
+    const md = await resp.text();
 
-  // Dynamically create style map
-  const colors = ['blue', 'green', 'purple', 'yellow', 'pink', 'cyan', 'red', 'orange'];
-  const styleMap = filteredFolders.reduce( ( map, folder, index ) => {
-    const color = colors[index % colors.length];
-    map[folder] = {
-      gradient: `from-${color}-900 via-gray-800 to-gray-900`,
-      border: `border-${color}-700`,
-      shadow: `hover:shadow-${color}-500/40`,
-      text: `text-${color}-300`,
-      btn: `bg-${color}-700 hover:bg-${color}-600`
+    // Parse first heading as name (e.g., "# Tool Name")
+    const nameMatch = md.match( /^#\s+(.+)/m );
+    let name = nameMatch ? nameMatch[1].trim() : folder;
+    if ( !cachedToolInfo[folder] ) console.log( 'Tool found:', name )
+
+    // Extract emojis from the beginning of the name for use as a background
+    const emojiMatch = name.split( ' ' )[0];
+    const emojiBackground = emojiMatch;
+
+    // Parse blockquote entitled Purpose as description (e.g., "> Purpose\nDescription text")
+    const descMatch = md.match( /^>\s*Purpose[\s\n]+([\s\S]*?)(?=\n>\s*$)/i );
+
+    // Extract Key Features section immediately after Purpose (e.g., "> Key Features\n- Feature 1\n- Feature 2")
+    const featuresMatch = md.match( /(?<=\n>\s*$)[\s\S]*?(?=\n#|\n##|$)/i );
+
+    // Convert Purpose and Features to HTML
+    const purposeHtml = descMatch ? `<h4 class='font-semibold text-lg mt-2 mb-1'>Purpose</h4>${mdToHtml( descMatch[1].trim() )}` : '';
+    const featuresHtml = featuresMatch ? `<h4 class='font-semibold text-lg mt-2 mb-1'>Key Features</h4>${mdToHtml( featuresMatch[0].trim() )}` : '';
+
+    const toolData = {
+      folder,
+      name, // Name without emojis
+      desc: descMatch ? descMatch[1].trim() : '', // Use the blockquote entitled Purpose as the description
+      features: featuresMatch ? featuresMatch[0].trim().split( /\n\- / ).slice( 1 ) : [], // Extracted features as an array
+      purposeHtml, // HTML-ready Purpose section
+      featuresHtml, // HTML-ready Features section
+      emojiBackground, // Extracted emojis for background
+      readme: `./${folder}/README.md`,
+      markdown: md // Full markdown content for further processing
     };
-    return map;
-  }, {} );
 
-  // Helper to fetch README content and parse info
-  async function fetchToolInfo ( folder ) {
-    try {
-      const resp = await fetch( `./${folder}/README.md` );
-      if ( !resp.ok ) return null;
-      const md = await resp.text();
-
-      // Parse first heading as name (e.g., "# Tool Name")
-      const nameMatch = md.match( /^#\s+(.+)/m );
-      let name = nameMatch ? nameMatch[1].trim() : folder;
-      console.log( 'Tool found:', name )
-      // Extract emojis from the beginning of the name for use as a background
-      const emojiMatch = name.split( ' ' )[0];
-      const emojiBackground = emojiMatch;
-
-      // Parse blockquote entitled Purpose as description (e.g., "> Purpose\nDescription text")
-      const descMatch = md.match( /^>\s*Purpose[\s\n]+([\s\S]*?)(?=\n>\s*$)/i );
-
-      // Extract Key Features section immediately after Purpose (e.g., "> Key Features\n- Feature 1\n- Feature 2")
-      const featuresMatch = md.match( /(?<=\n>\s*$)[\s\S]*?(?=\n#|\n##|$)/i );
-
-      // Convert Purpose and Features to HTML
-      const purposeHtml = descMatch ? `<h4 class='font-semibold text-lg mt-2 mb-1'>Purpose</h4>${mdToHtml( descMatch[1].trim() )}` : '';
-      const featuresHtml = featuresMatch ? `<h4 class='font-semibold text-lg mt-2 mb-1'>Key Features</h4>${mdToHtml( featuresMatch[0].trim() )}` : '';
-
-      return {
-        folder,
-        name, // Name without emojis
-        desc: descMatch ? descMatch[1].trim() : '', // Use the blockquote entitled Purpose as the description
-        features: featuresMatch ? featuresMatch[0].trim().split( /\n\- / ).slice( 1 ) : [], // Extracted features as an array
-        purposeHtml, // HTML-ready Purpose section
-        featuresHtml, // HTML-ready Features section
-        emojiBackground, // Extracted emojis for background
-        readme: `./${folder}/README.md`,
-        markdown: md // Full markdown content for further processing
-      };
-    } catch ( e ) {
-      return null;
-    }
+    cachedToolInfo[folder] = toolData;
+    return toolData;
+  } catch ( e ) {
+    return null;
   }
-
-  // Gather all tool info
-  const toolInfo = ( await Promise.all( filteredFolders.map( fetchToolInfo ) ) ).filter( Boolean );
-  // Assign styling
-  toolInfo.forEach( tool => Object.assign( tool, styleMap[tool.folder] || {} ) );
-  return toolInfo;
 }
 
-// --- Markdown to HTML Conversion ---
+
+
 // Converts markdown to HTML with TailwindCSS classes
 export function mdToHtml ( md ) {
   md = md.replace( /^# (.*$)/gim, '<h2 class="text-xl font-bold mb-2">$1</h2>' ); // Convert top-level # headings to h2
@@ -116,7 +149,6 @@ export function mdToHtml ( md ) {
   return md;
 }
 
-// --- Extract Purpose and Key Features from Markdown ---
 // Returns { purpose, features } with markdown converted to HTML
 export function extractPurposeAndFeatures ( md ) {
   let purpose = '';
@@ -160,7 +192,6 @@ export function extractPurposeAndFeatures ( md ) {
   return { purpose, features };
 }
 
-// --- Dynamic Tool Card Rendering ---
 // Returns HTML for a dynamically generated card based on the provided template
 export function generateDynamicCard ( tool, idx, totalTools ) {
   const angle = [4, -8, -7, 11, 13, -17, 20][idx % 7];
@@ -178,7 +209,7 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
   // Wrap dynamic details in a scrollable area
   return `
   <input type="radio" id="radio-${idx + 1}" name="radio-card" ${idx === 0 ? 'checked' : ''}>
-  <article class="card" style="--angle:${angle}deg">
+  <article class="card sm:text-center" style="--angle:${angle}deg; overflow-y:auto;   ">
       <div class="card-icon card-img bg-gradient-to-br ${tool.gradient} ${tool.text} ${tool.border} ${tool.shadow} flex items-center justify-center text-white border-8  p-4 bg-gray-800 ${randomIconAnimation}" style="width: 200px; height: 200px; font-size: 6rem;">
         <span>${tool.emojiBackground || '🔧'}</span>
       </div>
@@ -207,15 +238,14 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
 }
 
 function addDetailsListeners () {
-  
   // Listen for state toggling of the <details> element
   const detailsEls = document.querySelectorAll( ".detailsElement" )
-  detailsEls.forEach( el => {    
+  detailsEls.forEach( el => {
     el.addEventListener( "toggle", function ( event ) {
       const modal = document.getElementById( "modal" );
       const modalContent = document.getElementById( "modalContent" );
       const backdrop = document.getElementById( "backdrop" );
-    
+
       // If 'open' is true, copy inner content into the modal and display
       if ( event.target.open ) {
         modalContent.innerHTML = event.target.innerHTML;
@@ -225,53 +255,150 @@ function addDetailsListeners () {
       } else {
         closeModal();
       }
-    })
+    } )
   } );
-  
+
 }
 
-// Function to close the modal and remove backdrop
-export const closeModal = () => {
-  const modal = document.getElementById( "modal" );
-  const backdrop = document.getElementById( "backdrop" );
-  modal.classList.remove( "show" );
-  backdrop.classList.remove( "show" );
-}
-export const addCloseListener = () => {
-  const closeBtn = document.getElementById( 'closeButton' );
-  const backdrop = document.getElementById( 'backdrop' );
 
-  if ( closeBtn ) {
-    closeBtn.addEventListener( 'click', closeModal );
-  } else {
-    console.warn( "Close button not found!" );
+// Fetches tool data and caches it for reuse across functions
+export async function fetchToolData () {
+  if ( !cachedToolData ) {
+    console.log( "Fetching tool data..." );
+
+    // Gather all tool info
+    const toolInfo = ( await Promise.all( filteredToolFolders.map( fetchToolDataByFolder ) ) ).filter( Boolean );
+    // Assign styling
+    toolInfo.forEach( tool => Object.assign( tool, STYLEMAP[tool.folder] || {} ) );
+    cachedToolData = toolInfo;
+    console.log('Assigned STYLEMAP to tool list')
   }
-
-  if ( backdrop ) {
-    backdrop.addEventListener( 'click', closeModal );
-  } else {
-    console.warn( "Backdrop not found!" );
-  }
+  return cachedToolData;
 }
-// --- Carousel Rendering ---
+
+// --- Render Functions ---
 // Renders the carousel with all tool cards
-export async function renderCarousel () {
-  console.log( "Generating tool list" )
+export async function renderDeck () {
+  console.log( "Generating tool list" );
   const cardsContainer = document.querySelector( '.cards' );
   if ( !cardsContainer ) return;
-  const loading = ` <img
-        src="./loading.webp"
-        alt="Loading"
-        class="mx-auto mb-4 animate__animated animate__pulse animate__infinite"
-        style="width=150px; height: 150px;"
-      >`
-  cardsContainer.innerHTML = loading
-  setTimeout( async () => {
-    const tools = await getToolFolders();
-    
-    // Render dynamic cards
-    cardsContainer.innerHTML = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
 
-    addDetailsListeners()
-  }, 3000 );
+  cardsContainer.innerHTML = LOADING;
+
+  const tools = await fetchToolData();
+  console.dir( tools )
+
+  const toolHTML = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
+  cardsContainer.innerHTML = toolHTML
+  addDetailsListeners();
+  console.log( `${tools.length} Tools added to the list` )
+
+}
+
+// Dynamically generates the use-case section based on tool data
+export async function renderDynamicUseCaseSection () {
+  const useCasesContainerGrid = document.querySelector( '.use-cases-container > .grid' );
+  const useCasesContainer = document.querySelector( '.use-cases-container' );
+
+  if ( !useCasesContainer || !useCasesContainerGrid ) return;
+
+  useCasesContainerGrid.innerHTML = LOADING;
+
+  const tools = await fetchToolData();
+
+  const radioButtons = document.querySelectorAll( 'input[name="radio-card"]' );
+
+  radioButtons.forEach( ( radio, idx ) => {
+    radio.addEventListener( 'change', () => {
+      const selectedTool = tools[idx];
+      if ( selectedTool ) {
+        // useCasesContainer.className = `bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow}`;
+
+        // Update the use cases container to show only the relevant use cases
+        const useCaseMatch = selectedTool.markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
+        if ( useCaseMatch ) {
+          const useCaseContent = useCaseMatch[1]
+            .split( '\n' )
+            .map( line => line.trim() )
+            .filter( line => line !== '' && !line.startsWith( '#' ) );
+
+          const useCaseList = useCaseContent.map( useCase => `<li>${useCase}</li>` ).join( '' );
+          useCasesContainerGrid.innerHTML = `<details class="bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow} rounded-lg p-4 shadow-md" open>
+          <summary class="font-semibold text-lg cursor-pointer">${selectedTool.name}</summary>
+          <ul class="list-disc ml-5 mt-2">${useCaseList}</ul>
+        </details>`;
+        } else {
+          useCasesContainerGrid.innerHTML = '';
+        }
+      }
+    } );
+  } );
+
+  // set initial use case
+  const selectedTool = tools[0];
+  // Update the use cases container to show only the relevant use cases
+  const useCaseMatch = selectedTool.markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
+  if ( useCaseMatch ) {
+    const useCaseContent = useCaseMatch[1]
+      .split( '\n' )
+      .map( line => line.trim() )
+      .filter( line => line !== '' && !line.startsWith( '#' ) );
+
+    const useCaseList = useCaseContent.map( useCase => `<li>${useCase}</li>` ).join( '' );
+    useCasesContainerGrid.innerHTML = `<details class="bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow} rounded-lg p-4 shadow-md w-3/4 text-center"  open>
+    <summary class="font-semibold text-lg cursor-pointer"></summary>
+    <ul class="list-disc ml-5 mt-2 text-2xl" style="list-style-type:none;">${useCaseList}</ul>
+  </details>`;
+  } else {
+    useCasesContainerGrid.innerHTML = '';
+  }
+}
+
+// Extracts and consolidates all tool use cases into a structured format
+export async function consolidateToolUseCases () {
+  const tools = await fetchToolData();
+  const useCases = [];
+
+  for ( const tool of tools ) {
+    const { markdown } = tool;
+    const useCaseMatch = markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
+
+    if ( useCaseMatch ) {
+      const useCaseContent = useCaseMatch[1]
+        .split( '\n' )
+        .map( line => line.trim() )
+        .filter( line => line !== '' && !line.startsWith( '#' ) );
+
+      useCases.push( {
+        toolName: tool.name,
+        useCases: useCaseContent,
+      } );
+    }
+  }
+
+  return useCases;
+}
+
+// --- Page Initialization ---
+// Initializes the page by rendering all dynamic sections
+export async function initializePage () {
+  console.log( "Initializing page..." );
+
+  await getToolFolders(); // Ensure tool folders are fetched and filtered
+  console.log( "Tool folders fetched and filtered." );
+
+  // Generate the style map and assign it to the global variable
+  STYLEMAP = generateStyleMap( filteredToolFolders );
+  console.log("Stylemap created")
+
+  // List of functions responsible for rendering different sections of the page
+  const renderFunctions = [renderDeck, renderDynamicUseCaseSection];
+
+  // Iterate over each render function and execute it with a delay
+  for ( const renderFunction of renderFunctions ) {
+    setTimeout( async () => {
+      // Call the render function asynchronously
+      await renderFunction();
+    }, 300 ); // Delay of 300ms (3 seconds) before executing each function
+  }
 }

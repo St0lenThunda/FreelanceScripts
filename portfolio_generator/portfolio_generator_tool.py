@@ -29,10 +29,16 @@ def fetch_html(url):
         return None
 
 def parse_github(html):
+    # scrape selectors as of 06/10/2025
     soup = BeautifulSoup(html, 'html.parser')
     repos = []   
-    for repo in soup.select("a:has(span.repo), a[itemprop$='codeRepository']"):
-        name = repo.select_one('span.repo')
+    
+    primary_title_selector = "a:has(span.repo), a[itemprop$='codeRepository']"
+    secondary_title_selector = "span.repo"
+    
+    
+    for repo in soup.select(primary_title_selector):
+        name = repo.select_one(secondary_title_selector)
         if not name:
             name = repo.text.strip()
         else:
@@ -84,6 +90,7 @@ def fetch_trending_entries(platform):
     config = {
         'github': {
             'url': "https://github.com/trending",
+            # scrape selectors as of 06/10/2025
             'title_selector': "h2 a[data-hydro-click*='REPOSITORY']",
             'description_selector': 'p',
             'base_url': "https://github.com"
@@ -116,11 +123,10 @@ def fetch_trending_entries(platform):
     entries = []
     for item in soup.select(platform_config['title_selector']):
         if platform == 'github':
-          name = item.select_one('span.repo')
-          title = name.text.strip() if name else item.text.strip()  
-          title = title.split("/")[0] if '/' in title else title  # Get the last part after '/'
+            name = item.text.strip() 
+            title = name.split("/")[0] if '/' in name else title  # Get the first part before '/' eg. user/project
         else:
-          title = item.text.strip()
+            title = item.text.strip()
         href = item['href']
         description = "No description provided"
         if platform_config['description_selector']:
@@ -183,7 +189,66 @@ def main():
     parser.add_argument('--format', '-f', choices=['md', 'json'], default='md', help='Output format')
     parser.add_argument('--platform', '-p', choices=['github', 'behance', 'dribbble'], default='github', help='Platform to use if no URLs are provided (default: github)')
     args = parser.parse_args()
-
+    # TODO: Add more platforms like LinkedIn, Twitter, etc. in the 
+    # TODO: Add trending options for each platform
+    
+    # Validate output file extension
+    if not args.output.endswith(('.md', '.json')):
+        print("[!] Output file must have a .md or .json extension.")
+        return
+    # Ensure the output directory exists
+    output_dir = Path(args.output).parent
+    if not output_dir.exists():
+        output_dir.mkdir(parents=True, exist_ok=True)
+        print(f"[+] Created output directory: {output_dir}")
+    else:
+        print(f"[+] Output directory already exists: {output_dir}")
+    # Ensure the output file is writable
+    output_file = Path(args.output)
+    if output_file.exists() and not output_file.is_file():
+        print(f"[!] Output path {args.output} is not a file.")
+        return
+    if output_file.exists() and not output_file.is_writable():
+        print(f"[!] Output file {args.output} is not writable.")
+        return
+    if args.format == 'json':
+        if not args.output.endswith('.json'):
+            print("[!] Output file must have a .json extension for JSON format.")
+            return
+    elif args.format == 'md':           
+        if not args.output.endswith('.md'):
+            print("[!] Output file must have a .md extension for Markdown format.")
+            return
+    # Ensure the output file is not empty
+    if output_file.exists() and output_file.stat().st_size == 0:
+        print(f"[!] Output file {args.output} is empty. It will be overwritten.")
+    else:
+        print(f"[+] Output file {args.output} is ready for writing.")
+    # Ensure the output file is not a directory
+    if output_file.is_dir():
+        print(f"[!] Output path {args.output} is a directory, not a file.")
+        return
+    # Ensure the output file is not a symlink
+    if output_file.is_symlink():
+        print(f"[!] Output path {args.output} is a symlink, not a regular file.")
+        return
+    # Ensure the output file is not a special file
+    if output_file.is_socket() or output_file.is_fifo():
+        print(f"[!] Output path {args.output} is a special file (socket or FIFO), not a regular file.")
+        return
+    # Ensure the output file is not a device file
+    if output_file.is_block_device() or output_file.is_char_device():
+        print(f"[!] Output path {args.output} is a device file, not a regular file.")
+        return
+    # Ensure the output file is not a named pipe
+    if output_file.is_named_pipe():
+        print(f"[!] Output path {args.output} is a named pipe, not a regular file.")
+        return
+    # Ensure the output file is not a socket
+    if output_file.is_socket():
+        print(f"[!] Output path {args.output} is a socket, not a regular file.")
+        return  
+    
     # Fetch trending entries if no URLs are provided
     if not args.urls:
         print(f"Fetching trending entries for {args.platform}...")
@@ -199,7 +264,7 @@ def main():
                 f.write("|------|-------------|\n")
                 for entry in trending_entries:
                     f.write(f"| [{entry['title']}]({entry['url']}) | {entry['description']} |\n")
-            print(f"[+] Trending entries markdown saved to {args.output}")
+            print(f"[+] Trending entries markdown saved to ./{args.output}")
         return
 
     generate_portfolio(args.urls, args.output, args.format)
