@@ -7,6 +7,8 @@ const filteredToolFolders = [];
 let STYLEMAP = {};
 // --- Global variable to store tool data ---
 let cachedToolData = null;
+// --- Global variable to track the currently selected tool index ---
+let CURRENT_TOOL_INDEX = 0;
 // Loading image html
 const LOADING = ` <img
   src="./loading.webp"
@@ -42,7 +44,7 @@ export const addCloseListener = () => {
 }
 
 // Function to generate the style map
-function generateStyleMap ( folders ) {
+const generateStyleMap = ( folders ) => {
   const COLORS = ['blue', 'green', 'purple', 'yellow', 'pink', 'cyan', 'red', 'orange'];
   return folders.reduce( ( map, folder, index ) => {
     const color = COLORS[index % COLORS.length];
@@ -59,7 +61,6 @@ function generateStyleMap ( folders ) {
 
 // This function gets all tool folders, filters out those with a .excluded file, and fetches README info.
 export async function getToolFolders () {
-
   let folders = [];
   try {
     // TODO: --- Zero Config Dynamic Tool Info Fetcher with .excluded filtering ---
@@ -87,6 +88,7 @@ export async function getToolFolders () {
     filteredToolFolders.push( folder );
   }
 }
+
 // Helper to fetch README content and parse info
 async function fetchToolDataByFolder ( folder ) {
   if ( cachedToolInfo[folder] ) {
@@ -138,7 +140,7 @@ async function fetchToolDataByFolder ( folder ) {
 
 
 // Converts markdown to HTML with TailwindCSS classes
-export function mdToHtml ( md ) {
+const mdToHtml = ( md ) => {
   md = md.replace( /^# (.*$)/gim, '<h2 class="text-xl font-bold mb-2">$1</h2>' ); // Convert top-level # headings to h2
   md = md.replace( /\*\*(.*?)\*\*/gim, '<b>$1</b>' ); // Convert **bold** to <b>
   md = md.replace( /\*(.*?)\*/gim, '<i>$1</i>' ); // Convert *italic* to <i>
@@ -150,7 +152,7 @@ export function mdToHtml ( md ) {
 }
 
 // Returns { purpose, features } with markdown converted to HTML
-export function extractPurposeAndFeatures ( md ) {
+const extractPurposeAndFeatures= ( md ) =>{
   let purpose = '';
   let features = '';
 
@@ -193,7 +195,7 @@ export function extractPurposeAndFeatures ( md ) {
 }
 
 // Returns HTML for a dynamically generated card based on the provided template
-export function generateDynamicCard ( tool, idx, totalTools ) {
+const generateDynamicCard = ( tool, idx, totalTools ) => {
   const angle = [4, -8, -7, 11, 13, -17, 20][idx % 7];
   const prevIdx = ( idx - 1 + totalTools ) % totalTools + 1;
   const nextIdx = ( idx + 1 ) % totalTools + 1;
@@ -295,18 +297,16 @@ export async function renderDynamicUseCaseSection () {
 
   if ( !useCasesContainer || !useCasesContainerGrid ) return;
 
-  useCasesContainerGrid.innerHTML = LOADING;
-
   const tools = await fetchToolData();
 
   const radioButtons = document.querySelectorAll( 'input[name="radio-card"]' );
 
   radioButtons.forEach( ( radio, idx ) => {
     radio.addEventListener( 'change', () => {
+      CURRENT_TOOL_INDEX = idx; // Update the global index
       const selectedTool = tools[idx];
       if ( selectedTool ) {
-        useCasesContainer.className = `bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow}`;
-
+        applyToolTheme( '.use-cases-container', selectedTool );
         // Update the use cases container to show only the relevant use cases
         const useCaseMatch = selectedTool.markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
         if ( useCaseMatch ) {
@@ -325,7 +325,9 @@ export async function renderDynamicUseCaseSection () {
   } );
 
   // set initial use case
-  const selectedTool = tools[0];
+  CURRENT_TOOL_INDEX = 0; // Default to first tool
+  const selectedTool = tools[CURRENT_TOOL_INDEX];
+  applyToolTheme( '.use-cases-container', selectedTool );
   // Update the use cases container to show only the relevant use cases
   const useCaseMatch = selectedTool.markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
   if ( useCaseMatch ) {
@@ -336,17 +338,27 @@ export async function renderDynamicUseCaseSection () {
 
     const useCaseList = useCaseContent.map( useCase => `<li>${useCase.split('-')[1]}</li>` ).join( '' )
     // Set the initial use case HTML
-    useCasesContainerGrid.innerHTML = generateUseCaseHTML( selectedTool, useCaseList);
-    useCasesContainer.className = `bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow}`;
+    useCasesContainerGrid.innerHTML = generateUseCaseHTML( selectedTool, useCaseList );
+  }else{
+    useCasesContainerGrid.innerHTML = ''
   }
 }
-function generateUseCaseHTML (tool, list) {
+// Generates HTML for the use case section
+const generateUseCaseHTML = (tool, list) => {
   return `<div class="bg-grey-700 ${tool.border} ${tool.shadow} rounded-lg p-4 shadow-md w-3/4 text-justify">
   <ul class="list-disc ml-5 mt-2 text-2xl" style="list-style-type:none;">${list}</ul>
 </div>`
 }
+
+const setLoading = ( selector ) => {
+  const element = document.querySelector( selector );
+  if ( element ) {
+    element.innerHTML = LOADING;
+  }
+};
+
 // Extracts and consolidates all tool use cases into a structured format
-export async function consolidateToolUseCases () {
+async function consolidateToolUseCases () {
   const tools = await fetchToolData();
   const useCases = [];
 
@@ -370,14 +382,29 @@ export async function consolidateToolUseCases () {
   return useCases;
 }
 
+// TODO: implement renderSection
+async function renderSection ( { selector, fetchData, renderHtml } ) {
+  const container = document.querySelector( selector );
+  if ( !container ) return;
+  container.innerHTML = LOADING;
+  const data = await fetchData();
+  container.innerHTML = renderHtml( data );
+}
+
+
+function applyToolTheme ( sectionSelector, tool ) {
+  const el = document.querySelector( sectionSelector );
+  if ( !el ) return;
+  el.className = `bg-gradient-to-br ${tool.gradient} ${tool.border} ${tool.shadow}`;
+}
+
 // --- Page Initialization ---
 // Initializes the page by rendering all dynamic sections
 export async function initializePage () {
   console.log( "Initializing page..." );
 
   // set loading indicators
-  document.querySelector('.deck').innerHTML = LOADING;
-  document.querySelector('.use-cases-container > .grid').innerHTML = LOADING;
+  ['.deck', '.use-cases-container > .grid'].forEach( selector => setLoading( selector ) )
 
   await getToolFolders(); // Ensure tool folders are fetched and filtered
   console.log( "Tool folders fetched and filtered." );
@@ -397,3 +424,5 @@ export async function initializePage () {
     }, 3000 ); // Delay of 300ms (3 seconds) before executing each function
   }
 }
+
+
