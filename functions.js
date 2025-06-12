@@ -73,7 +73,8 @@ export async function getToolFolders () {
       'package_toolkit',
       'readme_updater',
       'watch_automation',
-      'toolkit_runner'
+      'toolkit_runner',
+      'portfolio_generator'
     ];
     console.info( `Error fetching folders: ${e}` )
     console.info( `Defaulting to ${folders.length} tools` );
@@ -136,7 +137,6 @@ async function fetchToolDataByFolder ( folder ) {
     return null;
   }
 }
-
 
 
 // Converts markdown to HTML with TailwindCSS classes
@@ -246,6 +246,7 @@ export async function fetchToolData () {
 
     // Gather all tool info
     const toolInfo = ( await Promise.all( filteredToolFolders.map( fetchToolDataByFolder ) ) ).filter( Boolean );
+
     // Assign styling
     toolInfo.forEach( tool => Object.assign( tool, STYLEMAP[tool.folder] || {} ) );
     cachedToolData = toolInfo;
@@ -292,8 +293,8 @@ export async function renderDeck () {
 
 // Dynamically generates the use-case section based on tool data
 export async function renderDynamicUseCaseSection () {
-  const useCasesContainerGrid = document.querySelector( '.use-cases-container > .grid' );
-  const useCasesContainer = document.querySelector( '.use-cases-container' );
+  const useCasesContainerGrid = document.querySelector( '#use-cases-container > .grid' );
+  const useCasesContainer = document.querySelector( '#use-cases-container' );
 
   if ( !useCasesContainer || !useCasesContainerGrid ) return;
 
@@ -306,7 +307,7 @@ export async function renderDynamicUseCaseSection () {
       CURRENT_TOOL_INDEX = idx; // Update the global index
       const selectedTool = tools[idx];
       if ( selectedTool ) {
-        applyToolTheme( '.use-cases-container', selectedTool );
+        applyToolTheme( '#use-cases-container', selectedTool );
         // Update the use cases container to show only the relevant use cases
         const useCaseMatch = selectedTool.markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
         if ( useCaseMatch ) {
@@ -327,7 +328,7 @@ export async function renderDynamicUseCaseSection () {
   // set initial use case
   CURRENT_TOOL_INDEX = 0; // Default to first tool
   const selectedTool = tools[CURRENT_TOOL_INDEX];
-  applyToolTheme( '.use-cases-container', selectedTool );
+  applyToolTheme( '#use-cases-container', selectedTool );
   // Update the use cases container to show only the relevant use cases
   const useCaseMatch = selectedTool.markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
   if ( useCaseMatch ) {
@@ -404,7 +405,7 @@ export async function initializePage () {
   console.log( "Initializing page..." );
 
   // set loading indicators
-  ['.deck', '.use-cases-container > .grid'].forEach( selector => setLoading( selector ) )
+  ['.deck', '#use-cases-container > .grid'].forEach( selector => setLoading( selector ) )
 
   await getToolFolders(); // Ensure tool folders are fetched and filtered
   console.log( "Tool folders fetched and filtered." );
