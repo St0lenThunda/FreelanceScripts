@@ -18,7 +18,7 @@
 ---
 
 ### Use Cases
-- Auto-run tasks on file changes
+- Autorun tasks on file changes
 - Reduce human error in packaging
 - Speed up development & deployment cycles
 

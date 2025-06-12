@@ -35,7 +35,7 @@
         padding: 2rem 1rem;
       }
 
-      .cards {
+      .deck {
         display: grid;
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -67,7 +67,7 @@
       }
 
       @media (min-width: 768px) {
-        .cards {
+        .deck {
           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
 
@@ -140,7 +140,7 @@
         font: 1rem system-ui;
       }
 
-      .cards {
+      .deck {
         /* Reverting to original styles */
         --img-w: 200px;
         --duration: 300ms;
@@ -485,7 +485,7 @@
       <!-- BEGIN CARDS FOR DECK -->
       <section class="my-12">
         <h2 class="text-3xl font-bold mb-2 text-center animate__animated animate__fadeIn">Included Tools</h2>
-        <div class="cards"></div>
+        <div class="deck"></div>
       </section>
       <!-- END CARDS FOR DECK -->
       

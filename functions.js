@@ -8,7 +8,7 @@ let STYLEMAP = {};
 // --- Global variable to store tool data ---
 let cachedToolData = null;
 // Loading image html
-export const LOADING = ` <img
+const LOADING = ` <img
   src="./loading.webp"
   alt="Loading"
   class="mx-auto mb-4 animate__animated animate__pulse animate__infinite"
@@ -237,30 +237,6 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
   `;
 }
 
-function addDetailsListeners () {
-  // Listen for state toggling of the <details> element
-  const detailsEls = document.querySelectorAll( ".detailsElement" )
-  detailsEls.forEach( el => {
-    el.addEventListener( "toggle", function ( event ) {
-      const modal = document.getElementById( "modal" );
-      const modalContent = document.getElementById( "modalContent" );
-      const backdrop = document.getElementById( "backdrop" );
-
-      // If 'open' is true, copy inner content into the modal and display
-      if ( event.target.open ) {
-        modalContent.innerHTML = event.target.innerHTML;
-        modal.classList.add( "show" );
-        backdrop.classList.add( "show" );
-        addCloseListener()
-      } else {
-        closeModal();
-      }
-    } )
-  } );
-
-}
-
-
 // Fetches tool data and caches it for reuse across functions
 export async function fetchToolData () {
   if ( !cachedToolData ) {
@@ -280,17 +256,34 @@ export async function fetchToolData () {
 // Renders the carousel with all tool cards
 export async function renderDeck () {
   console.log( "Generating tool list" );
-  const cardsContainer = document.querySelector( '.cards' );
-  if ( !cardsContainer ) return;
-
-  cardsContainer.innerHTML = LOADING;
+  const deck = document.querySelector( '.deck' );
+  if ( !deck ) return;
 
   const tools = await fetchToolData();
   console.dir( tools )
 
-  const toolHTML = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
-  cardsContainer.innerHTML = toolHTML
-  addDetailsListeners();
+  const cards = tools.map( ( tool, idx ) => generateDynamicCard( tool, idx, tools.length ) ).join( '' );
+  deck.innerHTML = cards
+  
+  // Listen for state toggling of the <details> element
+  const detailsEls = document.querySelectorAll( ".detailsElement" )
+  detailsEls.forEach( el => {
+    el.addEventListener( "toggle", function ( event ) {
+      const modal = document.getElementById( "modal" );
+      const modalContent = document.getElementById( "modalContent" );
+      const backdrop = document.getElementById( "backdrop" );
+
+      // If 'open' is true, copy inner content into the modal and display
+      if ( event.target.open ) {
+        modalContent.innerHTML = event.target.innerHTML;
+        modal.classList.add( "show" );
+        backdrop.classList.add( "show" );
+        addCloseListener()
+      } else {
+        closeModal();
+      }
+    } )
+  } )
   console.log( `${tools.length} Tools added to the list` )
 
 }
@@ -312,7 +305,7 @@ export async function renderDynamicUseCaseSection () {
     radio.addEventListener( 'change', () => {
       const selectedTool = tools[idx];
       if ( selectedTool ) {
-        // useCasesContainer.className = `bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow}`;
+        useCasesContainer.className = `bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow}`;
 
         // Update the use cases container to show only the relevant use cases
         const useCaseMatch = selectedTool.markdown.match( /### Use Cases[\s\n]+([\s\S]*?)(?=\n##|$)/i );
@@ -320,13 +313,10 @@ export async function renderDynamicUseCaseSection () {
           const useCaseContent = useCaseMatch[1]
             .split( '\n' )
             .map( line => line.trim() )
-            .filter( line => line !== '' && !line.startsWith( '#' ) );
+            .filter( line => line !== '' && !line.startsWith( '#' ) && line != '---');
 
-          const useCaseList = useCaseContent.map( useCase => `<li>${useCase}</li>` ).join( '' );
-          useCasesContainerGrid.innerHTML = `<details class="bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow} rounded-lg p-4 shadow-md  w-3/4 text-center" open>
-          <summary class="font-semibold text-lg cursor-pointer">${selectedTool.name}</summary>
-          <ul class="list-disc ml-5 mt-2" style="list-style-type:none;">${useCaseList}</ul>
-        </details>`;
+          const useCaseList = useCaseContent.map( useCase => `<li>${useCase.split( '-' )[1]}</li>` ).join( '' );
+          useCasesContainerGrid.innerHTML = generateUseCaseHTML( selectedTool, useCaseList )
         } else {
           useCasesContainerGrid.innerHTML = '';
         }
@@ -344,16 +334,17 @@ export async function renderDynamicUseCaseSection () {
       .map( line => line.trim() )
       .filter( line => line !== '' && !line.startsWith( '#' ) );
 
-    const useCaseList = useCaseContent.map( useCase => `<li>${useCase}</li>` ).join( '' );
-    useCasesContainerGrid.innerHTML = `<details class="bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow} rounded-lg p-4 shadow-md w-3/4 text-center"  open>
-    <summary class="font-semibold text-lg cursor-pointer"></summary>
-    <ul class="list-disc ml-5 mt-2 text-2xl" style="list-style-type:none;">${useCaseList}</ul>
-  </details>`;
-  } else {
-    useCasesContainerGrid.innerHTML = '';
+    const useCaseList = useCaseContent.map( useCase => `<li>${useCase.split('-')[1]}</li>` ).join( '' )
+    // Set the initial use case HTML
+    useCasesContainerGrid.innerHTML = generateUseCaseHTML( selectedTool, useCaseList);
+    useCasesContainer.className = `bg-gradient-to-br ${selectedTool.gradient} ${selectedTool.border} ${selectedTool.shadow}`;
   }
 }
-
+function generateUseCaseHTML (tool, list) {
+  return `<div class="bg-grey-700 ${tool.border} ${tool.shadow} rounded-lg p-4 shadow-md w-3/4 text-justify">
+  <ul class="list-disc ml-5 mt-2 text-2xl" style="list-style-type:none;">${list}</ul>
+</div>`
+}
 // Extracts and consolidates all tool use cases into a structured format
 export async function consolidateToolUseCases () {
   const tools = await fetchToolData();
@@ -384,12 +375,16 @@ export async function consolidateToolUseCases () {
 export async function initializePage () {
   console.log( "Initializing page..." );
 
+  // set loading indicators
+  document.querySelector('.deck').innerHTML = LOADING;
+  document.querySelector('.use-cases-container > .grid').innerHTML = LOADING;
+
   await getToolFolders(); // Ensure tool folders are fetched and filtered
   console.log( "Tool folders fetched and filtered." );
 
   // Generate the style map and assign it to the global variable
   STYLEMAP = generateStyleMap( filteredToolFolders );
-  console.log("Stylemap created")
+  console.log("StyleMap created")
 
   // List of functions responsible for rendering different sections of the page
   const renderFunctions = [renderDeck, renderDynamicUseCaseSection];
@@ -399,6 +394,6 @@ export async function initializePage () {
     setTimeout( async () => {
       // Call the render function asynchronously
       await renderFunction();
-    }, 300 ); // Delay of 300ms (3 seconds) before executing each function
+    }, 3000 ); // Delay of 300ms (3 seconds) before executing each function
   }
 }
