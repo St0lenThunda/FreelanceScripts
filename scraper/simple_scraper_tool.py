@@ -260,8 +260,10 @@ if __name__ == "__main__":
             html = response.text
             if args.suggest:
                 suggest_scrapables(html, top_n=args.suggest_top, max_depth=args.suggest_depth)
-            notify(f"Parsing HTML and extracting with selector: {args.selector}")
-            results = scrape_titles_and_links(html, args.selector)
+            # Use default selector if none supplied
+            selector = args.selector if args.selector else "span.titleline a"
+            notify(f"Parsing HTML and extracting with selector: {selector}")
+            results = scrape_titles_and_links(html, selector=selector)
             notify(f"Extracted {len(results)} items.")
         else:
             notify(f"Failed to fetch {url} (status code: {response.status_code})")
