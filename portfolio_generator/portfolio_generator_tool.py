@@ -9,6 +9,7 @@ Features:
 - Outputs Markdown or JSON format
 - Ideal for freelancers showcasing their work
 """
+# TODO: ouput to output directory and add platform, and timestamp to filename
 
 import argparse
 import json

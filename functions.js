@@ -72,7 +72,9 @@ export async function getToolFolders () {
       'package_toolkit',
       'readme_updater',
       'watch_automation',
-      'toolkit_runner'
+      'toolkit_runner',
+      'portfolio_generator',
+      'freqhue'
     ];
     console.info( `Error fetching folders: ${e}` )
     console.info( `Defaulting to ${folders.length} tools` );
