@@ -10,10 +10,6 @@
 > - Symlinks each tool (without the `.py` extension) into a `bin/` directory.
 >
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-### Use Cases
-- Prep scripts for client use
-- Automate script permissions in CI
-- Save manual chmod effort across large toolkits
 
 ## 🚀 Usage
    ```bash

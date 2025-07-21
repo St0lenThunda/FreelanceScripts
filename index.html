@@ -21,77 +21,6 @@
       href="./PythonStarter.png"
     >
     <style>
-      /* Mobile-first styles */
-      body {
-        font-family: system-ui, sans-serif;
-        margin: 0;
-        padding: 1rem;
-        background: linear-gradient(to bottom, #1a202c, #2d3748);
-        color: #edf2f7;
-      }
-
-      header {
-        text-align: center;
-        padding: 2rem 1rem;
-      }
-
-      .deck {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        margin: 2rem auto;
-        max-width: 100%;
-      }
-
-      /*
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      background: #2d3748;
-      */
-      .card {
-        padding: 1rem;
-        transition: transform 0.3s;
-      }
-
-
-      .use-cases {
-        margin: 2rem auto;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .use-cases .grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      @media (min-width: 768px) {
-        .deck {
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        }
-
-        .use-cases .grid {
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        }
-      }
-
-      footer {
-        text-align: center;
-        padding: 1rem;
-        background: #1a202c;
-        color: #a0aec0;
-      }
-
-      footer a {
-        color: #63b3ed;
-        text-decoration: none;
-      }
-
-      footer a:hover {
-        text-decoration: underline;
-      }
-
       .tool-card:hover {
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
       }
@@ -140,8 +69,7 @@
         font: 1rem system-ui;
       }
 
-      .deck {
-        /* Reverting to original styles */
+      .cards {
         --img-w: 200px;
         --duration: 300ms;
         --img-easing: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -292,7 +220,7 @@
       }
 
       /* next card +1 checked - place behind */
-      .card:has(+input + .card +input:checked) {
+      .card:has(+input + .card + input:checked) {
         z-index: 8;
       }
 
@@ -481,28 +409,13 @@
     </header>
 
     <main class="max-w-5xl mx-auto px-4">
-
-      <!-- BEGIN CARDS FOR DECK -->
+      <!-- Tool Carousel -->
       <section class="my-12">
         <h2 class="text-3xl font-bold mb-2 text-center animate__animated animate__fadeIn">Included Tools</h2>
-        <div class="deck"></div>
+        <div class="cards"></div>
       </section>
-      <!-- END CARDS FOR DECK -->
-      
-    <!-- BEGIN USE-CASE SECTION -->
 
-    <div class="animate__fadeInUp my-12">
-      <h2 class="text-3xl font-bold mb-4 text-center">Use Cases</h2>
-      <div id="use-cases-container">
-        <div class="grid grid-cols-1 place-items-center p-4"></div>
-          <!-- Use cases will be dynamically inserted here -->
-        </div>
-      </div>
-    </div>
-    <!-- END USE-CASE SECTION -->
-
-    
-      <!-- BEGIN CONCEPTS SECTION -->
+      <!-- Concepts Section -->
       <section class="my-12 animate__animated animate__fadeInUp">
         <h2 class="text-3xl font-bold mb-4 text-center">Pythonic Concepts</h2>
         <div class="bg-gray-800 rounded-xl p-6 shadow-lg">
@@ -587,13 +500,12 @@
           </details>
         </div>
       </section>
-      <!-- END CONCEPTS SECTION -->
 
-      <!-- BEGIN PROJECT-STRUCTURE SECTION -->
+      <!-- Project Structure Section -->
       <section class="my-12 animate__animated animate__fadeInUp">
         <h2 class="text-3xl font-bold mb-4 text-center">Project Structure</h2>
         <div class="bg-gray-800 rounded-xl p-6 shadow-lg overflow-x-auto">
-          <pre class="text-sm text-gray-300 whitespace-pre projects">
+          <pre class="text-sm text-gray-300 whitespace-pre">
                     ├── README.md
                     ├── csv_json_converter/
                     │   ├── csv_to_json_converter_tool.py
@@ -623,8 +535,6 @@
                   </pre>
         </div>
       </section>
-      <!-- END PROJECT-STRUCTURE SECTION -->
-
       <!-- Backdrop to focus the modal -->
       <div
         id="backdrop"
@@ -647,15 +557,19 @@
 
     <footer class="py-8 text-center text-gray-500 animate__animated animate__fadeInUp">
       <p>&copy; 2025 StolenThunda &mdash; MIT License. <a
-          href="https://github.com//FreelanceScripts"
+          href="https://github.com/St0lenThunda/FreelanceScripts"
           class="text-blue-400 underline"
         >GitHub Repo</a></p>
     </footer>
 
     <script type="module">
-        import { addCloseListener, initializePage } from './functions.js';
-        // Call initializePage when the document is loaded
-        window.addEventListener( 'DOMContentLoaded', initializePage );
+        import { renderCarousel, addCloseListener } from './functions.js';
+
+        // Render the carousel dynamically on DOMContentLoaded
+        document.addEventListener( 'DOMContentLoaded', () => {
+          renderCarousel();
+          setTimeout( addCloseListener, 100 );   
+      } );
     </script>
   </body>
 

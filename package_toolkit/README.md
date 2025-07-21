@@ -1,6 +1,8 @@
 # 🧰 Package Toolkit
 
 > ## Purpose
+> package_toolkit.py
+>
 > This script packages all tools in the FreelanceScripts project into a single zip archive, while respecting exclusion rules and generating a combined README.
 >
 > Key Features:
@@ -10,10 +12,6 @@
 > - Packages everything into an `output/freelance_toolkit.zip` archive.
 >
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
-### Use Cases
-- Generate deliverables for clients or marketplaces
-- Create backups or releases
-- Bundle scripts for tutorials or training
 
 ## Exclusion Rules
 

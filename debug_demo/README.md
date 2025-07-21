@@ -2,7 +2,7 @@
 
 [← Back to Main README](../README.md)
 
-> ## Purpose
+> ## Demo - Purpose
 >This tool demonstrates a real-world debugging and refactoring process taken from the `scraper/simple_scraper_tool.py`. It includes both a **broken** and a **fixed** version of the scraper to illustrate how problems were identified and solved in a freelance-style workflow.
 
 ---
@@ -79,19 +79,6 @@ __Fixed (structured output + logging + links)__
 * Typical client workflow: "It’s kinda broken, make it better."
 
 ---
-
-## Purpose
-
-This project serves multiple purposes:
-
-- **Educational**: To teach debugging and web scraping fundamentals.
-- **Demonstrative**: To showcase the before-and-after of a debugging process.
-- **Practical**: To provide a reusable and robust web scraping tool.
-
-### Use Cases
-- Teach debugging fundamentals
-- Use in tutorials or tech blogs
-- Show value to clients with live repair demos
 
 ## 📜 License
 
