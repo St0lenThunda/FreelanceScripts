@@ -1,13 +1,14 @@
 
-[Web Info Page](https://st0lenthunda.github.io/FreelanceScripts/)
-##  :boom: StolenThunda Presents: 
-# Freelance Scripts - 🐍 Python “Starter Pack” Tools 🛠️
-_A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
+### [:boom: Live Site 💥](https://st0lenthunda.github.io/FreelanceScripts/)
+###  *StolenThunda Presents*: 
+---
+# Freelance Scripts - 🐍 Python “Starter Pack” Tool
+*A Python Starter Toolkit for Freelancers, Debuggers, and Builders*
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![OS](https://img.shields.io/badge/OS-Mac%20%7C%20Linux%20%7C%20WSL-brightgreen)
 ![Last Commit](https://img.shields.io/github/last-commit/St0lenThunda/FreelanceScripts)
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![GitHub Repo stars](https://img.shields.io/github/stars/St0lenThunda/FreelanceScripts?style=social)
 
 <!-- vscode-markdown-toc -->
@@ -45,11 +46,18 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 <ul>
 <li>--</li>
 </ul>
+<b>Api integration</b>
+<ul>
+<li>Fetches data from external platforms like GitHub, Behance, and Dribbble.</li>
+</ul>
 <b>Argument parsing</b>
 <ul>
 <li>Handles command-line arguments and interactive prompts for flexible usage.</li>
-<li>Handles command-line arguments for flexible usage.</li>
 <li>Uses `argparse` for flexible CLI usage.</li>
+</ul>
+<b>Cli design</b>
+<ul>
+<li>Provides flexible command-line arguments for customization.</li>
 </ul>
 <b>Command-line</b>
 <ul>
@@ -59,23 +67,33 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 <ul>
 <li>Uses Python's built-in `csv` and `json` modules for data conversion.</li>
 </ul>
+<b>Data storage</b>
+<ul>
+<li>Saves structured data to JSON files for easy reuse.</li>
+</ul>
+<b>Data transformation</b>
+<ul>
+<li>Converts raw API responses into structured JSON or markdown.</li>
+</ul>
 <b>Docstring extraction and markdown conversion</b>
 <ul>
-<li>Extracts Python docstrings, preserves formatting, and safely converts HTML tags for markdown.</li>
+<li>Extracts ython docstrings, preserves formatting, and safely converts HTML ags for markdown.</li>
 </ul>
 <b>Dynamic documentation</b>
 <ul>
 <li>Automates the generation of a combined README by reading and summarizing other README files.</li>
-<li>Automates updates to README files based on project state.</li>
+<li>Automates updates to README files ased on project state.</li>
 </ul>
-<b>Educational comments</b>
+<b>Dynamic tool discovery</b>
 <ul>
-<li>Explains each step for learning purposes.</li>
+<li>Lists tools dynamically based on the project structure.</li>
 </ul>
 <b>Error handling</b>
 <ul>
 <li>Checks for file existence and handles missing/invalid files gracefully.</li>
-<li>Provides robust error messages and suggestions.</li>
+<li>Gracefully handles API errors, invalid inputs, and network issues.</li>
+<li>Gracefully handles failed requests and invalid selectors.</li>
+<li>Gracefully handles invalid inputs and tool execution errors.</li>
 </ul>
 <b>Exclusion by marker file</b>
 <ul>
@@ -85,6 +103,10 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 <b>Exclusion logic</b>
 <ul>
 <li>Shows how to exclude files/folders based on patterns and marker files (e.g., `.excluded`).</li>
+</ul>
+<b>Extensibility</b>
+<ul>
+<li>Designed to easily add new tools and features.</li>
 </ul>
 <b>File and directory traversal</b>
 <ul>
@@ -100,7 +122,7 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 </ul>
 <b>File parsing</b>
 <ul>
-<li>Reads and updates Markdown files programmatically.</li>
+<li>Reads and updates Markdown files rogrammatically.</li>
 </ul>
 <b>File permissions</b>
 <ul>
@@ -112,7 +134,12 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 </ul>
 <b>Heavy commenting</b>
 <ul>
+<li>Provides clear, educational comments for ach step.</li>
 <li>Provides clear, educational comments for each step.</li>
+</ul>
+<b>Interactive cli</b>
+<ul>
+<li>Prompts users for missing arguments and provides helpful feedback.</li>
 </ul>
 <b>Line ending normalization</b>
 <ul>
@@ -122,18 +149,21 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 <ul>
 <li>Logs activity to both terminal and file for auditing.</li>
 </ul>
+<b>Menu-based</b>
+<ul>
+<li>CLI: Provides an interactive menu for tool selection and execution.</li>
+</ul>
 <b>Modular task system</b>
 <ul>
-<li>Uses classes and inheritance to enable extensible task management.</li>
+<li>Uses classes and inheritance to nable extensible task management.</li>
 </ul>
 <b>Modularity</b>
 <ul>
 <li>Organizes code into functions and classes for clarity.</li>
-<li>Organizes code into functions for clarity and reuse.</li>
 </ul>
 <b>Multi-step</b>
 <ul>
-<li>Automation: Supports running multiple update steps in sequence with a single command (e.g., `--task=sync_and_table`).</li>
+<li>Automation: Supports running multiple update teps in sequence with a single command (e.g., --task=sync_and_table`).</li>
 </ul>
 <b>Output inference</b>
 <ul>
@@ -141,7 +171,7 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 </ul>
 <b>Path handling</b>
 <ul>
-<li>Leverages `pathlib` for robust file and directory operations.</li>
+<li>Leverages `pathlib` for robust file and irectory operations.</li>
 <li>Uses `pathlib` for robust, cross-platform file operations.</li>
 </ul>
 <b>Path manipulation</b>
@@ -154,15 +184,11 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 </ul>
 <b>Regex usage</b>
 <ul>
-<li>Employs regular expressions for flexible text replacement and extraction.</li>
+<li>Employs regular expressions for flexible text eplacement and extraction.</li>
 </ul>
 <b>Robustness</b>
 <ul>
 <li>Uses checks for file existence and safe file removal.</li>
-</ul>
-<b>Selector suggestion and ranking</b>
-<ul>
-<li>Analyzes HTML structure to suggest and rank CSS selectors.</li>
 </ul>
 <b>Subprocess automation</b>
 <ul>
@@ -172,17 +198,13 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 <ul>
 <li>Demonstrates creating symbolic links with `Path.symlink_to` for easy command-line access.</li>
 </ul>
-<b>Table output</b>
-<ul>
-<li>Formats results as Markdown tables for readability.</li>
-</ul>
 <b>User interactivity</b>
 <ul>
 <li>Prompts users for input and provides file selection menus.</li>
 </ul>
 <b>Web scraping</b>
 <ul>
-<li>Uses `requests` and `BeautifulSoup` for HTTP requests and HTML parsing.</li>
+<li>Uses libraries like `requests` and `BeautifulSoup` to fetch and parse HTML content.</li>
 </ul>
 <b>Zipfile handling</b>
 <ul>
@@ -195,17 +217,19 @@ _A Python Starter Toolkit for Freelancers, Debuggers, and Builders_
 ##  2. <a name='ToolsIncluded'></a>📦 Tools Included
 
 <!-- TOOL_TABLE_START -->
-| Tool | Description | Link |
-|------|-------------|------|
-| 🧙‍♂️ CSV ⇄ JSON Converter Tool | A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JS... | [csv_json_converter/README.md](csv_json_converter/README.md) |
-| 📰 README Updater | This script provides a modular framework for dynamically updating the main project README and too... | [readme_updater/README.md](readme_updater/README.md) |
-| 🛠️ Tool Runner | A unifying script to run all tools in the FreelanceScripts project. This script provides a menu-b... | [toolkit_runner/README.md](toolkit_runner/README.md) |
-| 🌐 Simple Web Scraper | A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News). | [scraper/README.md](scraper/README.md) |
-| 👀 Watch Automation Tool | A utility that automatically updates your main project README tool table whenever any tool's READ... | [watch_automation/README.md](watch_automation/README.md) |
-| tool_runner | No description. | [tool_runner/README.md](tool_runner/README.md) |
-| 🪓 Executioner Tool | This script automates making Python scripts executable and symlinking them into a `bin/` director... | [executioner/README.md](executioner/README.md) |
-| 🧰 Package Toolkit | package_toolkit.py | [package_toolkit/README.md](package_toolkit/README.md) |
+| Tool | Description | Use Cases |
+|------|-------------|-----------|
+| [🧙‍♂️ CSV ⇄ JSON Converter Tool]([csv_json_converter/README.md](csv_json_converter/README.md)) | A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JS... | <ol><li>Convert legacy data formats for client uploads</li><li>Clean and structure input/output data</li><li>Offer format conversion as a paid service</li></ol> |
+| [📰 README Updater]([readme_updater/README.md](readme_updater/README.md)) | This script provides a modular framework for dynamically updating the main project README and too... | <ol><li>Keep documentation in sync</li><li>Automate release note generation</li><li>Maintain a professional project appearance</li></ol> |
+| [🛠️ Tool Runner]([toolkit_runner/README.md](toolkit_runner/README.md)) | A unifying script to run all tools in the FreelanceScripts project. This script provides a menu-b... | <ol><li>Quickly access and run any tool in the project.</li><li>Provide a unified interface for managing tools.</li><li>Simplify tool usage for non-technical users.</li><li>Demonstrate menu-based CLI design.</li></ol> |
+| [🌐 Simple Web Scraper]([scraper/README.md](scraper/README.md)) | A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News). | <ol><li>Pull titles for blog digests.</li><li>Extract data from forums or news sites.</li><li>Automate content summaries for newsletters.</li><li>Learn web scraping techniques for personal projects.</li></ol> |
+| [🗂️ Portfolio Generator Tool]([portfolio_generator/README.md](portfolio_generator/README.md)) | A CLI tool to generate a personal project portfolio page or JSON data by scraping GitHub, Behance... | <ol><li>Build a markdown or JSON résumé.</li><li>Provide GitHub summaries for clients.</li><li>Automate portfolio creation for freelancers.</li><li>Offer portfolio setup as a freelance service.</li></ol> |
+| [👀 Watch Automation Tool]([watch_automation/README.md](watch_automation/README.md)) | A utility that automatically updates your main project README tool table whenever any tool's READ... | <ol><li>Auto-run tasks on file changes</li><li>Reduce human error in packaging</li><li>Speed up development & deployment cycles</li></ol> |
+| [🪓 Executioner Tool]([executioner/README.md](executioner/README.md)) | This script automates making Python scripts executable and symlinking them into a `bin/` director... | <ol><li>Prep scripts for client use</li><li>Automate script permissions in CI</li><li>Save manual chmod effort across large toolkits</li></ol> |
+| [🧰 Package Toolkit]([package_toolkit/README.md](package_toolkit/README.md)) | This script packages all tools in the FreelanceScripts project into a single zip archive, while r... | <ol><li>Generate deliverables for clients or marketplaces</li><li>Create backups or releases</li><li>Bundle scripts for tutorials or training</li></ol> |
 <!-- TOOL_TABLE_END -->
+
+
 
 ##  3. <a name='Installation'></a>⚙️ Installation
 
