@@ -8,6 +8,7 @@
 > - Supports GitHub, Behance, and Dribbble
 > - Outputs Markdown or JSON format
 > - Ideal for freelancers showcasing their work
+
 ### Use Cases
 - Build a markdown or JSON résumé.
 - Provide GitHub summaries for clients.

@@ -42,10 +42,6 @@
 <!-- CONCEPTS_START -->
 <details><summary><strong>Pythonic Concepts found in this project</strong></summary>
 <p>This section lists unique Pythonic concepts demonstrated across all tools in this project.</p>
-<b>--</b>
-<ul>
-<li>--</li>
-</ul>
 <b>Api integration</b>
 <ul>
 <li>Fetches data from external platforms like GitHub, Behance, and Dribbble.</li>
@@ -219,14 +215,15 @@
 <!-- TOOL_TABLE_START -->
 | Tool | Description | Use Cases |
 |------|-------------|-----------|
-| [🧙‍♂️ CSV ⇄ JSON Converter Tool]([csv_json_converter/README.md](csv_json_converter/README.md)) | A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JS... | <ol><li>Convert legacy data formats for client uploads</li><li>Clean and structure input/output data</li><li>Offer format conversion as a paid service</li></ol> |
+| [🧙‍♂️ CSV ⇄ JSON Converter Tool]([csv_json_converter/README.md](csv_json_converter/README.md)) | A two-way data converter for CSV and JSON files. It contains functions to convert CSV files to JS... | No use cases provided. |
+| [FreqHue – Synesthetic Sound Visualizer]([freqhue/README.md](freqhue/README.md)) | Returns a list of dicts for input or output devices, each with: - 'index': device index - 'name':... | No use cases provided. |
 | [📰 README Updater]([readme_updater/README.md](readme_updater/README.md)) | This script provides a modular framework for dynamically updating the main project README and too... | <ol><li>Keep documentation in sync</li><li>Automate release note generation</li><li>Maintain a professional project appearance</li></ol> |
-| [🛠️ Tool Runner]([toolkit_runner/README.md](toolkit_runner/README.md)) | A unifying script to run all tools in the FreelanceScripts project. This script provides a menu-b... | <ol><li>Quickly access and run any tool in the project.</li><li>Provide a unified interface for managing tools.</li><li>Simplify tool usage for non-technical users.</li><li>Demonstrate menu-based CLI design.</li></ol> |
-| [🌐 Simple Web Scraper]([scraper/README.md](scraper/README.md)) | A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News). | <ol><li>Pull titles for blog digests.</li><li>Extract data from forums or news sites.</li><li>Automate content summaries for newsletters.</li><li>Learn web scraping techniques for personal projects.</li></ol> |
-| [🗂️ Portfolio Generator Tool]([portfolio_generator/README.md](portfolio_generator/README.md)) | A CLI tool to generate a personal project portfolio page or JSON data by scraping GitHub, Behance... | <ol><li>Build a markdown or JSON résumé.</li><li>Provide GitHub summaries for clients.</li><li>Automate portfolio creation for freelancers.</li><li>Offer portfolio setup as a freelance service.</li></ol> |
+| [🛠️ Tool Runner]([toolkit_runner/README.md](toolkit_runner/README.md)) | A unifying script to run all tools in the FreelanceScripts project. This script provides a menu-b... | No use cases provided. |
+| [🌐 Simple Web Scraper]([scraper/README.md](scraper/README.md)) | A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News). | No use cases provided. |
+| [🗂️ Portfolio Generator Tool]([portfolio_generator/README.md](portfolio_generator/README.md)) | A CLI tool to generate a personal project portfolio page or JSON data by scraping GitHub, Behance... | No use cases provided. |
 | [👀 Watch Automation Tool]([watch_automation/README.md](watch_automation/README.md)) | A utility that automatically updates your main project README tool table whenever any tool's READ... | <ol><li>Auto-run tasks on file changes</li><li>Reduce human error in packaging</li><li>Speed up development & deployment cycles</li></ol> |
-| [🪓 Executioner Tool]([executioner/README.md](executioner/README.md)) | This script automates making Python scripts executable and symlinking them into a `bin/` director... | <ol><li>Prep scripts for client use</li><li>Automate script permissions in CI</li><li>Save manual chmod effort across large toolkits</li></ol> |
-| [🧰 Package Toolkit]([package_toolkit/README.md](package_toolkit/README.md)) | This script packages all tools in the FreelanceScripts project into a single zip archive, while r... | <ol><li>Generate deliverables for clients or marketplaces</li><li>Create backups or releases</li><li>Bundle scripts for tutorials or training</li></ol> |
+| [🪓 Executioner Tool]([executioner/README.md](executioner/README.md)) | This script automates making Python scripts executable and symlinking them into a `bin/` director... | No use cases provided. |
+| [🧰 Package Toolkit]([package_toolkit/README.md](package_toolkit/README.md)) | package_toolkit.py | No use cases provided. |
 <!-- TOOL_TABLE_END -->
 
 

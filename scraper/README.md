@@ -18,6 +18,7 @@
 > - Designed as a learning resource: code is heavily commented and modular.
 >
 > TODO: Add colorized output for better readability.
+
 ### Use Cases
 - Pull titles for blog digests.
 - Extract data from forums or news sites.

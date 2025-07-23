@@ -15,6 +15,7 @@
 > - Educational: code is heavily commented for learning purposes.
 >
 > Intended as a learning resource: code is heavily commented to explain each step and concept.
+
 ### Use Cases
 - Convert legacy data formats for client uploads
 - Clean and structure input/output data

@@ -32,8 +32,6 @@ Each tool's `README.md` should include:
 > - Updates the main tool table in the root README with tool names, descriptions, and links.
 > - Supports a combined task (`--task=sync_and_table`) to sync all Purpose sections and immediately update the tool table in one step.
 > Intended as a learning resource: code is heavily commented to explain each step and concept. 
- ## License
- 
  MIT License. Use freely and modify as needed.
  
  ## Concepts
