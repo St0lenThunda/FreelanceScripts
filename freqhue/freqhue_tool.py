@@ -1,7 +1,19 @@
-# FreqHue: Synesthetic Sound Visualizer
-# This script creates a Streamlit app that visualizes sound as color and provides an interactive piano keyboard.
-# It uses sounddevice for audio playback, aubio for pitch detection, and numpy/colorsys for math and color mapping.
+#!/usr/bin/env python3
+"""
+This script creates a Streamlit app that visualizes sound as color and provides an interactive piano keyboard.
+It uses sounddevice for audio playback, aubio for pitch detection, and numpy/colorsys for math and color mapping.
 
+Key Features:
+- Visualizes sound as color using frequency-to-hue mapping
+- Interactive on-screen piano keyboard with recording/playback
+- Microphone pitch detection with device selection
+- Audio file and YouTube URL input support
+- Progress bars for long-running analysis
+- Robust input/output device management
+- Customizable tuning (A=432 or 440 Hz)
+- Color bar visualization of note sequences
+- Cross-platform compatibility (Linux/WSL/Windows)
+"""
 # TODO: onscreen keyboard updated to look like piano
 # TODO: Audio Input/Outputs must be tested on different computers
 # TODO: Separate the onscreen recorder interface from the file uploader

@@ -1,12 +1,14 @@
-# FreqHue – Synesthetic Sound Visualizer
+# 🎼 FreqHue – Synesthetic Sound Visualizer
 
 > ## Purpose
 > Returns a list of dicts for input or output devices, each with:
 >     - 'index': device index
 >     - 'name': device name
 >     - 'api': host API name
->     - 'channels': max_input_channels or max_output_channels## Installation
+>     - 'channels': max_input_channels or max_output_channels
+---
 
+## Installation
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/St0lenThunda/FreelanceScripts.git
