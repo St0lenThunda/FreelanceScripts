@@ -14,9 +14,7 @@
 > - Robust error handling for missing or invalid files.
 > - Educational: code is heavily commented for learning purposes.
 >
-> Intended as a learning resource: code is heavily commented to explain each step and concept.
-
-### Use Cases
+> Intended as a learning resource: code is heavily commented to explain each step and concept.### Use Cases
 - Convert legacy data formats for client uploads
 - Clean and structure input/output data
 - Offer format conversion as a paid service

@@ -10,7 +10,8 @@
 > - Syncs the Purpose section of each tool README with the main docstring from its *_tool.py script, preserving formatting and safely handling HTML tags.
 > - Updates the main tool table in the root README with tool names, descriptions, and links.
 > - Supports a combined task (`--task=sync_and_table`) to sync all Purpose sections and immediately update the tool table in one step.
-> Intended as a learning resource: code is heavily commented to explain each step and concept.>
+> Intended as a learning resource: code is heavily commented to explain each step and concept.
+
 ### Use Cases
 - Keep documentation in sync
 - Automate release note generation
@@ -21,22 +22,13 @@
 Each tool's `README.md` should include:
 
 - A first-level header (`# Tool Name`) for the title.
-- A `> ## Purpose
-> This script provides a modular framework for dynamically updating the main project README and tool READMEs. It allows for the addition of multiple tasks, such as generating a tool table and syncing Purpose sections from script docstrings, and makes the process extensible for future enhancements.
->
-> Key Features:
-> - Modular task system using a Task base class.
-> - Excludes directories with `.excluded` marker files.
-> - Can be extended with new tasks for README management.
-> - Syncs the Purpose section of each tool README with the main docstring from its *_tool.py script, preserving formatting and safely handling HTML tags.
-> - Updates the main tool table in the root README with tool names, descriptions, and links.
-> - Supports a combined task (`--task=sync_and_table`) to sync all Purpose sections and immediately update the tool table in one step.
-> Intended as a learning resource: code is heavily commented to explain each step and concept. 
- MIT License. Use freely and modify as needed.
+- A second level heading entitle 'Purpose' enclosed in a markdown callout
+
+eg. `> ## Purpose`
+
+Within this call out, include "`Key Features`" section
  
- ## Concepts
- 
- This tool demonstrates several Pythonic concepts useful for eginners:
+ ## Concepts 
  
  - **Modular Task System:** Uses classes and inheritance to nable extensible task management.
  - **File Parsing:** Reads and updates Markdown files rogrammatically.

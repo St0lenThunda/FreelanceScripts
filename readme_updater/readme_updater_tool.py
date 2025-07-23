@@ -63,7 +63,7 @@ def extract_title_purpose_use_cases(readme_path):
     # Extract use cases
     in_use_cases = False
     for line in lines:
-        if line.strip().lower().startswith("### use cases"):
+        if "use cases" in line.strip().lower():
             in_use_cases = True
             continue
         if in_use_cases:

@@ -1,16 +1,11 @@
 # FreqHue – Synesthetic Sound Visualizer
 
-> ## Purpose 
-> FreqHue is an interactive Streamlit app that visualizes sound as color and provides a playable piano keyboard. It supports real-time pitch detection from a microphone, audio file uploads, and YouTube audio analysis, mapping detected frequencies to vibrant colors. The tool is designed for musicians, educators, creators, and anyone interested in the intersection of sound and color.
->
-> Key Features:
-> - On-screen piano keyboard with color feedback
-> - Microphone pitch detection and visualization
-> - Audio file and YouTube pitch/color analysis
-> - Sequence recording, playback, and color bar visualization
-> - Robust device selection and progress indicators
-
-## Installation
+> ## Purpose
+> Returns a list of dicts for input or output devices, each with:
+>     - 'index': device index
+>     - 'name': device name
+>     - 'api': host API name
+>     - 'channels': max_input_channels or max_output_channels## Installation
 
 1. **Clone the repository:**
    ```bash
