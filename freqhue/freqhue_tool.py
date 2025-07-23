@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+freqhue_tool.py
+ 
 This script creates a Streamlit app that visualizes sound as color and provides an interactive piano keyboard.
 It uses sounddevice for audio playback, aubio for pitch detection, and numpy/colorsys for math and color mapping.
 
