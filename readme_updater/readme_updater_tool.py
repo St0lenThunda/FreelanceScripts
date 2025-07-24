@@ -26,23 +26,20 @@ TOOL_DIRS = [
     and not (d / ".excluded").exists()
 ]
 
-# Helper to extract title, Purpose, and use cases from a README.md
-def extract_title_purpose_use_cases(readme_path):
-    """Extract title, purpose, and use cases from a README.md file."""
+TABLE_HEADER = "| Tool | Description | Link |\n|------|-------------|------|"
+
+# Helper to extract title and Purpose section from a README.md
+def extract_title_and_purpose(readme_path):
     title = ""
     purpose = ""
-    use_cases = []
-
     with open(readme_path, encoding="utf-8") as f:
         lines = f.readlines()
-
-    # Extract title
+    # Find title (first line starting with #)
     for line in lines:
         if line.strip().startswith("#"):
             title = line.strip().lstrip("# ")
             break
-
-    # Extract purpose
+    # Find Purpose section
     purpose_lines = []
     in_purpose = False
     for line in lines:
@@ -51,28 +48,17 @@ def extract_title_purpose_use_cases(readme_path):
             continue
         if in_purpose:
             if line.strip().startswith(">  -") or line.strip().startswith(">  -"):
+                # List item, keep
                 purpose_lines.append(line.strip().lstrip("> "))
             elif line.strip().startswith("> "):
+                # Paragraph, keep
                 purpose_lines.append(line.strip().lstrip("> "))
             elif line.strip() == "" or line.strip().startswith("> #") or line.strip().startswith("> ##"):
+                # End of section
                 break
             else:
                 break
-    purpose = " ".join(purpose_lines).strip()
-
-    # Extract use cases
-    in_use_cases = False
-    for line in lines:
-        if "use cases" in line.strip().lower():
-            in_use_cases = True
-            continue
-        if in_use_cases:
-            if line.strip().startswith("-"):
-                use_cases.append(line.strip().lstrip("- "))
-            elif line.strip() == "" or line.strip().startswith("##"):
-                break
-
-    return title, purpose, use_cases
+    purpose        if "use cases" in line.strip().lower():
 
 def generate_tool_table():
     rows = []
@@ -80,25 +66,17 @@ def generate_tool_table():
         readme_path = tool_dir / "README.md"
         if not readme_path.exists():
             continue
-
-        title, purpose, use_cases = extract_title_purpose_use_cases(readme_path)
+        title, purpose = extract_title_and_purpose(readme_path)
         if not title:
             title = tool_dir.name
         if not purpose:
             purpose = "No description."
-
-        # Limit description to 100 characters
+        # Limit description to 100 chars
         if len(purpose) > 100:
             purpose = purpose[:97].rstrip() + "..."
-
-        # Format use cases as an ordered list
-        use_cases_md = "<ol>" + "".join(f"<li>{case}</li>" for case in use_cases) + "</ol>" if use_cases else "No use cases provided."
-
-        # Create table row
         rel_link = f"[{tool_dir.name}/README.md]({tool_dir.name}/README.md)"
-        rows.append(f"| [{title}]({rel_link}) | {purpose} | {use_cases_md} |")
-
-    table = ["| Tool | Description | Use Cases |", "|------|-------------|-----------|"] + rows
+        rows.append(f"| {title} | {purpose} | {rel_link} |")
+    table = [TABLE_HEADER] + rows
     return "\n".join(table)
 
 def update_readme_with_table(readme_path, tool_table):
@@ -245,6 +223,22 @@ class ConsolidateConceptsTask(Task):
             in_concepts = False
             for line in lines:
                 if line.strip().lower().startswith("## concepts"):
+                    in_con
+            print(f"[INFO] Synced Purpose for {tool_dir.name}")
+
+class ConsolidateConceptsTask(Task):
+    def run(self, args):
+        # Collect all concept bullet points from each tool README
+        concepts_by_title = {}
+        for tool_dir in TOOL_DIRS:
+            readme_path = tool_dir / "README.md"
+            if not readme_path.exists():
+                continue
+            with open(readme_path, encoding="utf-8") as f:
+                lines = f.readlines()
+            in_concepts = False
+            for line in lines:
+                if line.strip().lower().startswith("## concepts"):
                     in_concepts = True
                     continue
                 if in_concepts:
@@ -295,19 +289,8 @@ class ConsolidateConceptsTask(Task):
             new_content = "".join(details_md) + content
         with open(root_readme, "w", encoding="utf-8") as f:
             f.write(new_content)
-        print(f"[INFO] Consolidated concepts inserted into {root_readme}")
-
-TASKS = {
-    "sync_purpose": SyncPurposeTask(),
-    "tool_table": ToolTableTask(),
-    "consolidate_concepts": ConsolidateConceptsTask(),
-    # Future tasks can be added here
-}
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="Update README with tool info.")
-    parser.add_argument('--task', default="tool_table", choices=list(TASKS.keys()) + ["sync_and_table", "all"], help="Task to run (default: tool_table)")
-    parser.add_argument('--readme', type=str, default=str(ROOT / "README.md"), help="Path to README to update (default: root README.md)")
+ to README to update (default
+            f.write('\n'): root README.md)")
     return parser.parse_args()
 
 def main():

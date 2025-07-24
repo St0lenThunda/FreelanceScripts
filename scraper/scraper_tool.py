@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-simple_scraper_tool.py
+scraper_tool.py
 
 A modular web scraper that fetches titles and links from one or more URLs (default: Hacker News).
 
@@ -17,6 +17,9 @@ Key Features:
 - Saves results to a JSON file in the output directory (default behavior, can be disabled with --no-save).
 - Output files are named after the URL.
 - Designed as a learning resource: code is heavily commented and modular.
+- Advanced bot protection debugging: Automatically analyzes response headers and body for clues (Cloudflare, Akamai, cookies, JavaScript, CAPTCHA, etc.) and outputs actionable suggestions.
+- Only retries with the next User-Agent if no actionable suggestions are found; otherwise, stops and outputs next steps.
+- Logs all progress, sent/received headers, and body snippets for robust debugging.
 
 TODO: Add colorized output for better readability.
 """
@@ -251,30 +254,111 @@ if __name__ == "__main__":
     # Remove duplicates while preserving order
     seen = set()
     urls = [u for u in urls if not (u in seen or seen.add(u))]
+    user_agents = [
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15",
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0) Gecko/20100101 Firefox/115.0",
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
+    ]
     for url in urls:
         notify(f"Fetching: {url}")
-        response = requests.get(url)
-        notify("Fetched page, status code: " + str(response.status_code))
+        response = None
+        last_exception = None
+        session = requests.Session()
+        for idx, ua in enumerate(user_agents):
+            headers = {
+                "User-Agent": ua,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Referer": url,
+                "Connection": "keep-alive",
+                "Upgrade-Insecure-Requests": "1"
+            }
+            notify(f"Attempt {idx+1} with User-Agent: {ua}")
+            try:
+                response = session.get(url, headers=headers, timeout=15)
+                notify(f"Status code: {response.status_code}")
+                if response.status_code == 200:
+                    break
+                elif response.status_code == 403:
+                    sent_headers = dict(headers)
+                    resp_headers = dict(response.headers)
+                    resp_body = response.text[:500]
+                    notify(f"403 Forbidden with User-Agent {ua}.")
+                    notify(f"Sent headers: {sent_headers}")
+                    notify(f"Response headers: {resp_headers}")
+                    notify(f"Response body (first 500 chars): {resp_body}")
+                    suggestions = []
+                    if any(k in resp_headers for k in ["CF-RAY", "Server", "Akamai", "X-Request-ID"]):
+                        suggestions.append("Site uses advanced bot protection (Cloudflare/Akamai). Try a real browser (Selenium/Playwright) or a residential proxy.")
+                    if "Set-Cookie" in resp_headers:
+                        suggestions.append("Site sets cookies. Try replaying cookies from a browser session or persisting session cookies.")
+                    if "Access Denied" in resp_body or "Bot detected" in resp_body:
+                        suggestions.append("Access Denied/Bot detected in response. Use a real browser or proxy.")
+                    if "enable javascript" in resp_body.lower() or "captcha" in resp_body.lower():
+                        suggestions.append("Site requires JavaScript or CAPTCHA. Use Selenium/Playwright.")
+                    if not suggestions:
+                        suggestions.append("Try adding more headers (Origin, Cache-Control, Pragma, Accept-Encoding) or replaying cookies.")
+                        notify(f"No actionable suggestions found. Retrying with next User-Agent...")
+                        for s in suggestions:
+                            print(f"[SUGGESTION] {s}")
+                        print('')
+                        continue  # Only retry if no actionable suggestions
+                    else:
+                        notify(f"Automated suggestions based on analysis:")
+                        for s in suggestions:
+                            print(f"[SUGGESTION] {s}")
+                        print('')
+                        break  # Stop retrying if actionable suggestions found
+                else:
+                    notify(f"Non-200/403 status code: {response.status_code}. Trying next User-Agent...")
+            except requests.exceptions.RequestException as e:
+                notify(f"Request failed with User-Agent {ua}: {e}")
+                last_exception = e
+                continue
         results = []
-        if response.status_code == 200:
+        if response and response.status_code == 200:
             html = response.text
             if args.suggest:
                 suggest_scrapables(html, top_n=args.suggest_top, max_depth=args.suggest_depth)
             notify(f"Parsing HTML and extracting with selector: {args.selector}")
             results = scrape_titles_and_links(html, args.selector)
             notify(f"Extracted {len(results)} items.")
+        elif response and response.status_code == 403:
+            notify(f"Failed to fetch {url} (status code: 403 Forbidden) after trying all User-Agents.")
+            # Automated header/body analysis for final suggestions
+            resp_headers = dict(response.headers)
+            resp_body = response.text[:500]
+            suggestions = []
+            if any(k in resp_headers for k in ["CF-RAY", "Server", "Akamai", "X-Request-ID"]):
+                suggestions.append("Site uses advanced bot protection (Cloudflare/Akamai). Try a real browser (Selenium/Playwright) or a residential proxy.")
+            if "Set-Cookie" in resp_headers:
+                suggestions.append("Site sets cookies. Try replaying cookies from a browser session or persisting session cookies.")
+            if "Access Denied" in resp_body or "Bot detected" in resp_body:
+                suggestions.append("Access Denied/Bot detected in response. Use a real browser or proxy.")
+            if "enable javascript" in resp_body.lower() or "captcha" in resp_body.lower():
+                suggestions.append("Site requires JavaScript or CAPTCHA. Use Selenium/Playwright.")
+            if not suggestions:
+                suggestions.append("Try adding more headers (Origin, Cache-Control, Pragma, Accept-Encoding) or replaying cookies.")
+            notify(f"Automated suggestions based on final analysis:")
+            for s in suggestions:
+                print(f"[SUGGESTION] {s}")
+            print('')
+        elif response:
+            notify(f"Failed to fetch {url} (status code: {response.status_code}) after trying all User-Agents.")
         else:
-            notify(f"Failed to fetch {url} (status code: {response.status_code})")
+            notify(f"All requests failed for {url}. Last exception: {last_exception}")
         # Print to terminal if requested or if not saving
         if args.print or args.no_save:
             print(json.dumps(results, indent=2))
         # Save to file unless --no-save is set and only if response was successful
-        if not args.no_save and response.status_code == 200:
+        if response and not args.no_save and response.status_code == 200:
             output_file = OUTPUT_DIR / url_to_filename(url)
             with output_file.open("w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2)
             notify(f"Results saved to: {output_file}")
         # If no results were found, automatically suggest scrapable elements
-        if response.status_code == 200 and not results and not args.suggest:
+        if response and response.status_code == 200 and not results and not args.suggest:
             notify("No results found with the current selector. Scanning for scrapable elements...")
             suggest_scrapables(html, top_n=args.suggest_top, max_depth=args.suggest_depth)
