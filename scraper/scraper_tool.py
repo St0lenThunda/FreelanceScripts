@@ -237,6 +237,7 @@ def parse_args():
     parser.add_argument('--suggest-depth', type=int, default=SUGGEST_MAX_DEPTH, help=f'Max depth for nested selector suggestions (default: {SUGGEST_MAX_DEPTH})')
     parser.add_argument('--no-save', action='store_true', help='Do not save results to file (only print to terminal)')
     parser.add_argument('--print', action='store_true', help='Print results to terminal (default: off if saving to file)')
+    parser.add_argument('--use-playwright', action='store_true', help='Use Playwright (headless browser) for scraping if bot protection is detected')
     return parser.parse_args()
 
 if __name__ == "__main__":
@@ -261,11 +262,13 @@ if __name__ == "__main__":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0) Gecko/20100101 Firefox/115.0",
         "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
     ]
+    import sys
     for url in urls:
         notify(f"Fetching: {url}")
         response = None
         last_exception = None
         session = requests.Session()
+        playwright_suggested = False
         for idx, ua in enumerate(user_agents):
             headers = {
                 "User-Agent": ua,
@@ -291,13 +294,16 @@ if __name__ == "__main__":
                     notify(f"Response body (first 500 chars): {resp_body}")
                     suggestions = []
                     if any(k in resp_headers for k in ["CF-RAY", "Server", "Akamai", "X-Request-ID"]):
-                        suggestions.append("Site uses advanced bot protection (Cloudflare/Akamai). Try a real browser (Selenium/Playwright) or a residential proxy.")
+                        suggestions.append("Site uses advanced bot protection (Cloudflare/Akamai). Try a real browser (Playwright) or a residential proxy.")
+                        playwright_suggested = True
                     if "Set-Cookie" in resp_headers:
                         suggestions.append("Site sets cookies. Try replaying cookies from a browser session or persisting session cookies.")
                     if "Access Denied" in resp_body or "Bot detected" in resp_body:
                         suggestions.append("Access Denied/Bot detected in response. Use a real browser or proxy.")
+                        playwright_suggested = True
                     if "enable javascript" in resp_body.lower() or "captcha" in resp_body.lower():
-                        suggestions.append("Site requires JavaScript or CAPTCHA. Use Selenium/Playwright.")
+                        suggestions.append("Site requires JavaScript or CAPTCHA. Use Playwright.")
+                        playwright_suggested = True
                     if not suggestions:
                         suggestions.append("Try adding more headers (Origin, Cache-Control, Pragma, Accept-Encoding) or replaying cookies.")
                         notify(f"No actionable suggestions found. Retrying with next User-Agent...")
@@ -310,6 +316,33 @@ if __name__ == "__main__":
                         for s in suggestions:
                             print(f"[SUGGESTION] {s}")
                         print('')
+                        # If Playwright is suggested and --use-playwright is set, ask user to confirm
+                        if playwright_suggested or args.use_playwright:
+                            confirm = input("Bot protection detected. Would you like to try Playwright for this URL? (y/n): ").strip().lower()
+                            if confirm == 'y':
+                                notify("Proceeding with Playwright...")
+                                try:
+                                    import asyncio
+                                    from playwright.sync_api import sync_playwright
+                                    def fetch_with_playwright(url):
+                                        with sync_playwright() as p:
+                                            browser = p.chromium.launch(headless=True)
+                                            page = browser.new_page()
+                                            page.goto(url, timeout=30000)
+                                            html = page.content()
+                                            browser.close()
+                                            return html
+                                    html = fetch_with_playwright(url)
+                                    notify("Fetched page with Playwright. Proceeding to extract data...")
+                                    if args.suggest:
+                                        suggest_scrapables(html, top_n=args.suggest_top, max_depth=args.suggest_depth)
+                                    notify(f"Parsing HTML and extracting with selector: {args.selector}")
+                                    results = scrape_titles_and_links(html, args.selector)
+                                    notify(f"Extracted {len(results)} items.")
+                                    response = None  # Prevent further retries
+                                except Exception as e:
+                                    notify(f"Playwright scraping failed: {e}")
+                                break
                         break  # Stop retrying if actionable suggestions found
                 else:
                     notify(f"Non-200/403 status code: {response.status_code}. Trying next User-Agent...")
