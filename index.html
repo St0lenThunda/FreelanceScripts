@@ -485,23 +485,22 @@
       <!-- BEGIN CARDS FOR DECK -->
       <section class="my-12">
         <h2 class="text-3xl font-bold mb-2 text-center animate__animated animate__fadeIn">Included Tools</h2>
-        <div class="cards"></div>
+        <ul class="cards"></ul>
+
+        <!-- BEGIN USE-CASE SECTION -->
+
+        <div class="animate__fadeInUp my-12">
+          <h2 class="text-3xl font-bold mb-4 text-center">Use Cases</h2>
+          <section class="use-cases-container">
+            <div class="grid grid-cols-1 place-items-center p-4"></div>
+            <!-- Use cases will be dynamically inserted here -->
+          </section>
+        </div>
+        </div>
+        <!-- END USE-CASE SECTION -->
       </section>
       <!-- END CARDS FOR DECK -->
-      
-    <!-- BEGIN USE-CASE SECTION -->
 
-    <div class="animate__fadeInUp my-12">
-      <h2 class="text-3xl font-bold mb-4 text-center">Use Cases</h2>
-      <div class="use-cases-container">
-        <div class="grid grid-cols-1 place-items-center p-4"></div>
-          <!-- Use cases will be dynamically inserted here -->
-        </div>
-      </div>
-    </div>
-    <!-- END USE-CASE SECTION -->
-
-    
       <!-- BEGIN CONCEPTS SECTION -->
       <section class="my-12 animate__animated animate__fadeInUp">
         <h2 class="text-3xl font-bold mb-4 text-center">Pythonic Concepts</h2>
@@ -620,6 +619,8 @@
                     │   ├── README.md
                     │   ├── watch_automation_tool.py
                     │   └── watch_automation.log
+                    │
+                    etc.
                   </pre>
         </div>
       </section>
@@ -630,9 +631,9 @@
         id="backdrop"
         class="backdrop"
       ></div>
-      
+
       <!-- Modal container with Animate.css classes -->
-      <div
+      <dialog
         id="modal"
         class="modal animate__animated animate__fadeIn bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-gray-100"
       >
@@ -642,7 +643,7 @@
           class="close-button"
         >Close</button>
         <div id="modalContent"></div>
-      </div>
+      </dialog>
     </main>
 
     <footer class="py-8 text-center text-gray-500 animate__animated animate__fadeInUp">
@@ -653,9 +654,9 @@
     </footer>
 
     <script type="module">
-        import { addCloseListener, initializePage } from './functions.js';
-        // Call initializePage when the document is loaded
-        window.addEventListener( 'DOMContentLoaded', initializePage );
+      import { addCloseListener, initializePage } from './functions.js';
+      // Call initializePage when the document is loaded
+      window.addEventListener( 'DOMContentLoaded', initializePage );
     </script>
   </body>
 

@@ -381,5 +381,5 @@ When documenting a tool in its `README.md`, follow this syntax to ensure consist
 
 ##  5. <a name='License'></a>📜 License
 
-MIT © \StolenThunda
+MIT © StolenThunda
 Use, modify, and share freely. No attribution required, but always appreciated!

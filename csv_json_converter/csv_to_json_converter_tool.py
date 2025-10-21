@@ -43,8 +43,12 @@ def json_to_csv(json_path, csv_path):
     """
     Reads a JSON file and writes its contents as CSV.
     """
-    with open(json_path, encoding='utf-8') as jsonfile:
-        data = json.load(jsonfile)
+    try:
+        with open(json_path, encoding='utf-8') as jsonfile:
+            data = json.load(jsonfile)
+    except FileNotFoundError:
+        print(f"❌ JSON file not found: {json_path}")
+        return
     if not data:
         print("No data to write.")
         return

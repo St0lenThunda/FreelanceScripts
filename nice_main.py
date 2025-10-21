@@ -1,3 +1,15 @@
+"""
+This script creates a NiceGUI dashboard for managing and running various tools stored in
+different directories, with each tool having its own specific functionality and interface elements.
+
+:param path: The `path` parameter in the provided code refers to a file path represented as a `Path`
+object from the `pathlib` module. This parameter is used in various functions within the script to
+interact with files and directories, such as checking if a file is a valid tool, reading the README
+:type path: Path
+:return: The code you provided is a Python script that creates a NiceGUI dashboard for managing and
+running various tools. The script defines functions for finding valid tools, reading README files,
+launching tools, and rendering tool-specific UI elements based on the tool's type.
+"""
 import os
 import subprocess
 from pathlib import Path
@@ -90,7 +102,10 @@ def launch_tool(path: Path):
 
 def render_tool(tool_path: Path):
     heading, purpose = read_readme(tool_path)
-    with ui.card().classes("m-2 p-4 bg-slate-800 text-white"):
+    # The line `with ui.card().classes("m-2 p-4 bg-slate-800 text-white w-3/4"):` is creating a card
+    # element in the NiceGUI interface with specific styling classes applied to it. Here's a breakdown
+    # of what each part of the line is doing:
+    with ui.card().classes("m-2 p-4 bg-slate-800 text-white w-3/4"):
         ui.label(f"{heading}").classes("text-lg font-semibold")
         ui.label(f"📁 Folder: {tool_path.parent}").classes("text-sm text-gray-400")
         ui.markdown(f"📝 {purpose}") #.classes("text-sm italic mb-2")
@@ -136,20 +151,38 @@ def render_tool(tool_path: Path):
 
 
 
+
 tools = get_tools()
 tab_info = []
 for tool in tools:
     heading, _ = read_readme(tool)
     tab_info.append((tool, heading))
 
-with ui.tabs().classes("w-full") as tabs:
-    for _, heading in tab_info:
-        ui.tab(heading)
+# Sidebar layout with selection
+selected_idx = 0
 
-with ui.tab_panels(tabs, value=tab_info[0][1] if tab_info else None).classes("w-full") as panels:
-    for tool, heading in tab_info:
-        with ui.tab_panel(heading):
-            render_tool(tool)
+def set_selected(idx):
+    global selected_idx
+    selected_idx = idx
+    show_selected.refresh()
+
+with ui.row().classes("w-full"):
+    with ui.column().classes("w-1/4 bg-slate-900 text-white h-screen p-4 sticky top-0"):
+        ui.label("🧰 Available Tools").classes("text-xl font-bold mb-4")
+        for i, (_, heading) in enumerate(tab_info):
+            with ui.row().classes(f"items-center cursor-pointer p-2 rounded {'bg-slate-700' if i == selected_idx else 'hover:bg-slate-700'}"):
+                # ui.icon("description")
+                ui.label(heading).on("click", lambda v=i: set_selected(v))
+
+    with ui.column().classes("w-3/4 p-6"):
+        def show_selected():
+            if tab_info:
+                tool, _ = tab_info[selected_idx]
+                render_tool(tool)
+            else:
+                ui.label("No tools found.").classes("text-gray-400 italic")
+        show_selected = ui.refreshable(show_selected)
+        show_selected()
 
 
 

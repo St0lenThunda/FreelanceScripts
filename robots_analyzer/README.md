@@ -1,16 +1,16 @@
 # 🤖 Robot Analyzer Tool
 
 > ## Purpose  
-This tool fetches and analyzes the `robots.txt` file from any given website URL and produces a comprehensive, human-readable scraping compliance report. It breaks down allowed/disallowed paths, crawl-delay rules, sitemap declarations, and other directives, giving freelance devs and ethical scrapers quick guidance on whether and how to proceed.
-
+> This tool fetches and analyzes the `robots.txt` file from any given  website URL and produces a comprehensive, human-readable scraping  compliance report. It breaks down allowed/disallowed paths, crawl-delay rules, sitemap declarations, and other directives, giving  freelance devs and ethical scrapers quick guidance on whether and how to proceed.
+>
 > ## Key Features  
-- 📄 Automatically locates and fetches the correct `/robots.txt` for a domain  
-- 🧠 Parses standard and non-standard directives (Allow, Disallow, Crawl-delay, etc.)  
-- 🧭 Recommends a scraping strategy based on detected rules  
-- 📌 Includes comments and non-standard notes for extra insight  
-- 📥 CLI-based interface — just pass a URL to get an instant report  
-- 💬 Well-commented output, perfect for documentation or clients  
-- 🔍 Outputs scraping tips based on policy detection
+> - 📄 Automatically locates and fetches the correct `/robots.txt` for a domain  
+> - 🧠 Parses standard and non-standard directives (Allow, Disallow, Crawl-delay, etc.)  
+> - 🧭 Recommends a scraping strategy based on detected rules  
+> - 📌 Includes comments and non-standard notes for extra insight  
+> - 📥 CLI-based interface — just pass a URL to get an instant report  
+> - 💬 Well-commented output, perfect for documentation or clients  
+> - 🔍 Outputs scraping tips based on policy detection
 
 ---
 

@@ -30,10 +30,10 @@ def fetch_html(url):
         return None
 
 def parse_github(html):
-    # scrape selectors as of 06/10/2025
     soup = BeautifulSoup(html, 'html.parser')
     repos = []   
     
+    # scrape selectors as of 06/10/2025
     primary_title_selector = "a:has(span.repo), a[itemprop$='codeRepository']"
     secondary_title_selector = "span.repo"
     

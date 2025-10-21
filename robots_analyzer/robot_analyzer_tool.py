@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """
-robot_analyzer_tool.py
-
 Fetches and analyzes the /robots.txt file for a given URL, then produces a human-readable report of allowed/disallowed paths, user-agents, and crawl-delay rules.
 
 Usage:

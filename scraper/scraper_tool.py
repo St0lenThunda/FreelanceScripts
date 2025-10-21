@@ -13,8 +13,8 @@ Key Features:
 - Suggestion output is ranked using a composite emoji system (🏆, 🥇, 🥈, 🥉, 🎖️, 🔸) that combines link-likelihood, structural preference, and frequency.
 - Only the top 5 selector suggestions show detailed metrics and the composite emoji; the rest show selector and count for clarity.
 - Automatically suggests scrapable elements if no results are found with the current selector.
-- Prints results to the console (with --print or --no-save) for easy chaining.
-- Saves results to a JSON file in the output directory (default behavior, can be disabled with --no-save).
+- Prints results to the console after each scrape for easy chaining.
+- Prompts before saving results to a JSON file in the output directory (use --auto-save to skip the prompt, or --no-save to skip saving).
 - Output files are named after the URL.
 - Designed as a learning resource: code is heavily commented and modular.
 - Advanced bot protection debugging: Automatically analyzes response headers and body for clues (Cloudflare, Akamai, cookies, JavaScript, CAPTCHA, etc.) and outputs actionable suggestions.
@@ -31,6 +31,7 @@ from urllib.parse import urlparse
 from pathlib import Path
 import argparse
 from collections import Counter
+import sys
 
 # URL to scrape
 URL = "https://news.ycombinator.com"
@@ -92,6 +93,28 @@ def get_id_counts(soup):
         id_counts[tag['id']] = id_counts.get(tag['id'], 0) + 1
     return id_counts
 
+def split_selector_tokens(selector):
+    """
+    Break a selector path (e.g. 'ul.nav > li.item > a.link') into bare tag tokens.
+    """
+    tokens = []
+    for part in selector.split('>'):
+        token = part.strip()
+        if not token:
+            continue
+        token = token.split('#', 1)[0]
+        token = token.split('.', 1)[0]
+        tokens.append(token)
+    return tokens
+
+def selector_has_list_ancestor(selector):
+    """
+    Return True if any ancestor token in the selector path is a list container.
+    """
+    tokens = split_selector_tokens(selector)
+    # Ignore the final token (the current element)
+    return any(tok in {'li', 'ul', 'ol'} for tok in tokens[:-1])
+
 def get_selector_path(tag, max_depth):
     path = []
     current = tag
@@ -116,30 +139,27 @@ def get_selector_preference_score(tag, selector):
         score += 3
     if tag.name in {'li', 'ul', 'ol'}:
         score += 2
-    if tag.name == 'a' and any(p in selector for p in ['li', 'ul', 'ol']):
+    if tag.name == 'a' and selector_has_list_ancestor(selector):
         score += 1  # Bonus for a inside a list
     return score
 
 def get_selector_counters_and_ranking(soup, max_depth):
     selector_counter = Counter()
-    selector_ranking = {}
-    selector_preference = {}
+    selector_rank_totals = Counter()
+    selector_pref_totals = Counter()
     for tag in soup.find_all(True):
         selector = get_selector_path(tag, max_depth)
         selector_counter[selector] += 1
         # Heuristic: score based on likelihood the selector yields usable links (1-100)
-        score = 0
+        score = 10
         # Highest: <a> tags with href
         if tag.name == 'a' and tag.get('href'):
             score = 100
         # <li> or <div> containing <a> with href
-        elif tag.name in {'li', 'div', 'span', 'td', 'tr', 'ul', 'ol'}:
-            if tag.find('a', href=True):
-                score = 80
-            else:
-                score = 30
+        elif tag.name in {'li', 'div', 'span', 'td', 'tr'}:
+            score = 80 if tag.find('a', href=True) else 30
         elif tag.name in {'ul', 'ol'}:
-            score = 60
+            score = 60 if tag.find('a', href=True) else 25
         elif tag.name in {'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}:
             if tag.find('a', href=True):
                 score = 70
@@ -147,12 +167,18 @@ def get_selector_counters_and_ranking(soup, max_depth):
                 score = 20
         elif tag.get('href'):
             score = 60
-        else:
-            score = 10
-        selector_ranking[selector] = max(selector_ranking.get(selector, 0), score)
+        selector_rank_totals[selector] += score
         # Add original preference score
         pref_score = get_selector_preference_score(tag, selector)
-        selector_preference[selector] = max(selector_preference.get(selector, 0), pref_score)
+        selector_pref_totals[selector] += pref_score
+    selector_ranking = {
+        sel: selector_rank_totals[sel] / selector_counter[sel]
+        for sel in selector_counter
+    }
+    selector_preference = {
+        sel: selector_pref_totals[sel] / selector_counter[sel]
+        for sel in selector_counter
+    }
     return selector_counter, selector_ranking, selector_preference
 
 def print_tag_summary(tag_counts, top_n):
@@ -176,8 +202,8 @@ def print_selector_summary(ranked_selectors, selector_ranking, selector_preferen
     if ranked_selectors:
         print(f"[INFO] Common nested selectors (top {top_n}, ranked):")
         # Table header
-        print(f"{'Selector':<50} {'Count':>7} {'Rank':>7} {'Pref':>7} {'Freq':>7} {'Emoji':>7}")
-        print('-' * 90)
+        print(f"{'Selector':<50} {'Rank':>7} {'Pref':>7} {'Freq':>7} {'Emoji':>7}")
+        print('-' * 80)
         max_rank = 100
         max_pref = max(selector_preference.values()) if selector_preference else 1
         max_count = max([count for _, count in ranked_selectors]) if ranked_selectors else 1
@@ -202,8 +228,8 @@ def print_selector_summary(ranked_selectors, selector_ranking, selector_preferen
             rank = selector_ranking.get(sel, 0)
             pref = selector_preference.get(sel, 0)
             emoji = composite_emoji(rank, pref, count) if i < 5 else ''
-            print(f"{sel:<50.50} {count:>7} {rank:>7} {pref:>7} {count:>7} {emoji:>7}")
-        print('-' * 90)
+            print(f"{sel:<50.50} {rank:>7.1f} {pref:>7.1f} {count:>7} {emoji:>7}")
+        print('-' * 80)
 
 # Suggest scrapable elements by scanning the DOM for common tags/classes/ids
 
@@ -236,12 +262,14 @@ def parse_args():
     parser.add_argument('--suggest-top', type=int, default=SUGGEST_TOP_N, help=f'How many top tags/classes/ids/selectors to show (default: {SUGGEST_TOP_N})')
     parser.add_argument('--suggest-depth', type=int, default=SUGGEST_MAX_DEPTH, help=f'Max depth for nested selector suggestions (default: {SUGGEST_MAX_DEPTH})')
     parser.add_argument('--no-save', action='store_true', help='Do not save results to file (only print to terminal)')
-    parser.add_argument('--print', action='store_true', help='Print results to terminal (default: off if saving to file)')
+    parser.add_argument('--auto-save', action='store_true', help='Automatically save results without prompting (useful for scripts)')
+    parser.add_argument('--print', action='store_true', help='Print results to terminal (deprecated: results are now always shown)')
     parser.add_argument('--use-playwright', action='store_true', help='Use Playwright (headless browser) for scraping if bot protection is detected')
     return parser.parse_args()
 
 if __name__ == "__main__":
     args = parse_args()
+    interactive_session = sys.stdin.isatty()
     # Gather URLs from CLI and/or file
     urls = list(args.urls)
     if args.url_file:
@@ -262,13 +290,18 @@ if __name__ == "__main__":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0) Gecko/20100101 Firefox/115.0",
         "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
     ]
-    import sys
     for url in urls:
         notify(f"Fetching: {url}")
         response = None
         last_exception = None
         session = requests.Session()
         playwright_suggested = False
+        playwright_used = False
+        results = []
+        html = None
+        status_code = None
+        suggest_ran = False
+        extracted = False
         for idx, ua in enumerate(user_agents):
             headers = {
                 "User-Agent": ua,
@@ -283,6 +316,7 @@ if __name__ == "__main__":
                 response = session.get(url, headers=headers, timeout=15)
                 notify(f"Status code: {response.status_code}")
                 if response.status_code == 200:
+                    status_code = response.status_code
                     break
                 elif response.status_code == 403:
                     sent_headers = dict(headers)
@@ -318,26 +352,32 @@ if __name__ == "__main__":
                         print('')
                         # If Playwright is suggested and --use-playwright is set, ask user to confirm
                         if playwright_suggested or args.use_playwright:
-                            confirm = input("Bot protection detected. Would you like to try Playwright for this URL? (y/n): ").strip().lower()
-                            if confirm == 'y':
+                            use_playwright = args.use_playwright
+                            if not use_playwright:
+                                confirm = input("Bot protection detected. Would you like to try Playwright for this URL? (y/n): ").strip().lower()
+                                use_playwright = confirm == 'y'
+                            if use_playwright:
                                 notify("Proceeding with Playwright...")
                                 try:
-                                    import asyncio
                                     from playwright.sync_api import sync_playwright
-                                    def fetch_with_playwright(url):
+                                    def fetch_with_playwright(target_url):
                                         with sync_playwright() as p:
                                             browser = p.chromium.launch(headless=True)
                                             page = browser.new_page()
-                                            page.goto(url, timeout=30000)
-                                            html = page.content()
+                                            page.goto(target_url, timeout=30000)
+                                            page_html = page.content()
                                             browser.close()
-                                            return html
+                                            return page_html
                                     html = fetch_with_playwright(url)
+                                    playwright_used = True
+                                    status_code = 200
                                     notify("Fetched page with Playwright. Proceeding to extract data...")
                                     if args.suggest:
                                         suggest_scrapables(html, top_n=args.suggest_top, max_depth=args.suggest_depth)
+                                        suggest_ran = True
                                     notify(f"Parsing HTML and extracting with selector: {args.selector}")
                                     results = scrape_titles_and_links(html, args.selector)
+                                    extracted = True
                                     notify(f"Extracted {len(results)} items.")
                                     response = None  # Prevent further retries
                                 except Exception as e:
@@ -350,14 +390,20 @@ if __name__ == "__main__":
                 notify(f"Request failed with User-Agent {ua}: {e}")
                 last_exception = e
                 continue
-        results = []
         if response and response.status_code == 200:
+            status_code = response.status_code
             html = response.text
-            if args.suggest:
+        if status_code == 200 and html is not None:
+            if args.suggest and not suggest_ran:
                 suggest_scrapables(html, top_n=args.suggest_top, max_depth=args.suggest_depth)
-            notify(f"Parsing HTML and extracting with selector: {args.selector}")
-            results = scrape_titles_and_links(html, args.selector)
-            notify(f"Extracted {len(results)} items.")
+                suggest_ran = True
+            if not extracted:
+                notify(f"Parsing HTML and extracting with selector: {args.selector}")
+                results = scrape_titles_and_links(html, args.selector)
+                extracted = True
+                notify(f"Extracted {len(results)} items.")
+            elif playwright_used:
+                notify(f"Using Playwright results for selector: {args.selector}")
         elif response and response.status_code == 403:
             notify(f"Failed to fetch {url} (status code: 403 Forbidden) after trying all User-Agents.")
             # Automated header/body analysis for final suggestions
@@ -382,16 +428,30 @@ if __name__ == "__main__":
             notify(f"Failed to fetch {url} (status code: {response.status_code}) after trying all User-Agents.")
         else:
             notify(f"All requests failed for {url}. Last exception: {last_exception}")
-        # Print to terminal if requested or if not saving
-        if args.print or args.no_save:
-            print(json.dumps(results, indent=2))
-        # Save to file unless --no-save is set and only if response was successful
-        if response and not args.no_save and response.status_code == 200:
+        # Always display results to the user
+        notify(f"Scrape results for {url}:")
+        print(json.dumps(results, indent=2))
+        # Determine if results should be saved
+        should_save = False
+        if status_code == 200 and not args.no_save:
+            if args.auto_save or not interactive_session:
+                should_save = True
+                if not interactive_session and not args.auto_save:
+                    notify("Non-interactive session detected; auto-saving results.")
+            else:
+                prompt = input("Would you like to save these results to a file? (y/n): ").strip().lower()
+                should_save = prompt in {'y', 'yes'}
+        elif status_code == 200 and args.no_save:
+            notify("Skipping save due to --no-save flag.")
+        # Save to file if confirmed
+        if should_save:
             output_file = OUTPUT_DIR / url_to_filename(url)
             with output_file.open("w", encoding="utf-8") as f:
                 json.dump(results, f, indent=2)
             notify(f"Results saved to: {output_file}")
+        elif status_code == 200 and not args.no_save:
+            notify("Results were not saved.")
         # If no results were found, automatically suggest scrapable elements
-        if response and response.status_code == 200 and not results and not args.suggest:
+        if status_code == 200 and not results and not args.suggest:
             notify("No results found with the current selector. Scanning for scrapable elements...")
             suggest_scrapables(html, top_n=args.suggest_top, max_depth=args.suggest_depth)

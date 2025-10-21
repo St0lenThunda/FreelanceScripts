@@ -9,13 +9,14 @@
 > - Allows custom CSS selectors via --selector for flexible scraping of any site.
 > - Can scan the page and suggest common tags, classes, ids, and nested selectors for scrapable elements (--suggest).
 > - The number of top suggestions and the maximum selector depth are adjustable via --suggest-top and --suggest-depth.
-> - Suggestion output is ranked using a composite emoji system (🏆, 🥇, 🥈, 🥉, 🎖️, 🔸) that combines link-likelihood, structural preference, and frequency.
-> - Only the top 5 selector suggestions show detailed metrics and the composite emoji; the rest show selector and count for clarity.
+> - Suggestion output is ranked using averaged link-likelihood, structural preference, and frequency, then annotated with a composite emoji system (🏆, 🥇, 🥈, 🥉, 🎖️, 🔸).
+> - Only the top 5 selector suggestions show a composite emoji; the remaining rows list their averaged metrics without the emoji for clarity.
 > - Automatically suggests scrapable elements if no results are found with the current selector.
 > - Prints results to the console (with --print or --no-save) for easy chaining.
 > - Saves results to a JSON file in the output directory (default behavior, can be disabled with --no-save).
 > - Output files are named after the URL.
 > - Designed as a learning resource: code is heavily commented and modular.
+> - Optional Playwright fallback: pass --use-playwright to automatically launch a headless browser when bot protection is detected.
 >
 > TODO: Add colorized output for better readability.
 
@@ -29,25 +30,28 @@
 
 ```bash
 # Scrape one or more custom URLs
-python simple_scraper_tool.py --url https://news.ycombinator.com
+python scraper_tool.py https://news.ycombinator.com
 
 # Scrape URLs from a file
-python simple_scraper_tool.py --url-file urls.txt
+python scraper_tool.py --url-file urls.txt
 
 # Use a custom CSS selector (e.g., all links in a div with class 'headline')
-python simple_scraper_tool.py --url https://example.com --selector 'div.headline a'
+python scraper_tool.py https://example.com --selector 'div.headline a'
 
 # Print results to terminal (for chaining)
-python simple_scraper_tool.py --url https://example.com --print
+python scraper_tool.py https://example.com --print
 
 # Only scan and suggest scrapable elements (no extraction)
-python simple_scraper_tool.py --url https://example.com --suggest
+python scraper_tool.py https://example.com --suggest
 
 # Adjust number of top suggestions and selector depth
-python simple_scraper_tool.py --url https://example.com --suggest --suggest-top 20 --suggest-depth 3
+python scraper_tool.py https://example.com --suggest --suggest-top 20 --suggest-depth 3
 
 # Disable saving to file
-python simple_scraper_tool.py --url https://example.com --no-save
+python scraper_tool.py https://example.com --no-save
+
+# Force a headless-browser fetch when bot protection is likely
+python scraper_tool.py https://example.com --use-playwright
 ```
 
 ## Notes

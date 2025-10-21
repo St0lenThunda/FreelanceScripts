@@ -202,7 +202,7 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
   const { purpose, features } = extractPurposeAndFeatures( tool.markdown || '' );
   const divider = `<div class='flex items-center'>
     <hr class='flex-grow border-gray-600'>
-    <span class='mx-4 text-gray-400'>✦</span>
+    <span class='mx-4 text-gray-400'>✦✦✦</span>
     <hr class='flex-grow border-gray-600'>
   </div>`;
   const iconAnimations = ['animate__bounce', 'animate__pulse', 'animate__rubberBand', 'animate__shakeX', 'animate__shakeY'];
@@ -210,7 +210,7 @@ export function generateDynamicCard ( tool, idx, totalTools ) {
 
   // Wrap dynamic details in a scrollable area
   return `
-  <input type="radio" id="radio-${idx + 1}" name="radio-card" ${idx === 0 ? 'checked' : ''}>
+  <input type="radio" id="radio-${idx + 1}" name="radio-card" ${idx === 0 ? 'checked' : ''} />
   <article class="card sm:text-center" style="--angle:${angle}deg; overflow-y:auto;   ">
       <div class="card-icon card-img bg-gradient-to-br ${tool.gradient} ${tool.text} ${tool.border} ${tool.shadow} flex items-center justify-center text-white border-8  p-4 bg-gray-800 ${randomIconAnimation}" style="width: 200px; height: 200px; font-size: 6rem;">
         <span>${tool.emojiBackground || '🔧'}</span>
