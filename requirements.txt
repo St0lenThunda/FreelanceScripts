@@ -1,0 +1,7 @@
+requests
+beautifulsoup4
+watchdog
+playwright
+markdown2
+streamlit
+nicegui

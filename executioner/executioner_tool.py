@@ -16,6 +16,7 @@ Intended as a learning resource: code is heavily commented to explain each step 
 import os
 import stat
 from pathlib import Path
+import argparse
 
 # Get the root directory of the project (parent of this script's directory)
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -70,16 +71,44 @@ def main():
     - Make each tool executable.
     - Symlink each tool into the bin directory.
     """
+    parser = argparse.ArgumentParser(description="Manage tool scripts in the project.")
+    parser.add_argument("--install", action="store_true", help="Install the tools (default action).")
+    parser.add_argument("--uninstall", action="store_true", help="Uninstall the tools.")
+    args = parser.parse_args()
+
+    if args.uninstall:
+        uninstall_tools()
+    else:
+        install_tools()
+
+def install_tools():
+    """
+    Finds, prepares, and symlinks all tool scripts.
+    """
     tool_scripts = find_tool_scripts()
     if not tool_scripts:
         print("No tool scripts found.")
         return
+    print("Installing tools...")
     for tool_path in tool_scripts:
         print(f"\nProcessing: {tool_path.relative_to(PROJECT_ROOT)}")
-        convert_to_unix_line_endings(tool_path)  # Normalize line endings
-        make_executable(tool_path)               # Make the script executable
-        symlink_tool(tool_path)                  # Create a symlink in bin/
-    print(f"\n✅ All tools processed. Symlinks are in: {BIN_DIR}")
+        print("  - Converting line endings to Unix (LF)...")
+        convert_to_unix_line_endings(tool_path)
+        print("  - Making the script executable...")
+        make_executable(tool_path)
+        symlink_tool(tool_path)
+    print(f"\n✅ All tools installed. Symlinks are in: {BIN_DIR}")
+
+def uninstall_tools():
+    """
+    Removes all tool symlinks from the bin directory.
+    """
+    print("Uninstalling tools...")
+    for symlink_path in BIN_DIR.glob("*"):
+        if symlink_path.is_symlink():
+            print(f"  - Removing symlink: {symlink_path.name}")
+            symlink_path.unlink()
+    print("\n✅ All tools uninstalled.")
 
 if __name__ == "__main__":
     main()

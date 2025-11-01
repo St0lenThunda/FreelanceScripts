@@ -50,7 +50,9 @@ def json_to_csv(json_path, csv_path):
         print(f"❌ JSON file not found: {json_path}")
         return
     if not data:
-        print("No data to write.")
+        with open(csv_path, 'w', encoding='utf-8') as csvfile:
+            pass
+        print("✅ Converted empty JSON to empty CSV.")
         return
     with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=data[0].keys())
